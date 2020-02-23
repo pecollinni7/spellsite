@@ -10,10 +10,37 @@
     Chromium <span id="chrome-version"></span>,
     and Electron <span id="electron-version"></span>.
 
+
+
+
     <p id="demo"></p>
+
+    <button disabled id="rdy-button" type="button" onClick="ipcRenderer.send('quitAndInstall')">Update Ready</button>
+
 
     <script>
       document.getElementById("demo").innerHTML = "app version is: " + require('electron').remote.app.getVersion();
+
+      const ipcRenderer = require('electron').ipcRenderer;
+      ipcRenderer.on('update-downloaded', function(event, text) {
+        console.log('update-downloaded');
+        var container = document.getElementById('rdy-button');
+        container.removeAttribute('disabled');
+      });
+      ipcRenderer.on('update-available', function(event, text) {
+        console.log('update-available')
+      });
+      ipcRenderer.on('error', function(event, text) {
+        console.log('error', text)
+      });
+      ipcRenderer.on('prog-made', function(event, text) {
+        console.log('prog-made')
+      });
+      ipcRenderer.on('update-not-available', function(event, text) {
+        console.log('update-not-available')
+      })
+
+
     </script>
 
     <!-- You can also require other files to run in this process -->
