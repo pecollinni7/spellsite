@@ -1,6 +1,6 @@
 {
   "name": "spellsite",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Electron SpellSite application",
   "main": "main.js",
   "build": {
@@ -33,9 +33,10 @@
   "bugs": {
     "url": "https://github.com/pecollinni7/spellsite/issues"
   },
-  "homepage": "https://github.com/pecollinni7/spellsite/#readme",
+  "homepage": "https://github.com/pecollinni7/spellsite#readme",
   "dependencies": {
-    "electron-updater": "^2.23.3"
+    "auto-updater": "^1.0.2",
+    "electron-updater": "^4.2.2"
   },
   "devDependencies": {
     "electron": "^8.0.1",
