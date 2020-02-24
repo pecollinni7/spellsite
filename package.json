@@ -1,0 +1,45 @@
+{
+  "name": "spellsite",
+  "version": "1.0.5",
+  "description": "Electron SpellSite application",
+  "main": "main.js",
+  "build": {
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "pecollinni7",
+        "repo": "spellsite"
+      }
+    ]
+  },
+  "scripts": {
+    "start": "electron .",
+    "build": "build",
+    "shipit": "build -p always"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pecollinni7/spellsite.git"
+  },
+  "keywords": [
+    "electron",
+    "example",
+    "autoUpdater",
+    "update",
+    "github"
+  ],
+  "author": "Petar Jevtic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pecollinni7/spellsite/issues"
+  },
+  "homepage": "https://github.com/pecollinni7/spellsite#readme",
+  "dependencies": {
+    "auto-updater": "^1.0.2",
+    "electron-updater": "^4.2.2"
+  },
+  "devDependencies": {
+    "electron": "^8.0.1",
+    "electron-builder": "^19.52.1"
+  }
+}
