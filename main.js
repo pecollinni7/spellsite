@@ -1,22 +1,45 @@
-const {app, ipcMain, BrowserWindow} = require('electron');
+const {app, ipcMain, BrowserWindow, globalShortcut} = require('electron');
 const {autoUpdater} = require('electron-updater');
 const path = require('path');
 
 let window;
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+    
+    const ret = globalShortcut.register('CommandOrControl+Q', () => {
+        app.quit();
+    });
+    
+    if (!ret) {
+        console.log('registration failed');
+    }
+    
+    // Check whether a shortcut is registered.
+    console.log(globalShortcut.isRegistered('CommandOrControl+Q'));
+    
+    
+    createWindow();
+    
+});
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit()
 });
 app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
 });
+app.on('will-quit', () => {
+    // Unregister a shortcut.
+    globalShortcut.unregister('CommandOrControl+Q');
+    
+    // Unregister all shortcuts.
+    globalShortcut.unregisterAll()
+});
 
 
 function createWindow() {
     window = new BrowserWindow({
-        width: 1400,
+        width: 1600,
         height: 1200,
         webPreferences: {
             preload: path.join(__dirname, './src/js/preload.js'),

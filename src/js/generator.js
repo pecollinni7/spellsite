@@ -9,8 +9,6 @@ let data = filesas.getDataFile();
 let Pages = [];
 let Files;
 
-console.log(imagesPath);
-
 function generatePagination()
 {
 	let res = "";
@@ -163,9 +161,9 @@ function generateHtmlForType(filePath, fileName, fileExt)
 		case ".gif":
 		case ".jpg":
 		case ".png":
-			res = "<img class='image' src='" + filePath + 
-				  "' onmousedown='handleItemClick(this)' data-fileName='" + fileName + 
-				  "' ondblclick='handleItemDoubleClick(this)' data-fileName='" + fileName + 
+			res = "<img class='image' src='" + filePath +
+				  "' onmousedown='handleItemClick(this)' data-fileName='" + fileName +
+				  "' ondblclick='handleItemDoubleClick(this)' data-fileName='" + fileName +
 				  "'>";
 			return res;
 		
@@ -213,9 +211,9 @@ module.exports.generateOverlayForType = function generateOverlayForType(filePath
 		case ".gif":
 			res = "<div id='gifContent' class='gifContent'>" +
 				  "<gif-player class='gifPlayer' src=" + filePath +
-				  " size='contain' speed='1' play prerender style='" + 
-				  "width:"  + ($(document).width() / 100 * 70) + "px; " + 
-				  "height:" + ($(document).height() / 100 * 50) + "px; " + 
+				  " size='contain' speed='1' play prerender style='" +
+				  "width:"  + ($(document).width() / 100 * 70) + "px; " +
+				  "height:" + ($(document).height() / 100 * 50) + "px; " +
 				  "position: center; display: block'>" +
 				  "</div>";
 			return res;
