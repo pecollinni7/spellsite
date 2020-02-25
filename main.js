@@ -19,21 +19,21 @@ function createWindow() {
         width: 1400,
         height: 1200,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
+            preload: path.join(__dirname, './src/js/preload.js'),
             nodeIntegration: true,
             webSecurity: true
         },
-        backgroundColor: '#FFFFFF'
+        backgroundColor: '#FFFFFF',
+        frame: false
     });
 
-    window.loadFile('index.html').then(r => {});
+    window.loadFile('./src/html/index.html').then(r => {});
     window.webContents.openDevTools();
     window.on('closed', function () {
         window = null;
     });
 
-    // autoUpdater.requestHeaders = { "PRIVATE-TOKEN": "f456d389c1202f5d403c78774ffcaf4947c1e879" };
-    // autoUpdater.autoDownload = true;
+    /*
 
     // Let autoUpdater check for updates, it will start downloading it automatically
     autoUpdater.checkForUpdates().then(r => {
@@ -67,4 +67,6 @@ function createWindow() {
     ipcMain.on('quitAndInstall', (event, arg) => {
         autoUpdater.quitAndInstall();
     });
+
+    */
 }

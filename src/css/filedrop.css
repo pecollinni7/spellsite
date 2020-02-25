@@ -1,0 +1,67 @@
+.filedrop {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	/*display: none;*/
+	display: flex;
+	visibility: hidden;
+	background-color: rgba(0, 0, 0, 0.0);
+	z-index: 100;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+
+	/*transition: visibility 1s, opacity 0.5s ease;*/
+	transition: background-color 0.16s ease;
+
+}
+
+.filedrop.show {
+	/*opacity: 0.7;*/
+	/*visibility: visible;*/
+	background-color: rgba(0, 0, 0, 0.7);
+	/*transition: background-color 0.24s ease;*/
+
+}
+
+/*.staticbg {*/
+/*	position: fixed;*/
+/*	width: 100%;*/
+/*	height: 100%;*/
+/*	background-color: #1e7e34;*/
+/*	*/
+/*	z-index: 1;*/
+/*}*/
+
+.drop-content {
+	width: 80%;
+	height: 80%;
+	/*max-width:80%;*/
+	/*max-height: 80%;*/
+	position: relative;
+	display: flex;
+	justify-content: center;
+	/*display: inline;*/
+	/*justify-content: center;*/
+	/*alignment: center;*/
+	/*background-color: rgba(0, 0, 0, 0.7);*/
+	padding: 20px 20px 20px 20px;
+	pointer-events: none;
+	font-size: 30px;
+	/*border: 1px solid rgba(255,255,255,0.3);*/
+	/*border-radius: 10px;*/
+
+}
+
+.drop-content img {
+	background-image: url('../../images/default/placeholder.png');
+	/*background: url('../images/default/placeholder.png') no-repeat;*/
+	/*height: auto;*/
+	max-width: 100%;
+	max-height: 100%;
+	position: center;
+	display: block;
+	margin: auto;
+	box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.6);
+}

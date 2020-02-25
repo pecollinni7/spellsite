@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>SpellSite</title>
+
+    <script>window.$ = window.jQuery = require('jquery');</script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../fonts/OpenSans-Light.ttf">
+
+    <script src="../lib/bootstrap.min.js"></script>
+    <script src="../lib/jquery-ui.js"></script>
+    <script src="../lib/gif-player.es6.js"></script>
+    <script src="../lib/web-animations.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" type="text/css" href="../css/titlebar.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/welcome.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dropdown.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/navigation.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/tags.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/content.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/filedrop.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/overlay.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+
+</head>
+<body>
+
+
+<!--<p id="demo"></p>-->
+<!--<button disabled id="rdy-button" type="button" onClick="ipcRenderer.send('quitAndInstall')">Update Ready-->
+<!--</button>-->
+<!--<script>-->
+<!--    document.getElementById("demo").innerHTML = "app version is: " + require('electron').remote.app.getVersion();-->
+<!--</script>-->
+
+
+<div class="titlebar" id="titlebar">
+    <a class="icon" onmousedown="navigation.setDropdownPos();">&#xE700;</a>
+    <a class="icon" onmousedown="reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
+    <a class="icon" onmousedown="tags.addNewTag();" data-toggle="tooltip" data-placement="bottom"
+       title="Add new Tag">&#xE948;</a>
+    <!--  <div class="reloadNotification">New files arrived. Reloading in 3</div>-->
+    <div class="drag-region"></div>
+    <a class="text" onmousedown="clearContentSelection()">Deselect</a>
+    <a class="icon navButton" onclick="navigation.toggleNavigation(this)" data-toggle="tooltip"
+       data-placement="bottom" title="Toggle Navigation">&#xE70E;</a>
+
+    <div class="window-controls" id="window-controls">
+        <div class="button" id="min-button">
+            <span>&#xE921;</span>
+        </div>
+        <div class="button" id="max-button">
+            <span>&#xE922;</span>
+        </div>
+        <div class="button" id="restore-button">
+            <span>&#xE923;</span>
+        </div>
+        <div class="button" id="close-button">
+            <span>&#xE8BB;</span>
+        </div>
+    </div>
+</div>
+
+<div class="dropdown-menu" id="mainmenu">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="#">Separated link</a>
+</div>
+
+<div class="dropdown-menu" id="contextmenu">
+    <a class="dropdown-item" href="#">Action 1</a>
+    <a class="dropdown-item" href="#">Action 2</a>
+    <a class="dropdown-item" href="#">Action 3</a>
+    <a class="dropdown-item" href="#">Action 4</a>
+    <a class="dropdown-item" href="#">Action 5</a>
+    <a class="dropdown-item" href="#">Action 6</a>
+</div>
+
+<div class="navigation collapse show" id="navigation">
+    <ul class="pagination" id="pagination"></ul>
+    <div class="tags " id="tags"></div>
+</div>
+
+<!--<div class="overlay" id="overlay" onclick="removeOverlay(this)" onmousemove="handleMouseMove(this)"></div>-->
+
+<div class="content" id="content"></div>
+
+<div class="footer" id="footer"></div>
+
+
+<!--    <script src="../js/appDownloaderService.js"></script>-->
+<script src="../js/titlebar.js"></script>
+<script src="../js/GUI.js"></script>
+<!--<script src="../js/navigation.js"></script>-->
+<script src="../js/renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+.navigation {
+	width: 100%;
+	position: fixed;
+	margin-top: 30px;
+	/*background-color: #0c5460;*/
+	transition: opacity 0.2s ease-out;
+	z-index: 8;
+
+}
+
+.navigation.faded{
+	opacity: 0.4;
+}
+.navigation.faded:hover {
+	opacity: 1;
+}
+.navigation.faded:active {
+	opacity: 1;
+}
+
+.navigation.inactive {
+	/*opacity: 0.0;*/
+}
+
+.collapsing {
+	transition: 0.35s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+
+.pagination {
+	justify-content: center;
+	-webkit-user-select: none;
+	padding: 4px 4px 4px 4px;
+	display: flex;
+	list-style: none;
+	border-radius: 0;
+	margin: 0;
+
+}
+
+
+.pagination a {
+	color: rgb(174, 174, 174);
+	font-size: 14px;
+	padding: 5px 16px;
+	text-decoration: none;
+	cursor: pointer;
+
+}
+
+.pagination li a {
+	font-size: 100%;
+	padding: 0 12px;
+	/*border-radius: 0;*/
+	border: 0 solid transparent;
+	background-color: #bdbdbd;
+	color: #424242;
+
+	transition: background-color 0.2s ease;
+}
+
+.pagination li a.active-link {
+	background-color: #512da8;
+	/*background-color: #558b2f;*/
+	color: #d9d9d9;
+	/*border: 1px solid #882fea;*/
+}
+
+.pagination li a:hover:not(.active-link) {
+	background-color: #9e9e9e;
+}
+
+.page-link {
+	/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+	/*font-family: Roboto, serif;*/
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+
+}
+

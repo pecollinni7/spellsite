@@ -1,0 +1,48 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+	/*font-family: Roboto, serif;*/
+
+
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+	src: local('Open Sans Light'), local('OpenSans-Light'), url(../fonts/OpenSans-Light.ttf) format('truetype');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/*html {*/
+/*	box-sizing: border-box;*/
+/*}*/
+
+/**, *:before, *:after {*/
+/*	box-sizing: inherit;*/
+/*}*/
+
+html, body {
+	height: 100%;
+	margin: 0;
+	/*background-color: #37474f;*/
+	/*background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);*/
+	/*background-image: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%);*/
+	/*background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);*/
+
+	/*background-image: linear-gradient(120deg, #1b1a1f 0%, #282530 100%);*/
+	/*background-image: linear-gradient(120deg, #11121c 0%, #1a1924 100%);*/
+	background-color: #2b2b2b;
+	/*background-color: #1f1f1f;*/
+
+	display: inline;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+

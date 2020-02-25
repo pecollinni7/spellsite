@@ -1,0 +1,25 @@
+{
+  "tagTypes": [
+    "Ice",
+    "Swing",
+    "Swirl",
+    "BlowUp",
+    "Teleport",
+    "Water",
+    "Explosion",
+    "Disolve",
+    "OnUnit",
+    "UI",
+    "Meteor",
+    "Fire",
+    "Dust",
+    "Laser",
+    "Vortex",
+    "Lightning",
+    "Acid",
+    "Something",
+    "Projectile",
+    "Boom",
+    "Card"
+  ]
+}

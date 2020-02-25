@@ -1,0 +1,166 @@
+#titlebar {
+	width: 100%;
+	/*background-color: #3c3f41;*/
+	overflow: hidden;
+	height: 30px;
+	/*height: 100px;*/
+	/*display: inline-flex;*/
+	display: flex;
+	position: fixed;
+	/*font-family: "Roboto", serif;*/
+	/*font-family: 'Roboto Thin', sans-serif;*/
+
+	/*font-weight: bold;*/
+	text-transform: uppercase;
+	margin: 0;
+
+	z-index: 10;
+
+}
+
+#titlebar a {
+	float: left;
+	text-align: center;
+	/*padding: 4px 8px 4px 8px;*/
+	color: #aeaeae;
+	text-decoration: none;
+	user-select: none; 
+	font-size: 14px;
+	line-height: 30px;
+	padding-left:  10px;
+	padding-right: 10px;
+
+	transition: background-color, color 0.21s ease;
+}
+
+#titlebar .icon{
+	font-family: "Segoe MDL2 Assets", sans-serif;
+	/*font-weight: bold;*/
+}
+
+#titlebar .text{
+	/*font-family: 'Roboto', sans-serif;*/
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+}
+
+#titlebar .reloadNotification {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+
+	display: block;
+	/*position: relative;*/
+	width: max-content;
+	min-width: fit-content ;
+	background-color: #673ab7;
+	margin: 4px 4px 4px 4px ;
+	text-align: center;
+	color: #aeaeae;
+	text-decoration: none;
+	user-select: none;
+	font-size: 14px;
+	border-radius: 3px;
+	padding-left:  10px;
+	padding-right: 10px;
+
+	animation-name: color-pulse;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+
+}
+
+
+@keyframes color-pulse {
+	0% {
+		background-color: #43248d;
+	}
+	20% {
+		background-color: #43248d;
+	}
+	50%{
+		background-color: #5a369c;
+	}
+	80% {
+		background-color: #43248d;
+	}
+	100% {
+		background-color: #43248d;
+	}
+}
+
+
+
+
+#titlebar a:hover {
+	background-color: #2a2f34;
+	color: #d9d9d9;
+}
+
+#titlebar a:active {
+	background-color: #272727;
+	color: #d9d9d9;
+}
+
+a.active {
+	background-color: #4CAF50;
+}
+
+.drag-region {
+	width: 100%;
+	height: auto;
+	-webkit-app-region: drag;
+}
+
+/* Add responsiveness - will automatically display the titlebar vertically instead of horizontally on screens less than 500 pixels */
+@media screen and (max-width: 500px) {
+	.titlebar a {
+		float: none;
+		display: block;
+	}
+}
+
+#window-controls {
+	display: grid;
+	grid-template-columns: repeat(3, 46px);
+	/*position: absolute;*/
+	/*top: 0;*/
+	/*right: 0;*/
+	height: 100%;
+	font-family: "Segoe MDL2 Assets", serif;
+	font-size: 10px;
+}
+#window-controls {
+	-webkit-app-region: no-drag;
+}
+#window-controls .button {
+	grid-row: 1 / span 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+#window-controls .button {
+	user-select: none;
+	cursor: default;
+	color: #BBB;
+}
+#window-controls .button:hover {
+	background: rgba(255,255,255,0.2);
+	color: #FFF;
+}
+#window-controls #min-button {
+	grid-column: 1;
+}
+#window-controls #max-button, #window-controls #restore-button {
+	grid-column: 2;
+}
+#window-controls #restore-button {
+	display: none;
+}
+#window-controls #close-button {
+	grid-column: 3;
+}
+#window-controls #close-button:hover {
+	background: #E81123;
+}

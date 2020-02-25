@@ -1,0 +1,20 @@
+.dropdown-menu {
+	background-color: #2b2b2b;
+	border: 1px solid #656565;
+	z-index: 20;
+}
+
+.dropdown-item {
+	color: #aeaeae;
+}
+
+.dropdown-item:hover{
+	background-color: #aeaeae;
+}
+
+.dropdown-divider{
+	background-color: #aeaeae;
+}
+
+.dropdown-menu.show {
+}
