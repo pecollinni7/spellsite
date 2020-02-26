@@ -2,6 +2,7 @@ let counter = 0;
 let grid1;
 let grid1AddButton;
 let grid1RemoveButton;
+const files = require('./files');
 
 const fs = require("fs");
 const Muuri = require('muuri');
@@ -299,11 +300,86 @@ function getActiveFilterTags()
     return tagNames;
 }
 
+
+function setTagForSource(srcFileName, tagName) {
+    var jsonData = files.getDataFile();
+    if (jsonData.hasOwnProperty(srcFileName) === false)
+        jsonData[srcFileName] = {};
+    
+    if (jsonData[srcFileName].hasOwnProperty('tags') === false)
+        jsonData[srcFileName].tags = {};
+    
+    jsonData[srcFileName].tags[tagName] = 1;
+    files.setDataFile(jsonData);
+    
+    
+    var jsonPatch = files.getPatchFile();
+    if (jsonPatch.hasOwnProperty(srcFileName) === false)
+        jsonPatch[srcFileName] = {};
+    
+    if (jsonPatch[srcFileName].hasOwnProperty('tags') === false)
+        jsonPatch[srcFileName].tags = {};
+    
+    jsonPatch[srcFileName].tags[tagName] = 1;
+    files.setPatchFile(jsonPatch);
+}
+
+
+function removeTagForSource(srcFileName, tagName) {
+    
+    var jsonData = files.getDataFile();
+    if (jsonData.hasOwnProperty(srcFileName) === false)
+        jsonData[srcFileName] = {};
+    
+    if (jsonData[srcFileName].hasOwnProperty('tags') === false)
+        jsonData[srcFileName].tags = {};
+    
+    // if (jsonData[srcFileName].tags.hasOwnProperty(tagName) !== false)
+    // 	delete jsonData[srcFileName].tags[tagName];
+    
+    jsonData[srcFileName].tags[tagName] = 0;
+    files.setDataFile(jsonData);
+    
+    
+    var jsonPatch = files.getPatchFile();
+    if (jsonPatch.hasOwnProperty(srcFileName) === false)
+        jsonPatch[srcFileName] = {};
+    
+    if (jsonPatch[srcFileName].hasOwnProperty('tags') === false)
+        jsonPatch[srcFileName].tags = {};
+    
+    // if (jsonPatch[srcFileName].tags.hasOwnProperty(tagName) !== false)
+    // 	delete jsonPatch[srcFileName].tags[tagName];
+    
+    jsonPatch[srcFileName].tags[tagName] = 0;
+    files.setPatchFile(jsonPatch);
+    
+}
+
+function getTagsForSource(srcFileName) {
+    var tagsOn = [];
+    
+    const jsonFile = files.getDataFile()[srcFileName].tags;
+    for (var tagName in jsonFile) {
+        if (jsonFile.hasOwnProperty(tagName)) {
+            if (jsonFile[tagName] === 1) {
+                tagsOn.push(tagName);
+            }
+        }
+    }
+    
+    return tagsOn;
+}
+
+
 module.exports = {
     addNewTag,
     displayTags,
     isTagActive,
     getActiveFilterTags,
     clearTagSelection,
-    getGrid
+    getGrid,
+    setTagForSource,
+    removeTagForSource,
+    getTagsForSource
 };

@@ -44,7 +44,7 @@ function createWindow() {
         webPreferences: {
             preload: path.join(__dirname, './src/js/preload.js'),
             nodeIntegration: true,
-            webSecurity: true
+            webSecurity: false
         },
         backgroundColor: '#FFFFFF',
         frame: false

@@ -49,7 +49,7 @@ function handleItemClick(item)
 	{
 		for (let i = 0; i < selection.length; i++)
 		{
-			tags.displayTags(getTagsForSource(selection[i]));
+			tags.displayTags(tags.getTagsForSource(selection[i]));
 		}
 	}
 }
@@ -70,9 +70,9 @@ function handleTagClick(tagElement, tagName) {
 
 		selection.forEach(item => {
 			if (tags.isTagActive(tagElement)) {
-				setTagForSource(item, tagName);
+				tags.setTagForSource(item, tagName);
 			} else {
-				removeTagForSource(item, tagName);
+				tags.removeTagForSource(item, tagName);
 			}
 		});
 
@@ -99,73 +99,4 @@ function getSelectedItemFileNames() {
 	return selectedItems;
 }
 
-function getTagsForSource(srcFileName) {
-	var tagsOn = [];
 
-	const jsonFile = files.getDataFile()[srcFileName].tags;
-	for (var tagName in jsonFile) {
-		if (jsonFile.hasOwnProperty(tagName)) {
-			if (jsonFile[tagName] === 1) {
-				tagsOn.push(tagName);
-			}
-		}
-	}
-
-	return tagsOn;
-}
-
-
-function setTagForSource(srcFileName, tagName) {
-	var jsonData = files.getDataFile();
-	if (jsonData.hasOwnProperty(srcFileName) === false)
-		jsonData[srcFileName] = {};
-
-	if (jsonData[srcFileName].hasOwnProperty('tags') === false)
-		jsonData[srcFileName].tags = {};
-
-	jsonData[srcFileName].tags[tagName] = 1;
-	files.setDataFile(jsonData);
-
-
-	var jsonPatch = files.getPatchFile();
-	if (jsonPatch.hasOwnProperty(srcFileName) === false)
-		jsonPatch[srcFileName] = {};
-
-	if (jsonPatch[srcFileName].hasOwnProperty('tags') === false)
-		jsonPatch[srcFileName].tags = {};
-
-	jsonPatch[srcFileName].tags[tagName] = 1;
-	files.setPatchFile(jsonPatch);
-}
-
-
-function removeTagForSource(srcFileName, tagName) {
-
-	var jsonData = files.getDataFile();
-	if (jsonData.hasOwnProperty(srcFileName) === false)
-		jsonData[srcFileName] = {};
-
-	if (jsonData[srcFileName].hasOwnProperty('tags') === false)
-		jsonData[srcFileName].tags = {};
-
-	// if (jsonData[srcFileName].tags.hasOwnProperty(tagName) !== false)
-	// 	delete jsonData[srcFileName].tags[tagName];
-
-	jsonData[srcFileName].tags[tagName] = 0;
-	files.setDataFile(jsonData);
-
-
-	var jsonPatch = files.getPatchFile();
-	if (jsonPatch.hasOwnProperty(srcFileName) === false)
-		jsonPatch[srcFileName] = {};
-
-	if (jsonPatch[srcFileName].hasOwnProperty('tags') === false)
-		jsonPatch[srcFileName].tags = {};
-
-	// if (jsonPatch[srcFileName].tags.hasOwnProperty(tagName) !== false)
-	// 	delete jsonPatch[srcFileName].tags[tagName];
-
-	jsonPatch[srcFileName].tags[tagName] = 0;
-	files.setPatchFile(jsonPatch);
-
-}

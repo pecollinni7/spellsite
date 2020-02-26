@@ -1,12 +1,12 @@
 const fs   = require('fs');
 const Path = require('path');
 
-const path_dataFile        = Path.resolve(process.cwd() + "/storage/json/data.json");
-const path_patchFile       = Path.resolve(process.cwd() + "/storage/json/patch.json");
+const path_dataFile        = Path.resolve(process.cwd() + "/storage/json/data.json").replace(/\\/g, "/");
+const path_patchFile       = Path.resolve(process.cwd() + "/storage/json/patch.json").replace(/\\/g, "/");
 // const path_dataFileBackup  = Path.resolve(process.cwd() + "/json/dataBackup.json");
 // const path_writeStream     = Path.resolve(process.cwd() + "/json/_writeStream.json");
 // const path_readStream      = Path.resolve(process.cwd() + "/json/_readStream.json");
-const path_images          = Path.resolve(process.cwd() + "/storage/media");
+const path_images          = Path.resolve(process.cwd() + "/storage/media").replace(/\\/g, "/");
 // const path_downloadedMedia = Path.resolve(process.cwd() + "/downloadedMedia");
 
 let dataFile  = readData(path_dataFile);

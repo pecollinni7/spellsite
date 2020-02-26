@@ -46,13 +46,13 @@ exports.generateContent = function (activeFilterTagList) {
 		// const name = Path.basename(fileNames[i]);
 		const name      = fileNames[i].split(/[\\/]/).pop();
 		const extension = Path.extname(fileNames[i]);
-		const path      = '../../storage/media/' + name;
+		// const path      = '../../storage/media/' + name;
 		// const path      = Path.resolve(imagesPath + '/' + name);
-		const pathSys      = imagesPath + '/' + name;
+		const path      = imagesPath + '/' + name;
 
-		if (fs.existsSync(pathSys)) {
-			// console.log('exists: ' + pathSys);
-			res += generateHtmlForType(path, name, extension);
+		if (fs.existsSync(path)) {
+			console.log('exists: ' + path);
+			res += generateHtmlForType(path , name, extension);
 
 		} else {
 			// console.error('unexisted: ' + pathSys);
