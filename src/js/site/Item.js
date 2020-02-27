@@ -9,15 +9,16 @@ class Item
 	_isSelected;
 	_tags;
 	_html;
+	_itemSelector;
 
-	constructor(name)
+	constructor(name, allFilesTags)
 	{
-		this._name       = name;
-		this._ext        = Path.extname(name);
-		this._src        = mediaPath + '/' + name;
-		this._isSelected = false;
-		this._tags       = [];
-		this._html       = this.generateHtml(this.ext);
+		this.name         = name;
+		this.ext          = Path.extname(name);
+		this.src          = mediaPath + '/' + name;
+		this.isSelected   = false;
+		this.tags         = allFilesTags[name].tags;
+		this.html         = this.generateHtml(this.ext);
 	}
 
 	get name() {return this._name;}
@@ -36,19 +37,56 @@ class Item
 
 	set tags(value) { this._tags = value; }
 
+	set ext(value) { this._ext = value; }
+
 	get ext() { return this._ext; }
+
+	set html(value) { this._html = value; }
 
 	get html() { return this._html; }
 
-	
+	get itemSelector()
+	{
+		if (this._itemSelector === undefined)
+			this._itemSelector = this.getItemSelector();
+
+		return this._itemSelector;
+	}
+
+	getItemSelector()
+	{
+		const c = $('#content').children();
+
+		for (let i = 0; i < c.length; i++)
+		{
+			if ($(c[i]).attr('data-filename') === this.name)
+			{
+				return $('#content').children()[i];
+			}
+		}
+	}
+
+	deploySelection(value)
+	{
+		if (value)
+		{
+			this.itemSelector.classList.add('selected');
+		}
+		else
+		{
+			this.itemSelector.classList.remove('selected');
+		}
+	}
+
 	toggleSelection()
 	{
 		this.isSelected = !this.isSelected;
+		this.deploySelection(this.isSelected);
 	}
 
 	containsTag(searchTag)
 	{
-		return this._tags.includes(searchTag);
+		return this.tags.includes(searchTag);
 	}
 
 	generateHtml(extension)
@@ -62,14 +100,14 @@ class Item
 			case ".jpg":
 			case ".png":
 				res = "<img class='image' src='" + this.src +
-					"' onmousedown='handleItemClick(this)' data-fileName='" + this.name +
+					"' onmousedown='site.handleItemClick(this)' data-fileName='" + this.name +
 					"' ondblclick='handleItemDoubleClick(this)' data-fileName='" + this.name +
 					"'>";
 				return res;
 
 			case ".mp4":
 				res = "";
-				res += "<video class='videoInsert' onclick='handleItemClick(this)' ondblclick='handleItemDoubleClick(this)' data-fileName='" + this.name + "' autoplay loop muted>";
+				res += "<video class='videoInsert' onclick='site.handleItemClick(this)' ondblclick='site.handleItemDoubleClick(this)' data-fileName='" + this.name + "' autoplay loop muted>";
 				res += "<source src=" + this.src + " type='video/mp4'>";
 				res += "</video>";
 

@@ -2,41 +2,67 @@ class Tag
 {
 	_name;
 	_active;
-	
+
 	_tagSelector;
-	
+
 	constructor(name)
 	{
 		this.name   = name;
 		this.active = false;
-		
-		this.tagSelector = $('#tags').childNodes;
+
+		this.tagSelector = this.getTagSelector(this.name);
 	}
-	
-	
-	get tagSelector() { return this._tagSelector; }
-	
+
 	set tagSelector(value) { this._tagSelector = value; }
-	
-	get name()
+
+	get tagSelector() { return this.getTagSelector(this.name); }
+	// get tagSelector() { return this._tagSelector; }
+
+	get name() { return this._name; }
+
+	set name(value) { this._name = value; }
+
+	get active() { return this._active; }
+
+	set active(bool) { this._active = bool; }
+
+	toggleActive()
 	{
-		return this._name;
+		this.setActive(!this.active);
 	}
-	
-	set name(value)
+
+	setActive(value)
 	{
-		this._name = value;
+		this.active = value;
+		this.deployActive(this.active);
 	}
-	
-	get active()
+
+	deployActive(value)
 	{
-		return this._active;
+		if (value)
+		{
+			this.tagSelector.classList.add('item-content-active');
+		}
+		else
+		{
+			this.tagSelector.classList.remove('item-content-active', 'item-content-filter-active');
+		}
 	}
-	
-	set active(bool)
+
+	getTagSelector(name)
 	{
-		this._active = bool;
+		const children = $('#tags').children();
+
+		for (let i = 0; i < children.length; i++)
+		{
+			if (children[i].childNodes[0].textContent === name)
+			{
+				return $('#tags').children()[i].childNodes[0];
+			}
+		}
 	}
+
+
 }
 
 module.exports = Tag;

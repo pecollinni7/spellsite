@@ -44,28 +44,87 @@ class Tags
 		
 		return res;
 	}
-	
-	displayTags()
+
+	getTagsByName(tagNames)
 	{
+		let res = [];
+
+		//
+		// for (let i = 0; i < this.tags.length; i++)
+		// {
+		// 	console.log(this.tags[i]);
+		//
+		// 	for (let j = 0; j < tagNames.length; j++)
+		// 	{
+		// 		if (this.tags[i].name === tagNames[i])
+		// 		{
+		// 			res.push(this.tags[i]);
+		// 		}
+		// 	}
+		// }
+
+		console.log(tagNames);
+
+		this.tags.forEach(tag => {
+			tagNames.forEach(tagName => {
+				if (tagName === tag.name)
+				{
+					res.push(tag);
+				}
+			})
+		});
+
+		return res;
+	}
+
+	// displayTagsByNames(tagNames)
+	// {
+	// 	console.log(tagNames);
+	//
+	// }
+
+	toggleTagByName(tagName)
+	{
+		const tags = this.getTagsByName([tagName]);
+
+		for (let i = 0; i < tags.length; i++)
+		{
+			tags[i].toggleActive();
+		}
+	}
 	
+	displayTagsByName(tagNames)
+	{
+		this.clearSelection();
+
+		const tags = this.getTagsByName(tagNames);
+
+		tags.forEach(tag => {
+			tag.setActive(true);
+		})
 	}
 	
 	clearSelection()
 	{
 		this.tags.forEach(tag => {
-			tag.active = false;
+			tag.setActive(false);
 		});
-		
+
+
 		//you should move this under Tag class
-		this.tagsSelector.childNodes.each(element => {
-			element.childNodes[0].removeClass('item-content-active', 'item-content-filter-active');
-		});
+		// this.tagsSelector.children().each(element => {
+		// 	element.childNodes[0].removeClass('item-content-active', 'item-content-filter-active');
+		// });
 	}
 	
 	generateTags(tagNames)
 	{
 		this.createGrid();
 		this.addItemsToGrid(this.mainGrid, tagNames);
+
+		tagNames.forEach(name => {
+			this.addTag(name);
+		});
 	}
 	
 	

@@ -25,12 +25,12 @@ class ContentPages
 	
 	get activePage() {return this.contentPages[this.activePageIndex];}
 	
-	generatePages(fileNames)
+	generatePages(fileNames, fileTags)
 	{
 		const pageFileNameChunks = this.getPageChunks(fileNames, this.pageSize);
 		
 		pageFileNameChunks.forEach(pageFileNames => {
-			this.contentPages.push(new Content(pageFileNames))
+			this.contentPages.push(new Content(pageFileNames, fileTags))
 		});
 		
 		this.deployActivePage();

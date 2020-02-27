@@ -6,31 +6,31 @@ class Data
 {
 	static _dataFile;
 	static _patchFile;
-	
+
 	static get dataFile()
 	{
 		return StorageController.readFile(FilePaths.path_dataFile);
 		// return this._dataFile;
 	}
-	
+
 	static set dataFile(value)
 	{
 		this._dataFile = value;
 		StorageController.writeFile(value, FilePaths.path_dataFile);
 	}
-	
+
 	static get patchFile()
 	{
 		return StorageController.readFile(FilePaths.path_patchFile);
 		// return this._patchFile;
 	}
-	
+
 	static set patchFile(value)
 	{
 		this._patchFile = value;
 		StorageController.writeFile(value, FilePaths.path_patchFile);
 	}
-	
+
 	//you need to sort this
 	static getFileNames(tagsFilter)
 	{
@@ -38,10 +38,38 @@ class Data
 		{
 			return this.getFilteredNames(tagsFilter);
 		}
-		
+
 		return this.getNames();
 	}
-	
+
+	static getFileTags()
+	{
+		let res = {};
+
+		for (const fileName in this.dataFile)
+		{
+			if (this.dataFile.hasOwnProperty(fileName))
+			{
+				if (fileName !== 'version' && fileName !== 'tagTypes')
+				{
+					if (fs.existsSync(FilePaths.path_media + '/' + fileName))
+					{
+						if (this.dataFile[fileName].hasOwnProperty('tags'))
+						{
+							res[fileName] = {};
+							res[fileName]['tags'] = {};
+							res[fileName]['tags'] = this.dataFile[fileName].tags;
+
+							// res.push({fileName: this.dataFile[fileName].tags});
+						}
+					}
+				}
+			}
+		}
+
+		return res;
+	}
+
 	static getNames()
 	{
 		let res = [];
@@ -54,23 +82,22 @@ class Data
 					if (fs.existsSync(FilePaths.path_media + '/' + fileName))
 					{
 						res.push(fileName);
-					}
-					else
+					} else
 					{
 						console.warn('Missing file: ' + fileName);
 					}
 				}
 			}
 		}
-		
+
 		return res;
 	}
-	
-	
+
+
 	static getFilteredNames(tagsFilter)
 	{
 		let res = [];
-		
+
 		for (const fileName in this.dataFile)
 		{
 			if (this.dataFile.hasOwnProperty(fileName))
@@ -80,41 +107,40 @@ class Data
 					if (fs.existsSync(FilePaths.path_media + '/' + fileName))
 					{
 						const tags = this.dataFile[fileName]['tagsList'];
-						
+
 						if (tags.some(r => tagsFilter.include(r)))
 						{
 							res.push(fileName);
 						}
-					}
-					else
+					} else
 					{
 						console.warn('Missing file: ' + fileName);
 					}
 				}
 			}
 		}
-		
+
 		return res;
 	}
-	
+
 	static get tagsList()
 	{
 		if (this.dataFile.hasOwnProperty('tagTypes'))
 		{
 			return this.dataFile.tagTypes;
 		}
-		
+
 		console.error('No tagTypes in the dataFile!');
 		return [];
 	}
-	
+
 	static get version()
 	{
 		if (this.dataFile.hasOwnProperty('version'))
 		{
 			return this.dataFile['version'];
 		}
-		
+
 		return null;
 	}
 }

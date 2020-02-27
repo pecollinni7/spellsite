@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en-US" class="html">
 <head>
     <meta charset="UTF-8">
     <title>SpellSite</title>
@@ -41,12 +41,12 @@
 
 <div class="titlebar" id="titlebar">
     <a class="icon" onmousedown="navigation.setDropdownPos();">&#xE700;</a>
-    <a class="icon" onmousedown="reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
+    <a class="icon" onmousedown="site.reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
     <a class="icon" onmousedown="tags.addNewTag();" data-toggle="tooltip" data-placement="bottom"
        title="Add new Tag">&#xE948;</a>
     <!--  <div class="reloadNotification">New files arrived. Reloading in 3</div>-->
     <div class="drag-region"></div>
-    <a class="text" onmousedown="clearContentSelection()">Deselect</a>
+    <a class="text" onmousedown="site.contentPages.activePage.clearSelection(); site.tags.clearSelection();">Deselect</a>
     <a class="icon navButton" onclick="navigation.toggleNavigation(this)" data-toggle="tooltip"
        data-placement="bottom" title="Toggle Navigation">&#xE70E;</a>
 
@@ -63,6 +63,20 @@
         <div class="button" id="close-button">
             <span>&#xE8BB;</span>
         </div>
+    </div>
+</div>
+
+<div class="filedrop" id="filedrop">
+    <div class="drop-content" id="drop-content">
+        <!--		<a data-pin-do="embedPin" href="https://www.pinterest.com/pin/396879785902836210/"></a>-->
+        <!--		<iframe src="https://player.vimeo.com/video/281053917?autoplay=1&loop=1&color=ff4208&title=0&byline=0&portrait=0" -->
+        <!--		        width="640" height="360" frameborder="0" allow="fullscreen" allowfullscreen></iframe>-->
+
+        <!--		<iframe width="560" height="315" src="https://www.youtube.com/embed/668nUCeBHyY?autoplay=1&controls=0" frameborder="0" -->
+        <!--		        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+        <!--		<iframe src="https://www.vimeo.com/263130429?autoplay=1&loop=1&color=ff4208&title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allow="fullscreen" allowfullscreen></iframe>-->
+        <!--		<iframe src="https://player.vimeo.com/video/263130429?autoplay=1&loop=1&color=ff4208&title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>-->
+        <!--		<iframe src="https://player.vimeo.com/video/263130429?autoplay=1&loop=1&color=ff4208&title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>-->
     </div>
 </div>
 

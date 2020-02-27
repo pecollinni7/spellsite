@@ -8,14 +8,14 @@ class Content
 	
 	_contentSelector;
 	
-	constructor(fileNames)
+	constructor(fileNames, fileTags)
 	{
 		this._items = [];
 		
 		this.contentSelector = $('#content');
 		
 		
-		this.generateItems(fileNames);
+		this.generateItems(fileNames, fileTags);
 		this.generateHtml();
 	}
 	
@@ -29,10 +29,10 @@ class Content
 	
 	get contentSelector() { return this._contentSelector; }
 	
-	generateItems(fileNames)
+	generateItems(fileNames, fileTags)
 	{
 		fileNames.forEach(fileName => {
-			this.items.push(new Item(fileName));
+			this.items.push(new Item(fileName, fileTags));
 		})
 	}
 	
@@ -52,12 +52,33 @@ class Content
 	
 	getItemByName(itemName)
 	{
-		this.items.forEach(item => {
-			if (item.name === itemName)
+		for (let i = 0; i < this.items.length; i++)
+		{
+			if (this.items[i].name === itemName)
 			{
-				return item;
+				return this.items[i];
+			}
+		}
+	}
+
+	getSelectedItemsTags()
+	{
+		let res = [];
+
+		this.getSelectedItems().forEach(selectedItem => {
+
+			for (const tag in selectedItem.tags)
+			{
+				if (selectedItem.tags[tag] === 1)
+				{
+					res.push(tag);
+				}
 			}
 		});
+
+
+
+		return res;
 	}
 	
 	getSelectedItemNames()
