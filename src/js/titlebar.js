@@ -1,4 +1,4 @@
-// const remote = require('electron').remote;
+const remote = require('electron').remote;
 
 // When document has loaded, initialise
 document.onreadystatechange = () => {

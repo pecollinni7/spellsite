@@ -1,4 +1,4 @@
-const mediaPath = "";
+const mediaPath = require('./StorageFilePaths').path_media;
 const Path      = require('path');
 
 class Item
@@ -6,18 +6,18 @@ class Item
 	_name;
 	_ext;
 	_src;
-	_selected;
+	_isSelected;
 	_tags;
 	_html;
 
 	constructor(name)
 	{
-		this._name     = name;
-		this._ext      = Path.extname(name);
-		this._src      = mediaPath + '/' + name;
-		this._selected = false;
-		this._tags     = [];
-		this._html     = this.generateHtml(this.ext);
+		this._name       = name;
+		this._ext        = Path.extname(name);
+		this._src        = mediaPath + '/' + name;
+		this._isSelected = false;
+		this._tags       = [];
+		this._html       = this.generateHtml(this.ext);
 	}
 
 	get name() {return this._name;}
@@ -28,9 +28,9 @@ class Item
 
 	set src(value) { this._src = value; }
 
-	get selected() { return this._selected; }
+	get isSelected() { return this._isSelected; }
 
-	set selected(value) { this._selected = value; }
+	set isSelected(value) { this._isSelected = value; }
 
 	get tags() { return this._tags; }
 
@@ -40,6 +40,11 @@ class Item
 
 	get html() { return this._html; }
 
+	
+	toggleSelection()
+	{
+		this.isSelected = !this.isSelected;
+	}
 
 	containsTag(searchTag)
 	{
