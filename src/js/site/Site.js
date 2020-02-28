@@ -63,18 +63,21 @@ class Site
 	{
 		this.contentPages.activePage.clearSelection();
 		this.contentPages.activePage.getItemByName($(item).attr('data-filename')).toggleSelection();
-
 		this.tags.displayTagsByName(this.contentPages.activePage.getSelectedItemsTags());
 	}
 
 	handleTagClick(tagName)
 	{
 		const selectedItems = this.contentPages.activePage.getSelectedItems();
+		this.tags.toggleTagByName(tagName);
 
 		if (selectedItems !== undefined && selectedItems.length > 0)
 		{
-			this.tags.toggleTagByName(tagName);
-			//save them to json
+			this.contentPages.activePage.updateTagsForSelectedItems(tagName, this.tags.getTagValue(tagName));
+		}
+		else
+		{
+			this.contentPages.generatePages(Data.getFileNames(this.tags.getActiveTagNames()), Data.getFileTags());
 		}
 	}
 

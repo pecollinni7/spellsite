@@ -1,5 +1,6 @@
 const mediaPath = require('./StorageFilePaths').path_media;
 const Path      = require('path');
+const Data      = require('./Data');
 
 class Item
 {
@@ -13,12 +14,12 @@ class Item
 
 	constructor(name, allFilesTags)
 	{
-		this.name         = name;
-		this.ext          = Path.extname(name);
-		this.src          = mediaPath + '/' + name;
-		this.isSelected   = false;
-		this.tags         = allFilesTags[name].tags;
-		this.html         = this.generateHtml(this.ext);
+		this.name       = name;
+		this.ext        = Path.extname(name);
+		this.src        = mediaPath + '/' + name;
+		this.isSelected = false;
+		this.tags       = Data.getTagsForFileName(this.name);
+		this.html       = this.generateHtml(this.ext);
 	}
 
 	get name() {return this._name;}
@@ -32,10 +33,6 @@ class Item
 	get isSelected() { return this._isSelected; }
 
 	set isSelected(value) { this._isSelected = value; }
-
-	get tags() { return this._tags; }
-
-	set tags(value) { this._tags = value; }
 
 	set ext(value) { this._ext = value; }
 
@@ -51,6 +48,36 @@ class Item
 			this._itemSelector = this.getItemSelector();
 
 		return this._itemSelector;
+	}
+
+	get tags() { return Data.getTagsForFileName(this.name) }
+
+	set tags(value)
+	{
+		this._tags = value;
+		Data.setTagsForFileName(this.name, this._tags);
+	}
+
+	getActiveTags()
+	{
+		const res  = [];
+		const tags = this.tags;
+
+		for (const tag in tags)
+		{
+			if (tags[tag] === 1)
+			{
+				res.push(tag);
+			}
+		}
+
+		return res;
+	}
+
+	updateTag(tagName, tagValue)
+	{
+		Data.updateTag(this.name, tagName, tagValue);
+		this.tags = Data.getTagsForFileName(this.name);
 	}
 
 	getItemSelector()
@@ -71,8 +98,7 @@ class Item
 		if (value)
 		{
 			this.itemSelector.classList.add('selected');
-		}
-		else
+		} else
 		{
 			this.itemSelector.classList.remove('selected');
 		}

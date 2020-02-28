@@ -5,6 +5,7 @@ class ContentPages
 	_contentPages    = [];
 	_activePageIndex = 0;
 	_pageSize        = 30;
+	_activePage;
 	
 	constructor()
 	{
@@ -22,17 +23,19 @@ class ContentPages
 	set activePageIndex(value) { this._activePageIndex = value; }
 	
 	get numOfPages() {return this.contentPages.length;}
-	
+
 	get activePage() {return this.contentPages[this.activePageIndex];}
 	
 	generatePages(fileNames, fileTags)
 	{
+		this.contentPages = [];
+
 		const pageFileNameChunks = this.getPageChunks(fileNames, this.pageSize);
-		
+
 		pageFileNameChunks.forEach(pageFileNames => {
 			this.contentPages.push(new Content(pageFileNames, fileTags))
 		});
-		
+
 		this.deployActivePage();
 	}
 	
@@ -44,12 +47,13 @@ class ContentPages
 			//TODO potential error if chunk size is bigger then array.length
 			R.push(items.slice(i, i + chunkSize));
 		}
-		
+
 		return R;
 	}
 	
 	deployActivePage()
 	{
+		console.log(this.activePage.html);
 		$('#content').html(this.activePage.html);
 	}
 }

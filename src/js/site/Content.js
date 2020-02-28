@@ -35,6 +35,15 @@ class Content
 			this.items.push(new Item(fileName, fileTags));
 		})
 	}
+
+	updateTagsForSelectedItems(tagName, tagValue)
+	{
+		const selectedItems = this.getSelectedItems();
+
+		selectedItems.forEach(selectedItem => {
+			selectedItem.updateTag(tagName, tagValue);
+		})
+	}
 	
 	getSelectedItems()
 	{
@@ -64,19 +73,28 @@ class Content
 	getSelectedItemsTags()
 	{
 		let res = [];
+		const selectedItems = this.getSelectedItems();
 
-		this.getSelectedItems().forEach(selectedItem => {
 
-			for (const tag in selectedItem.tags)
-			{
-				if (selectedItem.tags[tag] === 1)
+		selectedItems.forEach(selectedItem => {
+			const selectedItemActiveTags = selectedItem.getActiveTags();
+
+
+			selectedItemActiveTags.forEach(tagName => {
+				if (res.includes(tagName) === false)
 				{
-					res.push(tag);
+					res.push(tagName);
 				}
-			}
+			});
+
+			// for (const tag in selectedItem.tags)
+			// {
+			// 	if (selectedItem.tags[tag] === 1)
+			// 	{
+			// 		res.push(tag);
+			// 	}
+			// }
 		});
-
-
 
 		return res;
 	}
@@ -111,7 +129,7 @@ class Content
 		this.html = "";
 		
 		this.items.forEach(item => {
-			this.html += item.html;
+			this.html += item.html + '\n';
 		})
 	}
 }

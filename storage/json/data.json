@@ -6,7 +6,8 @@
     "rating": "",
     "tags": {
       "Something": 1,
-      "Lightning": 1
+      "Lightning": 1,
+      "Water": 1
     }
   },
   "f6afd95a-27ca-4504-a1db-42888747d4e8.gif": {
@@ -32,9 +33,12 @@
     "tags": {
       "Boom": 1,
       "Disolve": 1,
-      "Explosion": 1,
+      "Explosion": 0,
       "Teleport": 1,
-      "Water": 1
+      "Water": 1,
+      "OnUnit": 1,
+      "Meteor": 1,
+      "Swing": 1
     }
   },
   "cfd9c452-508b-4538-8d6f-b1f894534f01.gif": {
