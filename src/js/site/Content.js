@@ -11,6 +11,7 @@ class Content
 	constructor(fileNames, fileTags)
 	{
 		this._items = [];
+		this.html = '';
 		
 		this.contentSelector = $('#content');
 		
@@ -48,8 +49,8 @@ class Content
 	getSelectedItems()
 	{
 		let res = [];
+		
 		this.items.forEach(item => {
-			
 			if (item.isSelected)
 			{
 				res.push(item);

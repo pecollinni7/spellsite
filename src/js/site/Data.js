@@ -171,7 +171,10 @@ class Data
 							{
 								if (this.dataFile[fileName].tags[tag] === 1)
 								{
-									res.push(fileName);
+									if (res.includes(fileName) === false)
+									{
+										res.push(fileName);
+									}
 								}
 							}
 						}

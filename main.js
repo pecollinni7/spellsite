@@ -15,10 +15,6 @@ app.on('ready', () => {
         console.log('registration failed');
     }
     
-    // Check whether a shortcut is registered.
-    console.log(globalShortcut.isRegistered('CommandOrControl+Q'));
-    
-    
     createWindow();
     
 });
