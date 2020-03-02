@@ -34,13 +34,28 @@ class Tags
 		this.tags.push(new Tag((tagName)));
 	}
 	
+	activeTags()
+	{
+		let res = [];
+		
+		this.tags.forEach(tag => {
+			
+			if (tag.active || tag.activeAsFilter)
+			{
+				res.push(tag.name);
+			}
+		});
+		
+		return res;
+	}
+	
 	getActiveTagNames()
 	{
 		let res = [];
 		
 		this.tags.forEach(tag => {
 			
-			if (tag.active)
+			if (tag.active || tag.activeAsFilter)
 			{
 				if (res.includes(tag.name) === false)
 				{
@@ -79,40 +94,38 @@ class Tags
 			}
 		}
 		
-		
-		// this.tags.forEach(tag => {
-		// 	tagNames.forEach(tagName => {
-		// 		if (tagName === tag.name)
-		// 		{
-		// 			res.push(tag);
-		// 		}
-		// 	})
-		// });
-		
-		// console.log(res);
-		
 		return res;
 	}
 	
-	// displayTagsByNames(tagNames)
-	// {
-	// 	console.log(tagNames);
-	//
-	// }
+	getTagByName(tagName)
+	{
+		for (let i = 0; i < this.tags.length; i++)
+		{
+			if (this.tags[i].name === tagName)
+			{
+				return this.tags[i];
+			}
+		}
+	}
 	
 	toggleTagByName(tagName, asFilter=false)
 	{
-		const tags = this.getTagsByName([tagName]);
+		// const tags = this.getTagsByName([tagName]);
+		// for (let i = 0; i < tags.length; i++)
+		// {
+		// 	tags[i].toggleActive(asFilter);
+		// }
 		
-		for (let i = 0; i < tags.length; i++)
-		{
-			tags[i].toggleActive(asFilter);
-		}
+		const tag = this.getTagByName(tagName);
+		tag.toggleActive(asFilter);
+		
+		
 	}
 	
 	displayTagsByName(tagNames)
 	{
-		this.clearSelection();
+		// this.clearSelection();
+		this.clearNormalTags();
 		
 		const tags = this.getTagsByName(tagNames);
 		
@@ -121,10 +134,27 @@ class Tags
 		})
 	}
 	
+	clearNormalTags()
+	{
+		this.tags.forEach(tag => {
+			tag.active =  false;
+			tag.deploy();
+		});
+	}
+	
+	clearFilterTags()
+	{
+		this.tags.forEach(tag => {
+			tag.activeAsFilter = false;
+			tag.deploy();
+		});
+	}
+	
 	clearSelection()
 	{
 		this.tags.forEach(tag => {
-			tag.setActive(false);
+			tag.active = tag.activeAsFilter = false;
+			tag.deploy();
 		});
 		
 		

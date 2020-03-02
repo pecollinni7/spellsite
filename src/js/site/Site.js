@@ -1,9 +1,12 @@
 const ContentPages  = require('./ContentPages');
 const Pagination    = require('./Pagination');
 const Tags          = require('./Tags');
-const Overlay       = require('./Overlay');
+const FileDrop      = require('./FileDrop');
 const Data          = require('./Data');
 const EventHandlers = require('./EventHandlers');
+const Overlay       = require('./Overlay');
+const Server  = require('../../js/server/Server');
+
 
 const remote = require('electron').remote;
 
@@ -12,13 +15,21 @@ const remote = require('electron').remote;
 
 class Site
 {
+	_server;
 	_pagination;
 	_tags;
 	_contentPages;
-	_overlay;
+	_fileDrop;
 	_eventHandlers;
+	_overlay;
+
+	get server() { return this._server; }
 	
 	get overlay() { return this._overlay; }
+	
+	set overlay(value) { this._overlay = value; }
+	
+	get fileDrop() { return this._fileDrop; }
 	
 	get pagination() { return this._pagination; }
 	
@@ -34,10 +45,13 @@ class Site
 		this._contentPages  = new ContentPages();
 		this._pagination    = new Pagination();
 		this._tags          = new Tags();
-		this._overlay       = new Overlay();
+		this._server  		= new Server(this);
+		this._fileDrop      = new FileDrop(this.server);
 		this._eventHandlers = new EventHandlers(this);
 		
 		this.initialize();
+		
+		
 	}
 	
 	initialize()
@@ -46,14 +60,18 @@ class Site
 		
 		this.generatePagesAndPagination();
 		this.tags.generateTags(Data.tagsList);
+		
+		this.server.polling.run();
 	}
 	
-	generatePagesAndPagination()
+	generatePagesAndPagination(tagsFilter = undefined)
 	{
-		this.generateContentPages();
+		this.generateContentPages(tagsFilter);
 		this.pagination.generateHtml(this.contentPages.numOfPages);
 		this.tags.clearSelection();
-		this.contentPages.activePage.clearSelection();
+		
+		if (this.contentPages.activePage !== undefined)
+			this.contentPages.activePage.clearSelection();
 	}
 	
 	reloadPage()
@@ -76,32 +94,47 @@ class Site
 		this.contentPages.activePage.getItemByName($(item).attr('data-filename')).toggleSelection();
 		this.tags.displayTagsByName(this.contentPages.activePage.getSelectedItemsTags());
 		
-		if (this.contentPages.filterMode && this.contentPages.activePage.getSelectedItems().length === 0)
+		if (this.contentPages.filterMode && this.contentPages.isSelectionEmpty())
 		{
 			this.tags.displayTagsByName(this.contentPages.filterModeSelectedTags);
 		}
 	}
 	
+	handleItemDoubleClick(item)
+	{
+		const itemName = $(item).attr('data-filename');
+		this.overlay = new Overlay(itemName);
+		this.overlay.showOverlay();
+	}
+	
 	handleTagClick(tagName)
 	{
-		const selectedItems = this.contentPages.getSelectedItems();
-		
-		if (selectedItems !== undefined && selectedItems.length > 0)
+		if (this.contentPages.isSelectionEmpty())
 		{
-			this.tags.toggleTagByName(tagName);
-			this.contentPages.filterMode = false;
-			this.contentPages.filterModeSelectedTags = [];
-			this.contentPages.activePage.updateTagsForSelectedItems(tagName, this.tags.getTagValue(tagName));
+			this.tags.toggleTagByName(tagName, true);
+			
+			if (this.tags.activeTags().length > 0)
+			{
+				this.contentPages.filterMode             = true;
+				this.contentPages.filterModeSelectedTags = this.tags.getActiveTagNames();
+				this.contentPages.generatePages(Data.getFileNames(this.tags.getActiveTagNames()), Data.getFileTags());
+				this.pagination.generateHtml(this.contentPages.numOfPages);
+			}
+			else
+			{
+				this.contentPages.filterMode             = false;
+				this.contentPages.filterModeSelectedTags = [];
+				this.generatePagesAndPagination();
+			}
 		}
 		else
 		{
-			this.tags.toggleTagByName(tagName, true);
-			this.contentPages.filterMode = true;
-			this.contentPages.filterModeSelectedTags = this.tags.getActiveTagNames();
-			this.contentPages.generatePages(Data.getFileNames(this.tags.getActiveTagNames()), Data.getFileTags());
+			this.tags.toggleTagByName(tagName);
+			this.contentPages.activePage.updateTagsForSelectedItems(tagName, this.tags.getTagValue(tagName));
+			
+			this.server.actionPerformed();
 		}
 	}
-	
 }
 
 module.exports = Site;

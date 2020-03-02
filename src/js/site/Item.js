@@ -127,7 +127,7 @@ class Item
 			case ".png":
 				res = "<img class='image' src='" + this.src +
 					"' onmousedown='site.handleItemClick(this)' data-fileName='" + this.name +
-					"' ondblclick='handleItemDoubleClick(this)' data-fileName='" + this.name +
+					"' ondblclick='site.handleItemDoubleClick(this)' data-fileName='" + this.name +
 					"'>";
 				return res;
 

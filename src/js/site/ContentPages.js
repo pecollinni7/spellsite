@@ -43,7 +43,7 @@ class ContentPages
 	get numOfPages() {return this.contentPages.length;}
 	
 	get activePage() {return this.contentPages[this.activePageIndex];}
-
+	
 	
 	generatePages(fileNames, fileTags)
 	{
@@ -91,6 +91,11 @@ class ContentPages
 		}
 		
 		return res;
+	}
+	
+	isSelectionEmpty()
+	{
+		return this.getSelectedItems().length <= 0;
 	}
 }
 

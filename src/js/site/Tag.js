@@ -37,28 +37,79 @@ class Tag
 	
 	toggleActive(asFilter)
 	{
-		this.activeAsFilter = asFilter;
-		this.setActive(!this.active);
+		if (asFilter)
+		{
+			this.activeAsFilter = !this.activeAsFilter;
+		}
+		else
+		{
+			this.active = !this.active;
+			
+			//add tag change to patch
+			
+		}
+
+		this.deploy();
 	}
 	
-	setActive(value)
-	{
-		this.active = value;
-		this.deployActive(this.active);
-	}
-	
-	deployActive(value)
+	deploy()
 	{
 		if (this.activeAsFilter)
+		{
 			this.tagSelector.classList.add('item-content-filter-active');
+		}
+		else
+		{
+			this.tagSelector.classList.remove('item-content-filter-active');
+		}
 		
-		if (value)
+		if (this.active)
 		{
 			this.tagSelector.classList.add('item-content-active');
 		}
 		else
 		{
+			this.tagSelector.classList.remove('item-content-active');
+		}
+	}
+	
+	
+	// toggleActive(asFilter)
+	// {
+	// 	this.activeAsFilter = asFilter;
+	//
+	// 	if (asFilter === false)
+	// 	{
+	// 		this.setActive(!this.active);
+	// 	}
+	//
+	// 	this.deployActive(this.active);
+	//
+	
+	
+	
+	
+	setActive(value)
+	{
+		this.active = value;
+		
+		// this.deployActive(this.active);
+		this.deploy();
+	}
+	
+	deployActive(value)
+	{
+		if (value)
+		{
+			this.tagSelector.classList.add('item-content-active');
+			
+			if (this.activeAsFilter)
+				this.tagSelector.classList.add('item-content-filter-active');
+		}
+		else
+		{
 			this.tagSelector.classList.remove('item-content-active', 'item-content-filter-active');
+			this.activeAsFilter = false;
 		}
 	}
 	

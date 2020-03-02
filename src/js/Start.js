@@ -1,4 +1,4 @@
-const Server  = require('../js/server/Server');
+// const Server  = require('../js/server/Server');
 const Site    = require('../js/site/Site');
 // const Mapper = require('../js/site/Mapper');
 const navigation = require('../js/navigation');
@@ -8,7 +8,7 @@ let server;
 
 window.addEventListener("DOMContentLoaded", function (e) {
 	site    = new Site();
-	server  = new Server(this.site);
+	// server  = new Server.Server(this.site);
 });
 
 

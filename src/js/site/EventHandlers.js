@@ -14,7 +14,6 @@ class EventHandlers
 	{
 		this._site   = site;
 		this.ctrlKey = false;
-		//
 		
 		$('#tags').on('tagClick', function (e, tagElement, tagName) {
 			site.handleTagClick(tagElement.innerText);
@@ -28,9 +27,14 @@ class EventHandlers
 			this.ctrlKey = e.ctrlKey;
 		});
 		
+		$(document).on('newFilesArrived', (e) => {
+			this.site.generatePagesAndPagination();
+		});
+		
 		// jQuery(function () {
 		$(document).on('mousedown', e => {
 			const element = $(e.target);
+			
 			
 			if (element.hasClass('navigation') ||
 				element.hasClass('pagination') ||
@@ -39,16 +43,40 @@ class EventHandlers
 				element.hasClass('tags'))
 			{
 				
-				
-				if (site.contentPages.filterMode)
-				{
-					site.generatePagesAndPagination();
-				}
-				else
+				if (site.contentPages.filterMode === false)
 				{
 					site.contentPages.activePage.clearSelection();
 					site.tags.clearSelection();
 				}
+				else
+				{
+					if (site.contentPages.getSelectedItems().length > 0)
+					{
+						site.contentPages.activePage.clearSelection();
+						site.tags.clearSelection();
+
+						//load only filter tags
+						site.contentPages.filterModeSelectedTags.forEach(tag => {
+							site.tags.toggleTagByName(tag, true);
+						})
+					}
+					else
+					{
+						site.contentPages.filterMode = false;
+						site.generatePagesAndPagination();
+					}
+				}
+				
+				// if (site.contentPages.filterMode)
+				// {
+				// 	site.contentPages.filterMode = false;
+				// 	site.generatePagesAndPagination();
+				// }
+				// else
+				// {
+				// 	site.contentPages.activePage.clearSelection();
+				// 	site.tags.clearSelection();
+				// }
 			}
 		});
 		// });

@@ -10,7 +10,7 @@ class Data
 	static get dataFile()
 	{
 		if (this._dataFile === undefined)
-			this._dataFile = StorageController.readFile(FilePaths.path_dataFile);
+			this.reloadData();
 
 		return this._dataFile;
 	}
@@ -34,6 +34,28 @@ class Data
 	{
 		this._patchFile = value;
 		// StorageController.writeFile(value, FilePaths.path_patchFile);
+	}
+	
+	static reloadData()
+	{
+		this._dataFile = StorageController.readFile(FilePaths.path_dataFile);
+	}
+	
+	static clearPatch()
+	{
+		this.patchFile = {};
+		this.savePatch();
+		// fs.writeFileSync(path_patchFile, JSON.stringify({}), 'utf8');
+	}
+	
+	static saveData()
+	{
+		StorageController.writeFile(this.dataFile, FilePaths.path_dataFile);
+	}
+	
+	static savePatch()
+	{
+		StorageController.writeFile(this.patchFile, FilePaths.path_patchFile);
 	}
 
 	//you need to sort this
@@ -109,25 +131,22 @@ class Data
 			case true: 	value = 1; break;
 			case false: value = 0; break;
 		}
-
+		
 		if (this.dataFile.hasOwnProperty(fileName) === false) this.dataFile[fileName] = {};
 		if (this.dataFile[fileName].hasOwnProperty('tags') === false) this.dataFile[fileName].tags = {};
-
-		this.dataFile[fileName].tags[tagName] = value;
+		if (this.patchFile.hasOwnProperty(fileName) === false) this.patchFile[fileName] = {};
+		if (this.patchFile[fileName].hasOwnProperty('tags') === false) this.patchFile[fileName].tags = {};
+		
+		this.dataFile[fileName].tags[tagName]  = value;
+		this.patchFile[fileName].tags[tagName] = value;
 		this.saveData();
+		this.savePatch();
 	}
 
-	static saveData()
-	{
-		StorageController.writeFile(this.dataFile, FilePaths.path_dataFile);
-	}
 
-	static savePatch()
-	{
-		StorageController.writeFile(this.patchFile, FilePaths.path_patchFile);
-	}
+	
 
-	static getNames()
+	static getAllFileNamesNoExistCheck()
 	{
 		let res = [];
 		for (const fileName in this.dataFile)
@@ -136,13 +155,7 @@ class Data
 			{
 				if (fileName !== 'version' && fileName !== 'tagTypes')
 				{
-					if (fs.existsSync(FilePaths.path_media + '/' + fileName))
-					{
-						res.push(fileName);
-					} else
-					{
-						console.warn('Missing file: ' + fileName);
-					}
+					res.push(fileName);
 				}
 			}
 		}
@@ -181,12 +194,43 @@ class Data
 					}
 					else
 					{
-						console.warn('Missing file: ' + fileName);
+						// console.warn('Missing file: ' + fileName);
 					}
 				}
 			}
 		}
+		
+		res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
+		
+		console.log(res);
 
+		return res;
+	}
+	
+	static getNames()
+	{
+		let res = [];
+		for (const fileName in this.dataFile)
+		{
+			if (this.dataFile.hasOwnProperty(fileName))
+			{
+				if (fileName !== 'version' && fileName !== 'tagTypes')
+				{
+					if (fs.existsSync(FilePaths.path_media + '/' + fileName))
+					{
+						res.push(fileName);
+					}
+					else
+					{
+						// console.warn('Missing file: ' + fileName);
+					}
+				}
+			}
+		}
+		
+		res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
+		
+		console.log(res);
 		return res;
 	}
 
@@ -207,8 +251,9 @@ class Data
 		{
 			return this.dataFile['version'];
 		}
-
-		return null;
+		
+		console.log(this.dataFile['version']);
+		return 0;
 	}
 }
 

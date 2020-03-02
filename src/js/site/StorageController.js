@@ -17,7 +17,7 @@ class StorageController
 		fs.writeFileSync(
 			filePath,
 			// fileData,
-			JSON.stringify(fileData, null, 2),
+			JSON.stringify(fileData, null, 4),
 			{encoding: 'utf8'});
 		
 		// console.timeEnd('writeFile');

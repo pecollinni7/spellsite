@@ -1,92 +1,28 @@
 {
-  "a6f8bfcf-7a07-4803-91bf-7d8f555120c9.gif": {
-    "originalName": "file",
-    "date": "",
-    "link": "",
-    "rating": "",
-    "tags": {
-      "Something": 1,
-      "Lightning": 1,
-      "Water": 1,
-      "Disolve": 0,
-      "Explosion": 0,
-      "Meteor": 1
-    }
-  },
-  "f6afd95a-27ca-4504-a1db-42888747d4e8.gif": {
-    "originalName": "file",
-    "date": "",
-    "link": "",
-    "rating": "",
-    "tags": {}
-  },
-  "40e86cb0-e1bc-4184-af84-617f12138dd3.gif": {
-    "originalName": "file",
-    "date": "",
-    "link": "",
-    "rating": "",
-    "tags": {}
-  },
-  "version": 171,
-  "8757fa0c-255b-4e58-acb8-e7430ce78dd2.gif": {
-    "originalName": "file",
-    "date": "",
-    "link": "",
-    "rating": "",
-    "tags": {
-      "Boom": 1,
-      "Disolve": 1,
-      "Explosion": 1,
-      "Teleport": 1,
-      "Water": 0,
-      "OnUnit": 0,
-      "Meteor": 1,
-      "Swing": 1,
-      "Dust": 0,
-      "Vortex": 0
-    }
-  },
-  "cfd9c452-508b-4538-8d6f-b1f894534f01.gif": {
-    "originalName": "file",
-    "date": "",
-    "link": "",
-    "rating": "",
-    "tags": {
-      "Fire": 1,
-      "Teleport": 1,
-      "Water": 1,
-      "Explosion": 0,
-      "UI": 0
-    }
-  },
-  "0075d4c4-7b5e-45a6-81a6-00c504e71096.mpg": {
-    "originalName": "file",
-    "date": "",
-    "link": "",
-    "rating": "",
-    "tags": {}
-  },
-  "tagTypes": [
-    "Ice",
-    "Swing",
-    "Swirl",
-    "BlowUp",
-    "Teleport",
-    "Water",
-    "Explosion",
-    "Disolve",
-    "OnUnit",
-    "UI",
-    "Meteor",
-    "Fire",
-    "Dust",
-    "Laser",
-    "Vortex",
-    "Lightning",
-    "Acid",
-    "Something",
-    "Projectile",
-    "Boom",
-    "Card"
-  ]
+    "tagTypes": [
+        "Ice",
+        "Swing",
+        "Swirl",
+        "BlowUp",
+        "Teleport",
+        "Water",
+        "Explosion",
+        "Disolve",
+        "OnUnit",
+        "UI",
+        "Meteor",
+        "Fire",
+        "Dust",
+        "Laser",
+        "Vortex",
+        "Lightning",
+        "Acid",
+        "Something",
+        "Projectile",
+        "Boom",
+        "Card"
+    ],
+
+    "version": 279
+
 }
