@@ -36,9 +36,31 @@ class Overlay
 		{
 			case '.gif':
 				const dimensions = ImageSize(this.filePath);
-				const docHeight = $(document).height();
-				const multiplier = (docHeight / 100 * 50) / dimensions.height ;
-				
+				const docHeight = $(window).height();
+				const docWidth = $(window).width();
+				let multiplier;
+
+				const xmult = (docWidth / 100 * 80) / dimensions.width;
+				const ymult = (docHeight / 100 * 60) / dimensions.height;
+
+				if (xmult > ymult)
+				{
+					multiplier = ymult;
+				}
+				else
+				{
+					multiplier = xmult;
+				}
+
+				// if (dimensions.width < dimensions.height)
+				// {
+				// 	multiplier = (docHeight / 100 * 60) / dimensions.height ;
+				// }
+				// else
+				// {
+				// 	multiplier = (docWidth / 100 * 80) / dimensions.width ;
+				// }
+
 				const gifSizeX = dimensions.width * multiplier;
 				const gifSizeY = dimensions.height * multiplier;
 				
