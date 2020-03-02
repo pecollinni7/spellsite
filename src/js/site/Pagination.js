@@ -24,15 +24,15 @@ class Pagination
 		let res = "";
 		
 		//left arrow
-		res += "<li><a class='page-link' onmousedown='callPrevPage(this)'>&#9664;</a></li>";
+		res += "<li><a class='page-link' onmousedown='site.callPreviousPage()'>&#9664;</a></li>";
 		
 		for (let i = 0; i < numPages; i++)
 		{
-			res += "<li><a class='page-link' onmousedown='setActivePage(this)'>" + i + "</a></li>";
+			res += "<li><a class='page-link' onmousedown='site.setActivePage(this)'>" + i + "</a></li>";
 		}
 		
 		//right arrow
-		res += "<li><a class='page-link' onmousedown='callNextPage(this)'>&#9654;</a></li>";
+		res += "<li><a class='page-link' onmousedown='site.callNextPage()'>&#9654;</a></li>";
 		
 		this.html = res;
 		// return res;

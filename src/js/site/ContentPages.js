@@ -43,6 +43,30 @@ class ContentPages
 	get numOfPages() {return this.contentPages.length;}
 	
 	get activePage() {return this.contentPages[this.activePageIndex];}
+
+
+	deployPage(pageNum)
+	{
+		console.log('this.contentPages.length = ' + this.contentPages.length);
+		let num = parseInt(pageNum);
+		console.log('pageNumIN = ' + num);
+
+		if (num >= this.contentPages.length)
+		{
+			num = this.contentPages.length - 1;
+		}
+
+		if (num < 0)
+		{
+			num = 0;
+		}
+
+		console.log('pageNumDeploy = ' + num);
+
+		this.activePage.clearSelection();
+		this.activePageIndex = num;
+		this.deployActivePage();
+	}
 	
 	
 	generatePages(fileNames, fileTags)

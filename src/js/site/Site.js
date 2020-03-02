@@ -135,6 +135,25 @@ class Site
 			this.server.actionPerformed();
 		}
 	}
+
+	callNextPage()
+	{
+		this.tags.clearSelection();
+		this.contentPages.deployPage(this.contentPages.activePageIndex + 1);
+	}
+
+	callPreviousPage()
+	{
+		this.tags.clearSelection();
+		this.contentPages.deployPage(this.contentPages.activePageIndex - 1);
+	}
+
+
+	setActivePage(pageNum)
+	{
+		this.tags.clearSelection();
+		this.contentPages.deployPage(pageNum.innerText);
+	}
 }
 
 module.exports = Site;
