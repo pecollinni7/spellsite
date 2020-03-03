@@ -23,6 +23,7 @@
     <link rel="stylesheet" type="text/css" href="../css/welcome.css"/>
     <link rel="stylesheet" type="text/css" href="../css/dropdown.css"/>
     <link rel="stylesheet" type="text/css" href="../css/navigation.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/loaderContent.css"/>
     <link rel="stylesheet" type="text/css" href="../css/tags.css"/>
     <link rel="stylesheet" type="text/css" href="../css/content.css"/>
     <link rel="stylesheet" type="text/css" href="../css/filedrop.css"/>
@@ -39,7 +40,6 @@
 <!--<script>-->
 <!--    document.getElementById("demo").innerHTML = "app version is: " + require('electron').remote.app.getVersion();-->
 <!--</script>-->
-
 
 <div class="titlebar" id="titlebar">
     <a class="icon" onmousedown="navigation.setDropdownPos();">&#xE700;</a>
@@ -102,6 +102,23 @@
 <div class="navigation collapse show" id="navigation">
     <ul class="pagination" id="pagination"></ul>
     <div class="tags " id="tags"></div>
+</div>
+
+<div class="loaderContent align-middle" id="loaderContent">
+
+    <h4 class="text-center text-light">Please specify the media directory.</h4>
+    <h6 class="text-muted text-center" >
+        This is where all the media will be stored. It can take a few gigabytes of space.
+        Chose a fast folder somewhere on your SSD drive...
+    </h6>
+    <div class="text-center" style="margin-top: 20px">
+        <button type="button"
+                class="btn btn-primary btn-lg btn-light"
+                onclick="site.choseMediaDirectory()">Select</button>
+    </div>
+
+
+
 </div>
 
 <div class="overlay" id="overlay" onclick="site.overlay.hideOverlay(this)" ></div>

@@ -42,21 +42,27 @@ class Site
 	
 	constructor()
 	{
-		this._contentPages  = new ContentPages();
-		this._pagination    = new Pagination();
-		this._tags          = new Tags();
-		this._server  		= new Server(this);
-		this._fileDrop      = new FileDrop(this.server);
-		this._eventHandlers = new EventHandlers(this);
-		
-		this.initialize();
-		
+		// this._contentPages  = new ContentPages();
+		// this._pagination    = new Pagination();
+		// this._tags          = new Tags();
+		// this._server  		= new Server(this);
+		// this._fileDrop      = new FileDrop(this.server);
+		// this._eventHandlers = new EventHandlers(this);
+		//
+		// this.initialize();
+		//
 		
 	}
 	
 	initialize()
 	{
 		//try get some settings first
+		this._contentPages  = new ContentPages();
+		this._pagination    = new Pagination();
+		this._tags          = new Tags();
+		this._server  		= new Server(this);
+		this._fileDrop      = new FileDrop(this.server);
+		this._eventHandlers = new EventHandlers(this);
 		
 		this.generatePagesAndPagination();
 		this.tags.generateTags(Data.tagsList);
@@ -158,6 +164,36 @@ class Site
 		this.pagination.setActiveButton(pageNum);
 		this.tags.clearSelection();
 		this.contentPages.deployPage(pageNum.innerText);
+	}
+
+	choseMediaDirectory()
+	{
+		const settings = require('electron').remote.require('electron-settings');
+		const {dialog} = require('electron').remote;
+
+		let paths = settings.has('path.media');
+
+		if (paths === false)
+		{
+			// var path = dialog.showOpenDialog({properties: ['openDirectory']});
+			dialog.showOpenDialog({
+				properties: ['openDirectory'],
+				// message: 'asd',
+				// defaultPath: 'C:/',
+
+			}).then(r => {
+
+				if (r.filePaths[0])
+				{
+					console.log(r.filePaths[0]);
+
+					$("#loaderContent").hide("slow");
+					this.initialize();
+				}
+			});
+		}
+		// console.log(path);
+
 	}
 }
 

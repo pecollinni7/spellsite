@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loader</title>
+</head>
+<body>
+
+
+
+<script>
+	// const settings = require('electron').remote.require('electron-settings');
+	// const {dialog} = require('electron').remote;
+    //
+	// let paths = settings.has('path.media');
+    //
+	// if (paths === false)
+	// {
+	// 	var path = dialog.showOpenDialog({properties: ['openDirectory']});
+	// 	console.log(path);
+	// }
+
+    setTimeout(()=>{
+    	require('electron').remote.getCurrentWindow().close();
+	}, 1000);
+
+
+</script>
+
+</body>
+</html>

@@ -2,10 +2,25 @@
 
 const Path = require('path');
 
+let _path_storage;
+
+function getPath_storage()
+{
+	return _path_storage;
+}
+
+function setPathStorage(value)
+{
+	_path_storage = value;
+}
+
 const path_dataFile  = Path.resolve(process.cwd() + "/storage/json/data.json").replace(/\\/g, "/");
 const path_patchFile = Path.resolve(process.cwd() + "/storage/json/patch.json").replace(/\\/g, "/");
 const path_media     = Path.resolve(process.cwd() + "/storage/media").replace(/\\/g, "/");
 const path_temp      = Path.resolve(process.cwd() + "/storage/temp").replace(/\\/g, "/");
+
+
+
 
 const SERVER = "http://127.0.0.1";
 // const SERVER = "http://144.91.87.68";

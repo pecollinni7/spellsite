@@ -1,0 +1,27 @@
+.loaderContent {
+    display: block;
+    width: 500px;
+    height: 120px;
+    /*align-content: center;*/
+
+    /*width: 50%;*/
+    /*margin: 0 auto;*/
+    /*display: flex;*/
+    /*flex-wrap: wrap; !* Optional. only if you want the items to wrap *!*/
+    /*justify-content: center; !* For horizontal alignment *!*/
+    /*align-items: center; !* For vertical alignment *!*/
+    /*background-color: #0c5460;*/
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /*-webkit-transform: translate(-50%, -50%);*/
+    transform: translate(-50%, -50%);
+}
+
+.btn-lg {
+    padding: 5px 50px;
+    font-size: 21px;
+    border-radius: 5px;
+    /*width:50%;    //Specify your width here*/
+}

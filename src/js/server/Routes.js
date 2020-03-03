@@ -85,7 +85,7 @@ function getFilesDifference()
 function downloadNewFiles()
 {
 	const fileDiff = getFilesDifference();
-	console.log('fileDiff: ' + fileDiff);
+	// console.log('fileDiff: ' + fileDiff);
 	
 	fileDiff.forEach(fileName => {
 		
@@ -189,7 +189,7 @@ const downloadFile = (fileName) => {
 		var chunk;
 		while (chunk = this.read())
 		{
-			console.log('got data: ', chunk);
+			// console.log('got data: ', chunk);
 			ws.write(chunk);
 		}
 	});

@@ -1,29 +1,35 @@
 const {app, ipcMain, BrowserWindow, globalShortcut} = require('electron');
 const {autoUpdater} = require('electron-updater');
 const path = require('path');
+const settings = require('electron-settings');
 
+
+let loaderWindow;
 let window;
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 app.on('ready', () => {
     
-    const ret = globalShortcut.register('CommandOrControl+Q', () => {
-        app.quit();
-    });
-    
-    if (!ret) {
-        console.log('registration failed');
-    }
-    
+    // const ret = globalShortcut.register('CommandOrControl+Q', () => {
+    //     app.quit();
+    // });
+    //
+    // if (!ret) {
+    //     console.log('registration failed');
+    // }
+
+
+
+    // createLoaderWindow();
     createWindow();
     
 });
-app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit()
-});
-app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-});
+// app.on('window-all-closed', function () {
+//     if (process.platform !== 'darwin') app.quit()
+// });
+// app.on('activate', function () {
+//     if (BrowserWindow.getAllWindows().length === 0) createWindow()
+// });
 app.on('will-quit', () => {
     // Unregister a shortcut.
     globalShortcut.unregister('CommandOrControl+Q');
@@ -33,10 +39,33 @@ app.on('will-quit', () => {
 });
 
 
+function createLoaderWindow()
+{
+    loaderWindow = new BrowserWindow({
+        width: 300,
+        height: 400,
+        show: true,
+        webPreferences: {
+            nodeIntegration: true,
+            webSecurity: false
+        },
+        backgroundColor: '#FFFFFF',
+        // frame: false
+    });
+
+    loaderWindow.loadFile('./src/html/loader.html').then(r => {});
+    // loaderWindow.webContents.openDevTools();
+    loaderWindow.on('closed', function () {
+        loaderWindow = null;
+        createWindow();
+    });
+}
+
 function createWindow() {
     window = new BrowserWindow({
         width: 1600,
         height: 1200,
+        show: true,
         webPreferences: {
             preload: path.join(__dirname, './src/js/preload.js'),
             nodeIntegration: true,
@@ -51,6 +80,7 @@ function createWindow() {
     window.on('closed', function () {
         window = null;
     });
+    window.show();
 
     /*
 
