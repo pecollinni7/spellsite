@@ -45,6 +45,19 @@ class EventHandlers
 		
 		$(document).on('keydown', e => {
 			this.ctrlKey = e.ctrlKey;
+
+			// if (e.keyCode === 38) {
+			// 	console.log('up arrow');
+			// }
+			// else if (e.keyCode === 40) {
+			// 	console.log('down arrow');
+			// }
+			if (e.keyCode === 37) {
+				this.site.callPreviousPage();
+			}
+			else if (e.keyCode === 39) {
+				this.site.callNextPage();
+			}
 		});
 		
 		$(document).on('keyup', e => {

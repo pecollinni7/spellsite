@@ -68,6 +68,7 @@ class Site
 	{
 		this.generateContentPages(tagsFilter);
 		this.pagination.generateHtml(this.contentPages.numOfPages);
+		this.pagination.setActiveButtonByIndex(this.contentPages.activePageIndex);
 		this.tags.clearSelection();
 		
 		if (this.contentPages.activePage !== undefined)
@@ -119,6 +120,7 @@ class Site
 				this.contentPages.filterModeSelectedTags = this.tags.getActiveTagNames();
 				this.contentPages.generatePages(Data.getFileNames(this.tags.getActiveTagNames()), Data.getFileTags());
 				this.pagination.generateHtml(this.contentPages.numOfPages);
+				this.pagination.setActiveButtonByIndex(this.contentPages.activePageIndex);
 			}
 			else
 			{
@@ -139,18 +141,21 @@ class Site
 	callNextPage()
 	{
 		this.tags.clearSelection();
+		this.pagination.setActiveButtonByIndex(this.contentPages.activePageIndex + 1);
 		this.contentPages.deployPage(this.contentPages.activePageIndex + 1);
 	}
 
 	callPreviousPage()
 	{
 		this.tags.clearSelection();
+		this.pagination.setActiveButtonByIndex(this.contentPages.activePageIndex - 1);
 		this.contentPages.deployPage(this.contentPages.activePageIndex - 1);
 	}
 
 
 	setActivePage(pageNum)
 	{
+		this.pagination.setActiveButton(pageNum);
 		this.tags.clearSelection();
 		this.contentPages.deployPage(pageNum.innerText);
 	}
