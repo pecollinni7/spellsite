@@ -16,7 +16,9 @@
     "start": "electron .",
     "build": "build",
     "shipit": "build -p always",
-    "release": "npm version patch && build"
+    "releasepatch": "npm version patch && build -p always",
+    "releaseminor": "npm version minor && build -p always",
+    "releasemajor": "npm version major && build -p always"
   },
   "repository": {
     "type": "git",
