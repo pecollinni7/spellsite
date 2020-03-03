@@ -200,9 +200,9 @@ class Data
 			}
 		}
 		
-		res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
+		// res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
 		
-		console.log(res);
+		// console.log(res);
 
 		return res;
 	}
@@ -228,9 +228,9 @@ class Data
 			}
 		}
 		
-		res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
+		// res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
 		
-		console.log(res);
+		// console.log(res);
 		return res;
 	}
 

@@ -229,7 +229,7 @@ class Tags
 		// setMarginSize();
 		// });
 		this.mainGrid.on('layoutStart', function () {
-			// setMarginSize();
+			$('#content').css('margin-top', $('#navigation').height() + 30);
 		});
 		
 	}
