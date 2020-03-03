@@ -1,1 +1,80 @@
-{}
+{
+    "82106ef9-a887-43d6-a1b4-4ec41fbb4918.gif": {
+        "tags": {
+            "Fire": 1,
+            "Laser": 1
+        }
+    },
+    "940c7a01-1779-45f5-95f5-4504469bca9d.gif": {
+        "tags": {
+            "Disolve": 1,
+            "OnUnit": 1,
+            "Meteor": 1
+        }
+    },
+    "66a65c04-3e6f-4b4f-91c4-984669f2343e.gif": {
+        "tags": {
+            "Meteor": 1
+        }
+    },
+    "7a87774f-0fee-41db-a10c-51589334e654.gif": {
+        "tags": {
+            "Meteor": 1
+        }
+    },
+    "122fabfc-b853-4b31-bd0b-5bca96d3d3e9.gif": {
+        "tags": {
+            "OnUnit": 1,
+            "Meteor": 1,
+            "UI": 1,
+            "Fire": 1
+        }
+    },
+    "9fe032ac-11fb-455c-87e5-73bb684d6edb.gif": {
+        "tags": {
+            "OnUnit": 1,
+            "Meteor": 1,
+            "UI": 1,
+            "Fire": 1
+        }
+    },
+    "85e5ba89-401c-4d45-bce0-b408951b8b9a.gif": {
+        "tags": {
+            "OnUnit": 1,
+            "Meteor": 1,
+            "UI": 1,
+            "Fire": 1
+        }
+    },
+    "fa8fb5b8-7a92-4708-bfdc-1d19827282b2.gif": {
+        "tags": {
+            "OnUnit": 1,
+            "Meteor": 1,
+            "UI": 1,
+            "Fire": 1
+        }
+    },
+    "e4147db0-8b78-424f-a2b5-bd360c5e3e82.gif": {
+        "tags": {
+            "OnUnit": 1,
+            "Meteor": 1,
+            "UI": 1,
+            "Fire": 1
+        }
+    },
+    "d80e6736-9517-471a-a5ee-ee41cb1f487c.jpg": {
+        "tags": {
+            "Meteor": 1
+        }
+    },
+    "a3d3500c-7d2c-4b60-ac32-14267cecc62d.gif": {
+        "tags": {
+            "Boom": 1
+        }
+    },
+    "eb79c8a4-8163-4889-9bc1-9dc7e2318001.gif": {
+        "tags": {
+            "Boom": 1
+        }
+    }
+}

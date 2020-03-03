@@ -15,7 +15,8 @@
   "scripts": {
     "start": "electron .",
     "build": "build",
-    "shipit": "build -p always"
+    "shipit": "build -p always",
+    "release": "npm version patch && build"
   },
   "repository": {
     "type": "git",
