@@ -2,22 +2,34 @@
 
 const Path = require('path');
 
-let _path_storage;
+let _storage;
 
-function getPath_storage()
+function getStorage()
 {
-	return _path_storage;
+	if (_storage === undefined)
+		_storage = require('electron-settings').get('path.storage');
+	
+	return _storage;
 }
 
-function setPathStorage(value)
+function setStorage(value)
 {
-	_path_storage = value;
+	console.log('setting new storage: ' + value);
+	_storage = value;
 }
 
-const path_dataFile  = Path.resolve(process.cwd() + "/storage/json/data.json").replace(/\\/g, "/");
-const path_patchFile = Path.resolve(process.cwd() + "/storage/json/patch.json").replace(/\\/g, "/");
-const path_media     = Path.resolve(process.cwd() + "/storage/media").replace(/\\/g, "/");
-const path_temp      = Path.resolve(process.cwd() + "/storage/temp").replace(/\\/g, "/");
+
+
+
+const path_dataFile  = Path.resolve(getStorage() + "/json/data.json").replace(/\\/g, "/");
+const path_patchFile = Path.resolve(getStorage() + "/json/patch.json").replace(/\\/g, "/");
+const path_media     = Path.resolve(getStorage() + "/media").replace(/\\/g, "/");
+const path_temp      = Path.resolve(getStorage() + "/temp").replace(/\\/g, "/");
+
+// const path_dataFile  = Path.resolve(process.cwd() + "/storage/json/data.json").replace(/\\/g, "/");
+// const path_patchFile = Path.resolve(process.cwd() + "/storage/json/patch.json").replace(/\\/g, "/");
+// const path_media     = Path.resolve(process.cwd() + "/storage/media").replace(/\\/g, "/");
+// const path_temp      = Path.resolve(process.cwd() + "/storage/temp").replace(/\\/g, "/");
 
 
 
@@ -45,5 +57,8 @@ module.exports = {
 	path_dataFile,
 	path_patchFile,
 	path_media,
-	path_temp
+	path_temp,
+	
+	setStorage,
+	getStorage
 };

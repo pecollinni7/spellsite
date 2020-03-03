@@ -1,14 +1,23 @@
-// const Server  = require('../js/server/Server');
-const Site    = require('../js/site/Site');
-// const Mapper = require('../js/site/Mapper');
+const Site       = require('../js/site/Site');
+// const FilePaths  = require('./site/StorageFilePaths');
 const navigation = require('../js/navigation');
+const Settings   = require('../js/site/Settings');
 
 let site;
-let server;
 
 window.addEventListener("DOMContentLoaded", function (e) {
-	site    = new Site();
-	// server  = new Server.Server(this.site);
+	
+	site = new Site();
+	
+	if (Settings.hasSettings())
+	{
+		site.initialize();
+	}
+	else
+	{
+		site.showChoseDirectory();
+	}
+	
 });
 
 

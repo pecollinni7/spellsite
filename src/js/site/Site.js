@@ -165,35 +165,29 @@ class Site
 		this.tags.clearSelection();
 		this.contentPages.deployPage(pageNum.innerText);
 	}
-
+	
+	showChoseDirectory()
+	{
+		$("#loaderContent").css('visibility', 'visible');
+	}
+	
 	choseMediaDirectory()
 	{
-		const settings = require('electron').remote.require('electron-settings');
+		const Settings = require('./Settings');
 		const {dialog} = require('electron').remote;
 
-		let paths = settings.has('path.media');
-
-		if (paths === false)
-		{
-			// var path = dialog.showOpenDialog({properties: ['openDirectory']});
-			dialog.showOpenDialog({
-				properties: ['openDirectory'],
-				// message: 'asd',
-				// defaultPath: 'C:/',
-
-			}).then(r => {
-
-				if (r.filePaths[0])
-				{
-					console.log(r.filePaths[0]);
-
-					$("#loaderContent").hide("slow");
-					this.initialize();
-				}
-			});
-		}
-		// console.log(path);
-
+		dialog.showOpenDialog({
+			properties: ['openDirectory'],
+		}).then(r => {
+			if (r.filePaths[0])
+			{
+				Settings.setSettings(r.filePaths[0]);
+				Settings.createDefaults();
+				
+				$("#loaderContent").hide("slow");
+				this.initialize();
+			}
+		});
 	}
 }
 
