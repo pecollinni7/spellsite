@@ -6,8 +6,8 @@ const fs       = require('fs');
 
 function hasSettings()
 {
-	return false;
-	// return settings.has('path.storage');
+	// return false;
+	return settings.has('path.storage');
 }
 
 function getSettings()

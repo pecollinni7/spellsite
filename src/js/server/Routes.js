@@ -44,7 +44,7 @@ const getData = () => needle.request(
 					//live update tags here
 					//or file removal maybe
 					
-					// $(document).trigger("newDataArrived");
+					$(document).trigger("newDataArrived");
 					
 				});
 		}

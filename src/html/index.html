@@ -22,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="../css/titlebar.css"/>
     <link rel="stylesheet" type="text/css" href="../css/welcome.css"/>
     <link rel="stylesheet" type="text/css" href="../css/dropdown.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/addTag.css"/>
     <link rel="stylesheet" type="text/css" href="../css/navigation.css"/>
     <link rel="stylesheet" type="text/css" href="../css/loaderContent.css"/>
     <link rel="stylesheet" type="text/css" href="../css/tags.css"/>
@@ -44,7 +45,7 @@
 <div class="titlebar" id="titlebar">
     <a class="icon" onmousedown="navigation.setDropdownPos();">&#xE700;</a>
     <a class="icon" onmousedown="site.reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
-    <a class="icon" onmousedown="tags.addNewTag();" data-toggle="tooltip" data-placement="bottom"
+    <a class="icon" onmousedown="site.addTagButton();" data-toggle="tooltip" data-placement="bottom"
        title="Add new Tag">&#xE948;</a>
     <!--  <div class="reloadNotification">New files arrived. Reloading in 3</div>-->
     <div class="drag-region"></div>
@@ -119,6 +120,31 @@
 
 
 
+</div>
+
+<div class="addTag " id="addTag">
+
+    <label class="text-center  h5" for="addTagInputName">Please specify the name for the new tag:</label>
+
+    <input type="text" class="addTagInputName" id="addTagInputName" name="name"
+           placeholder="TagName..." autofocus required minlength="1"
+           onkeyup="site.tagOverlay.handleKeyPress()">
+
+    <h6 class="text-danger text-center " id="errorText" style="display: none">
+        * Tag with that name already exists
+    </h6>
+
+    <div>
+        <button type="button"
+                class="btn btn-primary  btn-outline-light"
+                onclick="site.addTagButtonCancel()">Cancel
+        </button>
+
+        <button type="button"
+                class="btn btn-primary  btn-outline-light"
+                onclick="site.addTagButtonConfirm()">Confirm
+        </button>
+    </div>
 </div>
 
 <div class="overlay" id="overlay" onclick="site.overlay.hideOverlay(this)" ></div>

@@ -67,6 +67,10 @@ class EventHandlers
 		$(document).on('newFilesArrived', (e) => {
 			this.site.generatePagesAndPagination();
 		});
+
+		$(document).on('newDataArrived', (e) => {
+			this.site.generatePagesAndPagination();
+		});
 		
 		// jQuery(function () {
 		$(document).on('mousedown', e => {

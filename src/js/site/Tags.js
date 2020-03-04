@@ -245,6 +245,27 @@ class Tags
 		grid.add(elements);
 		grid.show(elements);
 	}
+
+
+
+	addTagToGrid(tagName)
+	{
+		this.addTag(tagName);
+		this.addItemsToGrid(this.mainGrid, [tagName]);
+
+		//save the data file
+		// Data.
+	}
+
+	removeItemsFromGrid(tagsNames)
+	{
+		let elements = $(this.mainGrid).children();
+
+		const tag = $('p[data-id="Sara"]');
+		console.log(tag);
+
+	}
+
 	
 	createTagElement(allTagTypes)
 	{
