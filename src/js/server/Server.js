@@ -1,4 +1,4 @@
-const routes  = require('./routes');
+const Routes  = require('./Routes');
 const polling = require('./Poller').polling;
 
 
@@ -18,9 +18,7 @@ class Server
 	
 	get polling() { return polling; }
 	
-	get routes() { return routes;}
-	
-	
+
 	constructor(site)
 	{
 		this._site = site;
@@ -30,15 +28,15 @@ class Server
 	actionPerformed()
 	{
 		polling.stop();
-		routes.setData(function () {
-			routes.downloadNewFiles();
+		Routes.setData(function () {
+			Routes.downloadNewFiles();
 			polling.run();
 		});
 	};
 	
 	uploadMedia(files)
 	{
-		routes.uploadMedia(files);
+		Routes.uploadMedia(files);
 	};
 }
 
