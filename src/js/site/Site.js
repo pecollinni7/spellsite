@@ -223,12 +223,16 @@ class Site
 	deleteTag()
 	{
 		this.tags.removeItemsFromGrid(this.tags.currentTagName);
+		this.server.actionPerformed();
+
 	}
 
 	deleteSelectedItems()
 	{
 		this.contentPages.activePage.removeSelectedItems();
 		this.generatePagesAndPagination();
+		this.server.actionPerformed();
+
 	}
 
 
