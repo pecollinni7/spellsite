@@ -125,17 +125,24 @@ class Item
 			case ".gif":
 			case ".jpg":
 			case ".png":
-				res = "<img class='image' src='" + this.src +
-					"' onmousedown='site.handleItemClick(this)' data-fileName='" + this.name +
-					"' ondblclick='site.handleItemDoubleClick(this)' data-fileName='" + this.name +
-					"'>";
+				res = "<img " +
+					"class='image' src='" + this.src + "'" +
+					" onmousedown='site.handleItemClick(this, event)' " +
+					" oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " +
+					" ondblclick='site.handleItemDoubleClick(this)' " +
+					"data-fileName='" + this.name + "'" +
+					">";
 				return res;
 
 			case ".mp4":
-				res = "";
-				res += "<video class='videoInsert' onclick='site.handleItemClick(this)' ondblclick='site.handleItemDoubleClick(this)' data-fileName='" + this.name + "' autoplay loop muted>";
-				res += "<source src=" + this.src + " type='video/mp4'>";
-				res += "</video>";
+				res = "<video class='videoInsert' " +
+					"onmousedown='site.handleItemClick(this, event)' " +
+					"ondblclick='site.handleItemDoubleClick(this)' " +
+					"oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " +
+					"data-fileName='" + this.name + "' " +
+					"autoplay loop muted>" +
+					"<source src=" + this.src + " type='video/mp4'>" +
+					"</video>";
 
 				// console.log(res);
 				return res;

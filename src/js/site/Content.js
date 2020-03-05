@@ -1,4 +1,5 @@
 const Item = require('./Item');
+const Data = require('./Data');
 
 class Content
 {
@@ -45,6 +46,14 @@ class Content
 			selectedItem.updateTag(tagName, tagValue);
 		})
 	}
+
+	removeSelectedItems()
+	{
+		const selectedItems = this.getSelectedItems();
+		const selectedItemNames = this.getSelectedItemNames();
+
+		Data.removeItems(selectedItemNames);
+	}
 	
 	getSelectedItems()
 	{
@@ -70,6 +79,8 @@ class Content
 			}
 		}
 	}
+
+
 
 	getSelectedItemsTags()
 	{

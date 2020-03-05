@@ -7,9 +7,20 @@ class Tags
 	
 	_tags;
 	_mainGrid;
-	
+	_currentTagName;
 	_tagsSelector;
-	
+
+
+	get currentTagName()
+	{
+		return this._currentTagName;
+	}
+
+	set currentTagName(value)
+	{
+		this._currentTagName = value;
+	}
+
 	set tags(value) { this._tags = value; }
 	
 	get tags() { return this._tags; }
@@ -32,6 +43,19 @@ class Tags
 	addTag(tagName)
 	{
 		this.tags.push(new Tag((tagName)));
+	}
+
+	removeTag(tagName)
+	{
+		for (let i = this.tags.length-1; i >= 0; i--)
+		{
+			if (this.tags[i].name === tagName)
+			{
+				this.tags.splice(i, 1);
+				Data.removeTag(tagName);
+				break;
+			}
+		}
 	}
 	
 	activeTags()
@@ -259,12 +283,23 @@ class Tags
 		
 	}
 
-	removeItemsFromGrid(tagsNames)
+	removeItemsFromGrid(tagName)
 	{
-		let elements = $(this.mainGrid).children();
 
-		const tag = $('p[data-id="Sara"]');
-		console.log(tag);
+		const gridItems = (this.mainGrid.getItems());
+
+		for (let i = 0; i < gridItems.length; i++)
+		{
+			const currentTagText = gridItems[i]._child.innerText;
+			if (currentTagText === tagName)
+			{
+				this.mainGrid.remove(i, {removeElements: true});
+				this.removeTag(tagName);
+
+				break;
+			}
+		}
+
 
 	}
 

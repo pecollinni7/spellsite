@@ -233,6 +233,70 @@ class Data
 		// console.log(res);
 		return res;
 	}
+
+	static removeTagPatch(tagName)
+	{
+		if (this.patchFile.hasOwnProperty('removeTags') === false)
+		{
+			this.patchFile['removeTags'] = [];
+		}
+
+		if (this.patchFile['removeTags'].indexOf(tagName) === -1)
+		{
+			this.patchFile['removeTags'].push(tagName);
+		}
+	}
+
+	static removeItemPatch(itemName)
+	{
+		if (this.patchFile.hasOwnProperty('removeItems') === false)
+		{
+			this.patchFile['removeItems'] = [];
+		}
+
+		if (this.patchFile['removeItems'].indexOf(itemName) === -1)
+		{
+			this.patchFile['removeItems'].push(itemName);
+		}
+
+	}
+
+	static removeTag(tagName)
+	{
+		const tags = this.tagsList;
+
+		for (let i = tags.length-1; i >= 0; i--)
+		{
+			if (tags[i] === tagName)
+			{
+				tags.splice(i, 1);
+				break;
+			}
+		}
+
+		this.removeTagPatch(tagName);
+
+		this.saveData();
+		this.savePatch();
+	}
+
+	static removeItems(itemNames)
+	{
+		for (let i = 0; i < itemNames.length; i++)
+		{
+			const itemName = itemNames[i];
+
+			if (this.dataFile.hasOwnProperty(itemName))
+			{
+				delete this.dataFile[itemName];
+				this.removeItemPatch(itemName);
+			}
+		}
+
+
+		this.saveData();
+		this.savePatch();
+	}
 	
 	static addNewTag(tagName)
 	{
@@ -254,6 +318,11 @@ class Data
 
 		console.error('No tagTypes in the dataFile!');
 		return [];
+	}
+
+	static set tagsList(value)
+	{
+		this.dataFile.tagTypes = value;
 	}
 
 	static get version()

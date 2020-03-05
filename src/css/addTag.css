@@ -12,6 +12,7 @@
     background-color: rgba(0, 0, 0, 0.0); /* Black background with opacity */
     opacity: 0.0;
     transition: background-color 0.18s ease, opacity 0.24s ease;
+    z-index: 10; /* Specify a stack order in case you're using a different order for other elements */
 
     display: flex;
     flex-direction: column;
@@ -24,7 +25,7 @@
 .addTag.show {
     /*opacity: 0.7;*/
     /*visibility: visible;*/
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     opacity: 1;
     /*transition: background-color 0.24s ease;*/
 

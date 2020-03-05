@@ -96,8 +96,14 @@ class Site
 		this.contentPages.generatePages(Data.getFileNames(tagsFilter), Data.getFileTags());
 	}
 
-	handleItemClick(item)
+	handleItemClick(item, e)
 	{
+		if (e.button === 2)
+		{
+			console.log('right click over item');
+			return;
+		}
+
 		if (!this.eventHandlers.ctrlKey)
 		{
 			this.contentPages.activePage.clearSelection();
@@ -212,6 +218,49 @@ class Site
 	addTagButtonCancel()
 	{
 		this.tagOverlay.removeTagOverlay();
+	}
+
+	deleteTag()
+	{
+		this.tags.removeItemsFromGrid(this.tags.currentTagName);
+	}
+
+	deleteSelectedItems()
+	{
+		this.contentPages.activePage.removeSelectedItems();
+		this.generatePagesAndPagination();
+	}
+
+
+	openContextMenu(e, mouseX, mouseY)
+	{
+		let contextmenu;
+
+		if ($(e.target).hasClass('image') || $(e.target).hasClass('videoInsert'))
+		{
+			contextmenu = $('#itemcontextmenu');
+			// this.contentPages.activePage.getItemByName($(e.target).attr('data-filename')).toggleSelection();
+		}
+
+		if ($(e.target).hasClass('item-content'))
+		{
+			contextmenu = $('#tagcontextmenu');
+		}
+
+
+		contextmenu.css({top: mouseY, left: mouseX, position: 'fixed'});
+		contextmenu.addClass('show');
+
+		contextmenu.on('mouseleave', () => {
+			contextmenu.removeClass('show');
+		});
+
+		$(window).on('mousedown', () => {
+			contextmenu.removeClass('show');
+		});
+		$(window).on('scroll', () => {
+			contextmenu.removeClass('show');
+		});
 	}
 
 

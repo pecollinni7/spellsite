@@ -107,19 +107,42 @@ class EventHandlers
 						site.generatePagesAndPagination();
 					}
 				}
-				
-				// if (site.contentPages.filterMode)
-				// {
-				// 	site.contentPages.filterMode = false;
-				// 	site.generatePagesAndPagination();
-				// }
-				// else
-				// {
-				// 	site.contentPages.activePage.clearSelection();
-				// 	site.tags.clearSelection();
-				// }
+
 			}
 		});
+
+
+
+		let clicked = false,
+			clickY,
+			clickYStart;
+		$(document).on({
+			// 'mousemove': function (e) {
+			// 	clicked && updateScrollPos(e);
+			// },
+			'mousedown': (e) => {
+				if (e.which === 3)
+				{
+					clicked     = true;
+					clickY      = e.pageY;
+					clickYStart = e.clientY;
+				}
+			},
+			'mouseup': (e) => {
+				clicked = false;
+				$('html').css('cursor', 'auto');
+				if (clickYStart === e.clientY)
+				{
+					console.log('end = ' + e.clientY);
+					// site.openContextMenu(e, e.clientX - 5, e.clientY - 5);
+				}
+			}
+		});
+
+		// window.addEventListener("contextmenu", e => {
+		// 	console.log(e);
+		// 	e.preventDefault();
+		// });
 		
 		
 		
