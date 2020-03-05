@@ -76,7 +76,7 @@ function createWindow() {
     });
 
     window.loadFile('./src/html/index.html').then(r => {});
-    window.webContents.openDevTools();
+    // window.webContents.openDevTools();
     window.on('closed', function () {
         window = null;
     });
