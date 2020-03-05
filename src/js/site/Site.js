@@ -204,6 +204,8 @@ class Site
 		{
 			this.tags.addTagToGrid(this.tagOverlay.inputText);
 			this.tagOverlay.removeTagOverlay();
+			
+			this.server.actionPerformed();
 		}
 	}
 

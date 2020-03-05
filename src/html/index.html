@@ -122,7 +122,7 @@
 
 </div>
 
-<div class="addTag " id="addTag">
+<div class="addTag" id="addTag">
 
     <label class="text-center  h5" for="addTagInputName">Please specify the name for the new tag:</label>
 
@@ -130,19 +130,22 @@
            placeholder="TagName..." autofocus required minlength="1"
            onkeyup="site.tagOverlay.handleKeyPress()">
 
-    <h6 class="text-danger text-center " id="errorText" style="display: none">
-        * Tag with that name already exists
-    </h6>
+<!--    <h6 class="text-danger text-center " id="errorText" style="display: none">-->
+<!--        * Tag with that name already exists-->
+<!--    </h6>-->
 
     <div>
+
         <button type="button"
-                class="btn btn-primary  btn-outline-light"
-                onclick="site.addTagButtonCancel()">Cancel
+                class="btn btn-secondary  btn-light"
+                onclick="site.addTagButtonCancel()">
+            Cancel
         </button>
 
         <button type="button"
-                class="btn btn-primary  btn-outline-light"
-                onclick="site.addTagButtonConfirm()">Confirm
+                class="btn btn-secondary  btn-light"
+                onclick="site.addTagButtonConfirm()">
+            Confirm
         </button>
     </div>
 </div>

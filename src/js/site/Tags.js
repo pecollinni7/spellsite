@@ -254,7 +254,9 @@ class Tags
 		this.addItemsToGrid(this.mainGrid, [tagName]);
 
 		//save the data file
-		// Data.
+		Data.addNewTag(tagName);
+		
+		
 	}
 
 	removeItemsFromGrid(tagsNames)

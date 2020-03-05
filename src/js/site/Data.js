@@ -233,6 +233,17 @@ class Data
 		// console.log(res);
 		return res;
 	}
+	
+	static addNewTag(tagName)
+	{
+		if (this.dataFile.hasOwnProperty('tagTypes'))
+			this.dataFile.tagTypes.push(tagName);
+		
+		this.patchFile.tagTypes = this.dataFile.tagTypes;
+		
+		this.saveData();
+		this.savePatch();
+	}
 
 	static get tagsList()
 	{
