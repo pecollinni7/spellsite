@@ -34,8 +34,8 @@ const path_temp      = Path.resolve(getStorage() + "/temp").replace(/\\/g, "/");
 
 
 
-const SERVER = "http://127.0.0.1";
-// const SERVER = "http://144.91.87.68";
+// const SERVER = "http://127.0.0.1";
+const SERVER = "http://144.91.87.68";
 const PORT = "12345";
 
 
