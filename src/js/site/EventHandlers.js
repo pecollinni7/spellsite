@@ -64,11 +64,12 @@ class EventHandlers
 			this.ctrlKey = e.ctrlKey;
 		});
 		
-		$(document).on('newFilesArrived', (e) => {
+		$(document).on('newFilesArrived', () => {
+			console.log("newFilesArrived triggered");
 			this.site.generatePagesAndPagination();
 		});
 
-		$(document).on('newDataArrived', (e) => {
+		$(document).on('newDataArrived', () => {
 			this.site.generatePagesAndPagination();
 		});
 		

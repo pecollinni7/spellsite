@@ -1,13 +1,19 @@
-const settings = require('electron').remote.require('electron-settings');
-const {dialog} = require('electron').remote;
-const fs       = require('fs');
+const settings  = require('electron').remote.require('electron-settings');
+const {dialog}  = require('electron').remote;
+const fs        = require('fs');
 
 // let path_storage = settings.has('path.storage');
 
 function hasSettings()
 {
 	// return false;
+	if (settings.has('path.storage'))
+	{
+		createDefaults();
+	}
 	return settings.has('path.storage');
+
+
 }
 
 function getSettings()
@@ -37,21 +43,21 @@ function createDefaults()
 
 	if (!fs.existsSync(storagePath + '/json/data.json'))
 		fs.writeFileSync(storagePath + '/json/data.json', JSON.stringify({
-		"version" : 0,
-		"tagTypes":
-			[
-				"Ice",
-				"Water",
-				"Fire"
-			]
-	}));
-	
+			"version": 0,
+			"tagTypes":
+				[
+					"Ice",
+					"Water",
+					"Fire"
+				]
+		}));
+
 }
 
 module.exports = {
 	hasSettings,
 	getSettings,
 	setSettings,
-	
+
 	createDefaults
 };

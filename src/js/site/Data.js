@@ -6,6 +6,32 @@ class Data
 {
 	static _dataFile;
 	static _patchFile;
+	static _currentlyDownloading = [];
+
+	static addToCurrentlyDownloading(fileName)
+	{
+		if (this.isCurrentlyDownloading(fileName) === false)
+		{
+			this._currentlyDownloading.push(fileName);
+		}
+	}
+
+	static removeFromCurrentlyDownloading(fileName)
+	{
+		const index = this._currentlyDownloading.indexOf(fileName);
+		if (index > -1)
+		{
+			this._currentlyDownloading.splice(index, 1);
+		}
+	}
+
+	static isCurrentlyDownloading(fileName)
+	{
+		return this._currentlyDownloading.indexOf(fileName) !== -1;
+	}
+
+
+
 
 	static get dataFile()
 	{
@@ -174,7 +200,7 @@ class Data
 			{
 				if (this.dataFile[fileName].hasOwnProperty('tags'))
 				{
-					if (fs.existsSync(FilePaths.path_media + '/' + fileName))
+					if (fs.existsSync(FilePaths.path_media + '/' + fileName) && this.isCurrentlyDownloading(fileName) === false)
 					{
 						const fileTags = this.dataFile[fileName].tags;
 
@@ -200,7 +226,7 @@ class Data
 			}
 		}
 		
-		// res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
+		res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
 		
 		// console.log(res);
 
@@ -216,7 +242,7 @@ class Data
 			{
 				if (fileName !== 'version' && fileName !== 'tagTypes')
 				{
-					if (fs.existsSync(FilePaths.path_media + '/' + fileName))
+					if (fs.existsSync(FilePaths.path_media + '/' + fileName) && this.isCurrentlyDownloading(fileName) === false)
 					{
 						res.push(fileName);
 					}
@@ -228,7 +254,7 @@ class Data
 			}
 		}
 		
-		// res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
+		res.sort((a, b) => (this.dataFile[b].date - this.dataFile[a].date));
 		
 		// console.log(res);
 		return res;

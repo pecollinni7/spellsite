@@ -4,7 +4,7 @@ class ContentPages
 {
 	_contentPages    = [];
 	_activePageIndex = 0;
-	_pageSize        = 30;
+	_pageSize        = 50;
 	_activePage;
 	_filterMode      = false;
 	_filterModeSelectedTags;

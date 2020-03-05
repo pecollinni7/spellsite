@@ -4,6 +4,9 @@ const FileType         = require('file-type');
 const Data             = require('../site/Data');
 const StorageFilePaths = require('../site/StorageFilePaths');
 
+let fileDiff;
+let downloaded = [];
+
 const getData = () => needle.request(
 	'get',
 	StorageFilePaths.CHECK_FOR_UPDATES,
@@ -84,14 +87,19 @@ function getFilesDifference()
 
 function downloadNewFiles()
 {
-	const fileDiff = getFilesDifference();
+	fileDiff = getFilesDifference();
 	// console.log('fileDiff: ' + fileDiff);
 	
 	fileDiff.forEach(fileName => {
 		
 		downloadFile(fileName);
+		Data.addToCurrentlyDownloading(fileName);
 		
-	})
+	});
+
+
+	// $(document).trigger("newFilesArrived");
+
 }
 
 
@@ -200,15 +208,11 @@ const downloadFile = (fileName) => {
 			console.log(err);
 			//TODO delete ws file
 		}
-		
-		console.log('file downloaded: ' + fileName);
-		
-		setTimeout(() => {
-			$(document).trigger("newFilesArrived");
-			
-		}, 1000);
-		
 		// console.log(this.request.res.headers['content-disposition']); //fileName from server
+		console.log('file downloaded: ' + fileName);
+		Data.removeFromCurrentlyDownloading(fileName);
+		$(document).trigger("newFilesArrived");
+
 	})
 };
 
