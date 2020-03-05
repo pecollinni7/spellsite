@@ -65,7 +65,6 @@ class EventHandlers
 		});
 		
 		$(document).on('newFilesArrived', () => {
-			console.log("newFilesArrived triggered");
 			this.site.generatePagesAndPagination();
 		});
 
