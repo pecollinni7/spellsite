@@ -80,7 +80,43 @@ class Content
 		}
 	}
 
+	getItemsByName(itemNames)
+	{
+		let res = [];
 
+		for (let i = 0; i < this.items.length; i++)
+		{
+			for (let j = 0; j < itemNames.length; j++)
+			{
+				if (this.items[i].name === itemNames[j])
+				{
+					res.push(this.items[i]);
+				}
+			}
+		}
+
+		return res;
+	}
+
+
+	selectItemsByName(itemNames)
+	{
+		// if (itemNames === undefined || itemNames.length === 0)
+		// {
+		// 	return;
+		// }
+
+		for (let i = 0; i < itemNames.length; i++)
+		{
+			for (let j = 0; j < this.items.length; j++)
+			{
+				if (this.items[j].name === itemNames[i])
+				{
+					this.items[j].toggleSelection();
+				}
+			}
+		}
+	}
 
 	getSelectedItemsTags()
 	{
@@ -114,6 +150,11 @@ class Content
 	getSelectedItemNames()
 	{
 		let res = [];
+
+		if (this.items.length === 0)
+		{
+			return [];
+		}
 		
 		this.items.forEach(item => {
 			if (item.isSelected)

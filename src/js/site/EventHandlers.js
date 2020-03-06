@@ -1,3 +1,5 @@
+Data = require('./Data');
+
 class EventHandlers
 {
 	_site;
@@ -65,11 +67,12 @@ class EventHandlers
 		});
 		
 		$(document).on('newFilesArrived', () => {
-			this.site.generatePagesAndPagination();
+			this.site.filesUpdate();
 		});
 
 		$(document).on('newDataArrived', () => {
-			this.site.generatePagesAndPagination();
+			// Data.reloadData();
+			this.site.dataUpdate();
 		});
 		
 		// jQuery(function () {

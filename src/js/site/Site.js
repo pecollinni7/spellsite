@@ -86,6 +86,34 @@ class Site
 	}
 
 
+
+	filesUpdate()
+	{
+		const selectedItemNames = this.contentPages.getSelectedItemNames();
+		const activePageIndex = this.contentPages.activePageIndex;
+
+		this.generatePagesAndPagination();
+
+		// this.setActivePage(activePageIndex);
+		// this.tags.clearSelection();
+		this.contentPages.selectItemsByName(selectedItemNames);
+		// this.tags.displayTagsByName(this.contentPages.activePage.getSelectedItemsTags());
+	}
+
+
+	dataUpdate()
+	{
+		const selectedItemNames = this.contentPages.getSelectedItemNames();
+
+		this.contentPages.clearSelection();
+		this.tags.clearSelection();
+
+		this.tags.update();
+
+		// this.contentPages.selectItemsByName(selectedItemNames);
+		// this.tags.displayTagsByName(this.contentPages.activePage.getSelectedItemsTags());
+	}
+
 	reloadPage()
 	{
 		remote.getCurrentWindow().reload();
@@ -172,7 +200,7 @@ class Site
 	{
 		this.pagination.setActiveButton(pageNum);
 		this.tags.clearSelection();
-		this.contentPages.deployPage(pageNum.innerText);
+		this.contentPages.deployPage(pageNum);
 	}
 
 	showChoseDirectory()

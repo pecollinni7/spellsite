@@ -24,7 +24,7 @@ const getData = () => needle.request(
 			return;
 		}
 		
-		console.log('response statusCode = ' + response.statusCode);
+		// console.log('response statusCode = ' + response.statusCode);
 		
 		if (response.statusCode === 200)
 		{
@@ -54,7 +54,7 @@ const getData = () => needle.request(
 		
 		if (response.statusCode === 205)
 		{
-			console.log('you are up to date');
+			// console.log('you are up to date');
 		}
 	}
 );
@@ -120,7 +120,7 @@ const setData = (cb) => needle.request(
 			return;
 		}
 		
-		console.log('response statusCode = ' + response.statusCode);
+		// console.log('response statusCode = ' + response.statusCode);
 		// console.log('patchFile: ' + JSON.stringify(files.getPatchFile()));
 		
 		if (response.statusCode === 200)
