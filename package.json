@@ -43,7 +43,7 @@
     "electron-settings": "^3.2.0",
     "electron-updater": "^4.2.2",
     "image-size": "^0.8.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "muuri": "^0.8.0",
     "needle": "^2.3.2",
     "file-type": "^14.1.3"
