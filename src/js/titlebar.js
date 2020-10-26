@@ -1,5 +1,10 @@
 const remote = require('electron').remote;
 
+
+// alert(remote.app.getVersion());
+
+document.getElementById("version-text").innerText = remote.app.getVersion();
+
 // When document has loaded, initialise
 document.onreadystatechange = () => {
     if (document.readyState === "complete") {

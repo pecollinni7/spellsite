@@ -61,6 +61,8 @@ function createLoaderWindow()
     });
 }
 
+
+
 function createWindow() {
     window = new BrowserWindow({
         width: 1600,

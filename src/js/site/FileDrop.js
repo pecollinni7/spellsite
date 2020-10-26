@@ -35,11 +35,11 @@ class FileDrop
 			// console.log(e.dataTransfer.getData('text/html').find('img'));
 
 
-			var droppedHTML = e.dataTransfer.getData("text/html");
-			var dropContext = $('<div>').append(droppedHTML);
-			var imgURL = $(dropContext).find("img").attr('src');
+			// var droppedHTML = e.dataTransfer.getData("text/html");
+			// var dropContext = $('<div>').append(droppedHTML);
+			// var imgURL = $(dropContext).find("img").attr('src');
 
-			console.log(dropContext);
+			// console.log(dropContext);
 
 
 
