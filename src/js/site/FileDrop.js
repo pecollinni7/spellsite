@@ -28,10 +28,23 @@ class FileDrop
 			setTimeout(() => {
 				$('#filedrop').removeClass('show')
 			}, 1000);
-			
-			
-			console.log(e.dataTransfer.files);
-			this.server.uploadMedia(e.dataTransfer.files);
+
+
+			// console.log(e.dataTransfer.getData('html'));
+			// console.log(e.dataTransfer.getData('text'));
+			// console.log(e.dataTransfer.getData('text/html').find('img'));
+
+
+			var droppedHTML = e.dataTransfer.getData("text/html");
+			var dropContext = $('<div>').append(droppedHTML);
+			var imgURL = $(dropContext).find("img").attr('src');
+
+			console.log(dropContext);
+
+
+
+			// console.log(e.dataTransfer.files);
+			// this.server.uploadMedia(e.dataTransfer.files);
 
 			// for (let i = 0; i < e.originalEvent.dataTransfer.files.length; i++)
 			// {

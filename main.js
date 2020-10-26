@@ -81,6 +81,7 @@ function createWindow() {
         window = null;
     });
     window.show();
+    window.webContents.openDevTools();
 
     // Let autoUpdater check for updates, it will start downloading it automatically
     autoUpdater.checkForUpdates().then(r => {

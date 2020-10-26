@@ -65,19 +65,24 @@ class EventHandlers
 		});
 		
 		$(document).on('newFilesArrived', () => {
+			this.site.saveSelection();
 			this.site.generatePagesAndPagination();
+			this.site.restoreSelection();
 		});
 
 		$(document).on('newDataArrived', () => {
+			this.site.saveSelection();
 			this.site.generatePagesAndPagination();
+			this.site.restoreSelection();
 		});
-		
+
 		// jQuery(function () {
 		$(document).on('mousedown', e => {
 			const element = $(e.target);
 			
 			
-			if (element.hasClass('navigation') ||
+			if (
+				element.hasClass('navigation') ||
 				element.hasClass('pagination') ||
 				element.hasClass('content') ||
 				element.hasClass('html') ||
@@ -111,9 +116,14 @@ class EventHandlers
 			}
 		});
 
+		// $('#tags').contextmenu(function() {
+		// 	alert( "Handler for .contextmenu() called." );
+		// });
 
 
-		let clicked = false,
+
+
+			let clicked = false,
 			clickY,
 			clickYStart;
 		$(document).on({
@@ -133,8 +143,8 @@ class EventHandlers
 				$('html').css('cursor', 'auto');
 				if (clickYStart === e.clientY)
 				{
-					console.log('end = ' + e.clientY);
-					// site.openContextMenu(e, e.clientX - 5, e.clientY - 5);
+					// console.log('end = ' + e.clientY);
+					site.openContextMenu(e, e.clientX - 5, e.clientY - 5);
 				}
 			}
 		});

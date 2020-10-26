@@ -46,7 +46,11 @@ const getData = () => needle.request(
 					
 					//live update tags here
 					//or file removal maybe
-					
+
+
+					//this should be triggered only if new files arrived
+					//no actually just save the selection
+					//and restore it after reloading content pages and tags
 					$(document).trigger("newDataArrived");
 					
 				});

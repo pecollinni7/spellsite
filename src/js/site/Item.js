@@ -110,6 +110,12 @@ class Item
 		this.deploySelection(this.isSelected);
 	}
 
+	selectIt()
+	{
+		this.isSelected = true;
+		this.deploySelection(this.isSelected);
+	}
+
 	containsTag(searchTag)
 	{
 		return this.tags.includes(searchTag);

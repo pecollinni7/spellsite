@@ -243,12 +243,13 @@ class Site
 		if ($(e.target).hasClass('image') || $(e.target).hasClass('videoInsert'))
 		{
 			contextmenu = $('#itemcontextmenu');
-			// this.contentPages.activePage.getItemByName($(e.target).attr('data-filename')).toggleSelection();
+			this.contentPages.activePage.getItemByName($(e.target).attr('data-filename')).selectIt();
 		}
 
 		if ($(e.target).hasClass('item-content'))
 		{
 			contextmenu = $('#tagcontextmenu');
+			this.tags.currentTagName = $(e.target).text();
 		}
 
 

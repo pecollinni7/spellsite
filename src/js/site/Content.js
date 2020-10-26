@@ -6,6 +6,7 @@ class Content
 	// _methods = [];
 	_items;
 	_html;
+	_selection = [];
 	
 	_contentSelector;
 	
@@ -68,6 +69,21 @@ class Content
 		
 		return res;
 	};
+
+	saveSelection()
+	{
+		this._selection = this.getSelectedItemNames();
+	}
+
+	restoreSelection()
+	{
+		if (this._selection === null) return;
+
+		this._selection.forEach(itemName => {
+			const item = this.getItemByName(itemName);
+			item.deploySelection(true);
+		});
+	}
 	
 	getItemByName(itemName)
 	{

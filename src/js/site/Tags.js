@@ -215,6 +215,8 @@ class Tags
 			justifyContent: 'center',
 			layoutOnResize: false,
 			layoutOnInit  : true,
+
+
 			
 			
 			dragStartPredicate: (item, e) => {

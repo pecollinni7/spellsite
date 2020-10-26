@@ -1,0 +1,51 @@
+.dropArea{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: rgba(0,0,0,0.8);
+	text-align: center;
+
+}
+
+.box {
+	position: relative;
+	top: 50%;
+	transform: translateX(50%) translateY(-50%);
+	width: 50%;
+	height: 30%;
+	/*background-color: #9fcdff;*/
+
+
+
+	/*background-image: url("top-left.png"), url("top-right.png"), url("bottom-right.png"), url("bottom-left.png"), url("center.png");*/
+	/*background-position: left top, right top, right bottom, left bottom, center center;*/
+	/*background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat-x;*/
+
+	/*-webkit-border-radius: 30px;*/
+	/*-moz-border-radius: 30px;*/
+	/*border-radius: 30px;*/
+	/*border:5px dashed gray;*/
+
+	/*display: inline-block;*/
+	/*padding: 20px;*/
+	/* Fallback dashed border
+	   - the 4px width here is overwritten with the border-image-width (if set)
+	   - the border-image-width can be omitted below if it is the same as the 4px here
+	*/
+	/*border: dashed 4px #000;*/
+
+	/* Individual border image properties */
+	/*border-image-source: url("http://i.stack.imgur.com/wLdVc.png");*/
+	/*border-image-slice: 2;*/
+	/*border-image-repeat: round;*/
+
+
+	/* or use the shorthand border-image */
+	/*border-image: url("http://i.stack.imgur.com/wLdVc.png") 1 round;*/
+
+
+
+
+}

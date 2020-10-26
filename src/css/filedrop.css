@@ -4,7 +4,7 @@
 	height: 100%;
 	/*display: none;*/
 	display: flex;
-	visibility: hidden;
+	visibility: visible;
 	background-color: rgba(0, 0, 0, 0.0);
 	z-index: 100;
 	flex-direction: row;
@@ -55,7 +55,7 @@
 }
 
 .drop-content img {
-	background-image: url('../../images/default/placeholder.png');
+	background-image: url('../../storage/default/placeholder.png');
 	/*background: url('../images/default/placeholder.png') no-repeat;*/
 	/*height: auto;*/
 	max-width: 100%;

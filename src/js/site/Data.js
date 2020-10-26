@@ -316,6 +316,7 @@ class Data
 			{
 				delete this.dataFile[itemName];
 				this.removeItemPatch(itemName);
+				StorageController.deleteFile(itemName);
 			}
 		}
 
