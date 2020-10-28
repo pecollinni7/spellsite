@@ -24,7 +24,7 @@
     "releasemajor": "npm version major && build -p always",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "build": "electron-builder --mac --windows --linux",
+    "build": "electron-builder --windows ",
     "postinstall": "electron-builder install-app-deps",
     "publish": "npm run build && electron-builder --publish=always"
   },
