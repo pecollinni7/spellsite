@@ -81,7 +81,7 @@
 }
 
 .videoInsert.selected {
-	border: 0;
+	border: 1px;
 }
 
 .selected {

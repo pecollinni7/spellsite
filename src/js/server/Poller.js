@@ -10,6 +10,7 @@ let polling = AsyncPolling(function (end) {
 }, interval);
 
 
+
 module.exports = {
 	polling
 };

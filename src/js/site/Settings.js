@@ -1,36 +1,57 @@
-const settings  = require('electron').remote.require('electron-settings');
-const {dialog}  = require('electron').remote;
-const fs        = require('fs');
+const settings = require('electron').remote.require('electron-settings');
+const fs       = require('fs');
+const path     = require('path');
+const slash    = require('slash');
 
-// let path_storage = settings.has('path.storage');
+
+const ICON_DOT_GREEN    = '../images/dot_green.png';
+const ICON_DOT_RED      = '../images/dot_red.png';
+
+// const SERVER            = "http://127.0.0.1";
+const SERVER            = "http://144.91.87.68";
+const PORT              = "12345";
+const GET_FILE          = "";
+const SET_DATA_FILE     = SERVER + ":" + PORT + "/setDataFile";
+const CHECK_FOR_UPDATES = SERVER + ":" + PORT + "/checkForUpdates";
+const DOWNLOAD_MEDIA    = SERVER + ":" + PORT + "/downloadFile/";
+const UPLOAD_FILE       = SERVER + ":" + PORT + "/uploadFile";
+const UPLOAD_MULTIPLE   = SERVER + ":" + PORT + "/uploadMultipleFiles";
+
+
+
+
 
 function hasSettings()
 {
-	// return false;
 	if (settings.has('path.storage'))
-	{
 		createDefaults();
-	}
+
 	return settings.has('path.storage');
-
-
 }
 
-function getSettings()
+function getSettings(value)
 {
-	return settings.get('path.storage').replace(/\\/g, "/");
+	return settings.get(value);
 }
 
 function setSettings(value)
 {
+	// const storagePath = value.replace(/\\/g, "/");
+
 	settings.set('path', {
-		storage: value
-	})
+		storage: slash(value),
+		data   : slash(path.join(value, 'json/data.json')),
+		patch  : slash(path.join(value, 'json/patch.json')),
+		media  : slash(path.join(value, 'media')),
+		temp   : slash(path.join(value, 'temp'))
+	});
 }
+
+
 
 function createDefaults()
 {
-	const storagePath = getSettings();
+	const storagePath = settings.get('path.storage');
 
 	if (!fs.existsSync(storagePath + '/json/'))
 		fs.mkdirSync(storagePath + '/json/');
@@ -51,7 +72,6 @@ function createDefaults()
 					"Fire"
 				]
 		}));
-
 }
 
 module.exports = {
@@ -59,5 +79,15 @@ module.exports = {
 	getSettings,
 	setSettings,
 
-	createDefaults
+	createDefaults,
+
+	ICON_DOT_GREEN,
+	ICON_DOT_RED,
+
+	CHECK_FOR_UPDATES,
+	SET_DATA_FILE,
+	GET_FILE,
+	DOWNLOAD_MEDIA,
+	UPLOAD_FILE,
+	UPLOAD_MULTIPLE,
 };

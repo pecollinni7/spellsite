@@ -55,7 +55,7 @@
 }
 
 .drop-content img {
-	background-image: url('../../storage/default/placeholder.png');
+	background-image: url('../images/placeholder.png');
 	/*background: url('../images/default/placeholder.png') no-repeat;*/
 	/*height: auto;*/
 	max-width: 100%;

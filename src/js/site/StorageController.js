@@ -1,4 +1,4 @@
-const StorageFilePaths = require('./StorageFilePaths');
+const Settings = require('./Settings');
 const fs               = require('fs');
 const path             = require('path');
 
@@ -29,13 +29,14 @@ class StorageController
 		try
         {
 			console.log('deleting file: ' + fileName);
-            fs.unlinkSync(path.join(StorageFilePaths.path_media, fileName));
+            fs.unlinkSync(path.join(Settings.getSettings('path.media'), fileName));
 		}
 		catch(err)
         {
 			console.error(err)
 		}
 	}
+
 }
 
 module.exports = StorageController;

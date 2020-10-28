@@ -1,5 +1,6 @@
 const StorageController = require('./StorageController');
-const FilePaths         = require('./StorageFilePaths');
+const Settings          = require('./Settings');
+const path              = require('path');
 const fs                = require('fs');
 
 class Data
@@ -51,7 +52,7 @@ class Data
 	{
 		if (this._patchFile === undefined)
 		{
-			this._patchFile = StorageController.readFile(FilePaths.path_patchFile);
+			this._patchFile = StorageController.readFile(Settings.getSettings('path.patch'));
 		}
 		return this._patchFile;
 	}
@@ -64,7 +65,7 @@ class Data
 	
 	static reloadData()
 	{
-		this._dataFile = StorageController.readFile(FilePaths.path_dataFile);
+		this._dataFile = StorageController.readFile(Settings.getSettings('path.data'));
 	}
 	
 	static clearPatch()
@@ -76,12 +77,12 @@ class Data
 	
 	static saveData()
 	{
-		StorageController.writeFile(this.dataFile, FilePaths.path_dataFile);
+		StorageController.writeFile(this.dataFile, Settings.getSettings('path.data'));
 	}
 	
 	static savePatch()
 	{
-		StorageController.writeFile(this.patchFile, FilePaths.path_patchFile);
+		StorageController.writeFile(this.patchFile, Settings.getSettings('path.patch'));
 	}
 
 	//you need to sort this
@@ -105,7 +106,7 @@ class Data
 			{
 				if (fileName !== 'version' && fileName !== 'tagTypes')
 				{
-					if (fs.existsSync(FilePaths.path_media + '/' + fileName))
+					if (fs.existsSync(Settings.getSettings('path.media') + '/' + fileName))
 					{
 						if (this.dataFile[fileName].hasOwnProperty('tags'))
 						{
@@ -200,7 +201,7 @@ class Data
 			{
 				if (this.dataFile[fileName].hasOwnProperty('tags'))
 				{
-					if (fs.existsSync(FilePaths.path_media + '/' + fileName) && this.isCurrentlyDownloading(fileName) === false)
+					if (fs.existsSync(Settings.getSettings('path.media') + '/' + fileName) && this.isCurrentlyDownloading(fileName) === false)
 					{
 						const fileTags = this.dataFile[fileName].tags;
 
@@ -242,7 +243,7 @@ class Data
 			{
 				if (fileName !== 'version' && fileName !== 'tagTypes')
 				{
-					if (fs.existsSync(FilePaths.path_media + '/' + fileName) && this.isCurrentlyDownloading(fileName) === false)
+					if (fs.existsSync(Settings.getSettings('path.media') + '/' + fileName) && this.isCurrentlyDownloading(fileName) === false)
 					{
 						res.push(fileName);
 					}
@@ -362,6 +363,44 @@ class Data
 		console.log(this.dataFile['version']);
 		return 0;
 	}
+
+	static removeInvalidMediaFiles()
+	{
+		const invalidFiles = this.getInvalidMediaFiles();
+
+		for (let i = 0; i < invalidFiles.length; i++)
+		{
+			StorageController.deleteFile(invalidFiles[i]);
+		}
+	}
+
+	static getInvalidMediaFiles()
+	{
+		let res = [];
+		const fileNames = Data.getNames();
+
+		for (let i=0; i<fileNames.length; i++) {
+
+			if (this.checkIfFileIsValid(fileNames[i]) === false) {
+				res.push(fileNames[i]);
+			}
+		}
+
+		return res;
+	}
+
+	static checkIfFileIsValid(fileName)
+	{
+		const filePath = path.join(Settings.getSettings('path.media'), fileName);
+
+		if (fs.statSync(filePath)['size'] === 0)
+		{
+			console.error('Corrupted media file: ' + filePath);
+			return false;
+		}
+		return true;
+	}
+
 }
 
 module.exports = Data;

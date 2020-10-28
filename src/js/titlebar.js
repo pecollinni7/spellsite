@@ -3,7 +3,8 @@ const remote = require('electron').remote;
 
 // alert(remote.app.getVersion());
 
-document.getElementById("version-text").innerText = remote.app.getVersion();
+// document.getElementById("version-dataFile").innerText = 'v' + remote.app.getVersion();
+document.getElementById("version-software").innerText = 'v' + remote.app.getVersion();
 
 // When document has loaded, initialise
 document.onreadystatechange = () => {

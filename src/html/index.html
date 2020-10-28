@@ -29,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="../css/content.css"/>
     <link rel="stylesheet" type="text/css" href="../css/filedrop.css"/>
     <link rel="stylesheet" type="text/css" href="../css/overlay.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/notificationOverlay.css"/>
     <link rel="stylesheet" type="text/css" href="../css/main.css"/>
 
 </head>
@@ -42,15 +43,35 @@
 <!--    document.getElementById("demo").innerHTML = "app version is: " + require('electron').remote.app.getVersion();-->
 <!--</script>-->
 
+
+
 <div class="titlebar" id="titlebar">
     <a class="icon" onmousedown="navigation.setDropdownPos();">&#xE700;</a>
     <a class="icon" onmousedown="site.reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
-    <a class="icon" onmousedown="site.addTagButton();" data-toggle="tooltip" data-placement="bottom"
-       title="Add new Tag">&#xE948;</a>
-    <!--  <div class="reloadNotification">New files arrived. Reloading in 3</div>-->
+    <a class="icon" onmousedown="site.addTagButton();" data-toggle="tooltip" data-placement="bottom" title="Add new Tag">&#xE948;</a>
+
+    <!--    <a  data-toggle="tooltip" data-placement="bottom" title="Server is online">-->
+<!--    </a>-->
+<!--    <div class="reloadNotification">New files arrived. Reloading in 3</div>-->
+
+
+    <div class="progress fade " id="progressBar">
+        <div class="progress-bar progress-bar-gray text" id="downloadProgressBar" role="progressbar" aria-valuenow="80"
+             aria-valuemin="0" aria-valuemax="100" style="width:80%">
+
+        </div>
+        <span id="progressBarText">Downloading 4/21</span>
+    </div>
+
+
+
     <div class="drag-region"></div>
 
-    <a class="text" id="version-text">1.0.1</a>
+    <a class="text-small" id="version-dataFile" data-toggle="tooltip" data-placement="bottom" title="Data version">d56</a>
+    <a class="text-small" id="version-software" data-toggle="tooltip" data-placement="bottom" title="Software version">v1.0.1</a>
+    <img class="icon" id="serverIcon" data-toggle="tooltip" data-placement="bottom" title="Server online" src="../images/dot_red.png">
+
+
     <a class="text" onmousedown="site.contentPages.activePage.clearSelection(); site.tags.clearSelection();">Deselect</a>
     <a class="icon navButton" onclick="navigation.toggleNavigation(this)" data-toggle="tooltip"
        data-placement="bottom" title="Toggle Navigation">&#xE70E;</a>
@@ -86,7 +107,7 @@
 </div>
 
 <div class="dropdown-menu" id="mainmenu">
-    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Set Media Folder</a>
     <a class="dropdown-item" href="#">Another action</a>
     <a class="dropdown-item" href="#">Something else here</a>
     <div class="dropdown-divider"></div>
@@ -156,6 +177,40 @@
         </button>
     </div>
 </div>
+
+<div class="notificationOverlay">
+    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+
+<script>
+
+
+    setTimeout(
+        function()
+        {
+            //do something special
+            $('#myAlert').alert('close');
+            // $('#progressBar').toggleClass('show');
+
+        }, 3000);
+
+    $('#myAlert').on('closed.bs.alert', function () {
+        // do something…
+        // alert('asdad');
+    })
+</script>
 
 <div class="overlay" id="overlay" onclick="site.overlay.hideOverlay(this)" ></div>
 

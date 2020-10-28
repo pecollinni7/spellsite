@@ -44,6 +44,17 @@
 	font-weight: bold;
 }
 
+#titlebar .text-small{
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+	text-transform: lowercase;
+	font-size: 14px;
+
+
+}
+
+
+
 #titlebar .reloadNotification {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: bold;
@@ -92,7 +103,8 @@
 
 
 #titlebar a:hover {
-	background-color: #2a2f34;
+	/*background-color: #2a2f34;*/
+	background-color: rgba(255,255,255,0.1);
 	color: #d9d9d9;
 }
 
@@ -146,7 +158,7 @@ a.active {
 	color: #BBB;
 }
 #window-controls .button:hover {
-	background: rgba(255,255,255,0.2);
+	background: rgba(255,255,255,0.1);
 	color: #FFF;
 }
 #window-controls #min-button {
@@ -163,4 +175,73 @@ a.active {
 }
 #window-controls #close-button:hover {
 	background: #E81123;
+}
+
+.progress-bar-purple {
+	background-color: purple !important;
+}
+
+.progress-bar-gray {
+	/*background-color: #43248d !important;*/
+
+	/*border-right: 1px solid #5a369c;*/
+	background: -webkit-linear-gradient(left ,#43248d 40%, #5a369c 50%, #43248d 60%) repeat;
+	-webkit-background-size: 600px;
+	-webkit-animation-name: moving-gradient;
+	-webkit-animation-duration: 3s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+
+
+@-webkit-keyframes moving-gradient {
+	0% {
+		background-position: 0;
+
+	}
+
+	20% {
+		background-position: 0;
+
+	}
+
+	80% {
+		background-position: 600px;
+
+	}
+
+
+	100% {
+		background-position: 600px;
+	}
+}
+
+.progress {
+	position:relative;
+	/*display: flex;*/
+	/*overflow: hidden;*/
+	-webkit-app-region: drag;
+	width:400px;
+	height:20px;
+	margin-top:auto;
+	margin-bottom: auto;
+	background-color: #393939 !important;
+
+	border: 1px solid #444444;
+
+	pointer-events: none;
+}
+
+.progress .text{
+	color: #aeaeae;
+}
+
+.progress span {
+	position:absolute;
+	left:0;
+	width:100%;
+	text-align:center;
+	z-index:2;
+	/*color:white;*/
+	color:#d9d9d9;
 }

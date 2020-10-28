@@ -7,9 +7,9 @@ const EventHandlers = require('./EventHandlers');
 const Overlay       = require('./Overlay');
 const TagOverlay    = require('./TagOverlay');
 const Server        = require('../../js/server/Server');
-
-
-const remote = require('electron').remote;
+const Settings      = require('./Settings');
+const {dialog}      = require('electron').remote;
+const remote        = require('electron').remote;
 
 // require('events').EventEmitter.defaultMaxListeners = 5;
 
@@ -24,6 +24,7 @@ class Site
 	_eventHandlers;
 	_overlay;
 	_tagOverlay;
+	_data;
 
 	get server() { return this._server; }
 
@@ -42,6 +43,8 @@ class Site
 	get eventHandlers() { return this._eventHandlers; }
 
 	get tagOverlay() { return this._tagOverlay; }
+
+	get data() { return this._data; }
 
 	constructor()
 	{
@@ -68,6 +71,10 @@ class Site
 		this._eventHandlers = new EventHandlers(this);
 		this._tagOverlay    = new TagOverlay();
 
+		Data.removeInvalidMediaFiles();
+
+		this.updateDataFileVersionLabel();
+
 		this.generatePagesAndPagination();
 		this.tags.generateTags(Data.tagsList);
 
@@ -84,6 +91,8 @@ class Site
 		if (this.contentPages.activePage !== undefined)
 			this.contentPages.activePage.clearSelection();
 	}
+
+
 
 
 	reloadPage()
@@ -138,7 +147,8 @@ class Site
 				this.contentPages.generatePages(Data.getFileNames(this.tags.getActiveTagNames()), Data.getFileTags());
 				this.pagination.generateHtml(this.contentPages.numOfPages);
 				this.pagination.setActiveButtonByIndex(this.contentPages.activePageIndex);
-			} else
+			}
+			else
 			{
 				this.contentPages.filterMode             = false;
 				this.contentPages.filterModeSelectedTags = [];
@@ -182,19 +192,20 @@ class Site
 
 	choseMediaDirectory()
 	{
-		const Settings = require('./Settings');
-		const {dialog} = require('electron').remote;
-
 		dialog.showOpenDialog({
 			properties: ['openDirectory'],
+
 		}).then(r => {
+
 			if (r.filePaths[0])
 			{
 				Settings.setSettings(r.filePaths[0]);
 				Settings.createDefaults();
 
 				$("#loaderContent").hide("slow");
+
 				this.initialize();
+
 			}
 		});
 	}
@@ -268,6 +279,10 @@ class Site
 		});
 	}
 
+	updateDataFileVersionLabel()
+	{
+		document.getElementById("version-dataFile").innerText = 'd' + Data.version;
+	}
 
 
 

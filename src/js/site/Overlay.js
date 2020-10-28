@@ -1,5 +1,5 @@
 const Path      = require('path');
-const FilePaths = require('./StorageFilePaths');
+const Settings = require('./Settings');
 const ImageSize = require('image-size');
 
 class Overlay
@@ -26,7 +26,7 @@ class Overlay
 		this._fileName = fileName;
 		this._ext      = Path.extname(this.fileName);
 		this._selector = $('#overlay');
-		this._filePath = FilePaths.path_media + '/' + this.fileName;
+		this._filePath = Settings.getSettings('path.media') + '/' + this.fileName;
 		this._html     = this.generateHtml();
 	}
 	
@@ -63,23 +63,26 @@ class Overlay
 
 				const gifSizeX = dimensions.width * multiplier;
 				const gifSizeY = dimensions.height * multiplier;
-				
-				return "<div id='gifContent' class='gifContent'>" +
-					   "<gif-player class='gifPlayer' src=" + this.filePath +
-					   " size='contain' speed='1' play prerender style='" +
-					   // "width:" + ($(document).width() / 100 * 70) + "px; " +
-					   // "height:" + ($(document).height() / 100 * 50) + "px; " +
-					   "width:" + gifSizeX + "px; " +
-					   "height:" + gifSizeY + "px; " +
-					   "position: center; display: block'>" +
-					   "</div>";
+
+				return 	"<div id='gifContent' class='gifContent'>" +
+							"<img id='gifLoader' src=" + "../images/loading.gif" + ">" +
+								"<gif-player class='gifPlayer' src=" + this.filePath +
+								" size='contain' speed='1' play prerender style='" +
+								// "width:" + ($(document).width() / 100 * 70) + "px; " +
+								// "height:" + ($(document).height() / 100 * 50) + "px; " +
+								"width:" + gifSizeX + "px; " +
+								"height:" + gifSizeY + "px; " +
+								"position: center; display: block'>" +
+						"</div>";
 			
 			case '.png':
 			case '.jpg':
 			case '.bmp':
 			case '.tiff':
 			case '.tga':
-				return '';
+				return 	"<div class='imageOverlay'>" +
+						"<img src=" + this.filePath + ">" +
+						"</div>";
 			
 			case '.mp4':
 				return "<video class='videoOverlay' id='videoOverlay' autoplay loop muted>" +

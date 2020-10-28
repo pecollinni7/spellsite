@@ -1,0 +1,14 @@
+.notificationOverlay {
+    display: inline-block;
+    position: fixed;
+    width: 420px;
+    /*height: 200px;*/
+    top: 200px;
+    left: auto;
+    right: 20px;
+    /*background-color: rgba(0, 0, 0, 0.0); !* Black background with opacity *!*/
+    /*background-color: #1d2124;*/
+    /*opacity: 80%;*/
+
+    /*pointer-events: none;*/
+}

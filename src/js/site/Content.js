@@ -1,5 +1,6 @@
 const Item = require('./Item');
-const Data = require('./Data');
+const Data        = require('./Data');
+let SelectionTemp = [];
 
 class Content
 {
@@ -70,18 +71,20 @@ class Content
 		return res;
 	};
 
-	saveSelection()
+	holdSelection()
 	{
-		this._selection = this.getSelectedItemNames();
+		SelectionTemp = this.getSelectedItemNames();
 	}
 
 	restoreSelection()
 	{
-		if (this._selection === null) return;
+		if (SelectionTemp === null) return;
 
-		this._selection.forEach(itemName => {
+		SelectionTemp.forEach(itemName => {
 			const item = this.getItemByName(itemName);
-			item.deploySelection(true);
+
+			if (item)
+				item.selectIt();
 		});
 	}
 	

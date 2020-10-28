@@ -65,15 +65,18 @@ class EventHandlers
 		});
 		
 		$(document).on('newFilesArrived', () => {
-			this.site.saveSelection();
+			this.site.contentPages.activePage.holdSelection();
 			this.site.generatePagesAndPagination();
-			this.site.restoreSelection();
+			this.site.contentPages.activePage.restoreSelection();
+			this.site.updateDataFileVersionLabel();
 		});
 
 		$(document).on('newDataArrived', () => {
-			this.site.saveSelection();
+			this.site.contentPages.activePage.holdSelection();
 			this.site.generatePagesAndPagination();
-			this.site.restoreSelection();
+			this.site.contentPages.activePage.restoreSelection();
+			this.site.tags.displayTagsByName(this.site.contentPages.activePage.getSelectedItemsTags());
+			this.site.updateDataFileVersionLabel();
 		});
 
 		// jQuery(function () {

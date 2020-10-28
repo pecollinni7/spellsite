@@ -1,4 +1,4 @@
-const mediaPath = require('./StorageFilePaths').path_media;
+const Settings = require('./Settings');
 const Path      = require('path');
 const Data      = require('./Data');
 
@@ -16,7 +16,7 @@ class Item
 	{
 		this.name       = name;
 		this.ext        = Path.extname(name);
-		this.src        = mediaPath + '/' + name;
+		this.src        = Settings.getSettings('path.media') + '/' + name;
 		this.isSelected = false;
 		this.tags       = Data.getTagsForFileName(this.name);
 		this.html       = this.generateHtml(this.ext);

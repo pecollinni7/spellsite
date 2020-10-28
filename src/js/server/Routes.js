@@ -2,14 +2,18 @@ const fs               = require('fs');
 const needle           = require('needle');
 const FileType         = require('file-type');
 const Data             = require('../site/Data');
-const StorageFilePaths = require('../site/StorageFilePaths');
+const Settings = require('../site/Settings');
+const progress         = require('progress-stream');
+const streamLength     = require("stream-length");
 
 let fileDiff;
 let downloaded = [];
+let filesToDownload = 0;
+let filesDownloaded = 0;
 
 const getData = () => needle.request(
 	'get',
-	StorageFilePaths.CHECK_FOR_UPDATES,
+	Settings.CHECK_FOR_UPDATES,
 	{
 		clientVersion: Data.version
 	},
@@ -20,18 +24,20 @@ const getData = () => needle.request(
 	(error, response, body) => {
 		if (error)
 		{
-			console.log(error);
+			console.log(error); //no connection
+			$('#serverIcon').attr("src",Settings.ICON_DOT_RED);
 			return;
 		}
-		
+
 		console.log('response statusCode = ' + response.statusCode);
-		
+
 		if (response.statusCode === 200)
 		{
 			console.log('new data arrived');
-			
+			$('#serverIcon').attr("src",Settings.ICON_DOT_GREEN);
+
 			fs.writeFile(
-				StorageFilePaths.path_dataFile,
+				Settings.getSettings('path.data'),
 				JSON.stringify(body, null, 4),
 				'utf8',
 				function (err) {
@@ -40,10 +46,10 @@ const getData = () => needle.request(
 						console.log('error while writing poller response');
 						throw err;
 					}
-					
-					// files.setDataFile(files.readFileAsync(files.path_dataFile));
+
+					// files.setDataFile(files.readFileAsync(files.getSettings('path.data));
 					Data.reloadData();
-					
+
 					//live update tags here
 					//or file removal maybe
 
@@ -52,20 +58,27 @@ const getData = () => needle.request(
 					//no actually just save the selection
 					//and restore it after reloading content pages and tags
 					$(document).trigger("newDataArrived");
-					
+
 				});
 		}
-		
+
 		if (response.statusCode === 205)
 		{
 			console.log('you are up to date');
+			$('#serverIcon').attr("src",Settings.ICON_DOT_GREEN);
+		}
+
+		if (response.statusCode === 404)
+		{
+			console.log('Server DataFile not found');
+			$('#serverIcon').attr("src",Settings.ICON_DOT_GREEN);
 		}
 	}
 );
 
 function getLocalFileList()
 {
-	return fs.readdirSync(StorageFilePaths.path_media, {withFileTypes: true})
+	return fs.readdirSync(Settings.getSettings('path.media'), {withFileTypes: true})
 			 .filter(item => !item.isDirectory())
 			 .map(item => item.name);
 }
@@ -79,10 +92,12 @@ function getFilesDifference()
 {
 	const fileListInDir  = getLocalFileList();
 	const fileListInJson = getServerFileList();
-	
+
 	// console.log('fileListInDir: ' + fileListInDir);
 	// console.log('fileListInJson: ' + fileListInJson);
-	
+
+
+
 	return fileListInJson.filter(
 		x => !fileListInDir.includes(x) &&
 			 x !== 'version' &&
@@ -92,13 +107,14 @@ function getFilesDifference()
 function downloadNewFiles()
 {
 	fileDiff = getFilesDifference();
-	// console.log('fileDiff: ' + fileDiff);
-	
+	filesToDownload += fileDiff.length;
+		// console.log('fileDiff: ' + fileDiff);
+
 	fileDiff.forEach(fileName => {
-		
+
 		downloadFile(fileName);
 		Data.addToCurrentlyDownloading(fileName);
-		
+
 	});
 
 
@@ -109,7 +125,7 @@ function downloadNewFiles()
 
 const setData = (cb) => needle.request(
 	'post',
-	StorageFilePaths.SET_DATA_FILE,
+	Settings.SET_DATA_FILE,
 	{
 		jsonData: JSON.stringify(Data.patchFile)
 	},
@@ -123,15 +139,15 @@ const setData = (cb) => needle.request(
 			console.log(error);
 			return;
 		}
-		
+
 		console.log('response statusCode = ' + response.statusCode);
 		// console.log('patchFile: ' + JSON.stringify(files.getPatchFile()));
-		
+
 		if (response.statusCode === 200)
 		{
-			
+
 			fs.writeFile(
-				StorageFilePaths.path_dataFile,
+				Settings.getSettings('path.data'),
 				JSON.stringify(body, null, 2),
 				'utf8',
 				function (err) {
@@ -140,9 +156,9 @@ const setData = (cb) => needle.request(
 						console.log('error while writing poller response');
 						throw err;
 					}
-					
+
 					Data.clearPatch();
-					// files.setDataFile(files.readFileAsync(files.path_dataFile));
+					// files.setDataFile(files.readFileAsync(files.getSettings('path.data));
 					cb();
 				});
 		}
@@ -151,10 +167,10 @@ const setData = (cb) => needle.request(
 
 
 const uploadFile = (data) => {
-	
+
 	needle.request(
 		'post',
-		StorageFilePaths.UPLOAD_FILE,
+		Settings.UPLOAD_FILE,
 		{file: data},
 		{multipart: true},
 		(error, response, body) => {
@@ -165,14 +181,14 @@ const uploadFile = (data) => {
 };
 
 const uploadMedia = function (files) {
-	
+
 	for (let i = 0; i < files.length; i++)
 	{
 		constructUploadData(files[i])
 			.then((data) => {
-				
+
 				uploadFile(data);
-				
+
 			})
 			.catch((err) => {
 				console.log(err);
@@ -192,20 +208,18 @@ async function constructUploadData(file)
 
 
 const downloadFile = (fileName) => {
-	
-	
-	var stream = needle.get(StorageFilePaths.DOWNLOAD_MEDIA + fileName);
-	var ws     = fs.createWriteStream(StorageFilePaths.path_media + '/' + fileName);
-	
+
+	let stream = needle.get(Settings.DOWNLOAD_MEDIA + fileName);
+	let ws     = fs.createWriteStream(Settings.getSettings('path.media') + '/' + fileName);
+
 	stream.on('readable', function () {
-		var chunk;
+		let chunk;
 		while (chunk = this.read())
 		{
-			// console.log('got data: ', chunk);
 			ws.write(chunk);
 		}
 	});
-	
+
 	stream.on('done', function (err) {
 		if (err)
 		{
@@ -215,10 +229,44 @@ const downloadFile = (fileName) => {
 		// console.log(this.request.res.headers['content-disposition']); //fileName from server
 		console.log('file downloaded: ' + fileName);
 		Data.removeFromCurrentlyDownloading(fileName);
-		$(document).trigger("newFilesArrived");
-
-	})
+		filesDownloaded += 1;
+		updateDownloadProgressBar();
+		// $(document).trigger("newFilesArrived");
+	});
 };
+
+
+let timerclock;
+function updateDownloadProgressBar()
+{
+	clearTimeout(timerclock);
+
+	let res = "Downloading " + filesDownloaded + "/" + filesToDownload;
+	let progress = normalizeValue(filesDownloaded, filesToDownload, 0);
+
+	$('#progressBar').addClass('show');
+
+	// $('#downloadProgressBar').attr('aria-valuenow', progress);
+	$('#downloadProgressBar').attr('style', 'width:' + Number(progress) + '%');
+	$('#progressBarText').text(res);
+
+	if (progress === 100)
+	{
+		timerclock = setTimeout(function()
+		{
+			$('#progressBar').removeClass('show');
+			filesToDownload = 0;
+			filesDownloaded = 0;
+			$(document).trigger("newFilesArrived");
+
+		}, 3000);
+	}
+}
+
+function normalizeValue(val, max, min)
+{
+	return (val - min) / (max - min) * 100;
+}
 
 
 module.exports = {

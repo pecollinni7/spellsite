@@ -44,7 +44,7 @@ class FileDrop
 
 
 			// console.log(e.dataTransfer.files);
-			// this.server.uploadMedia(e.dataTransfer.files);
+			this.server.uploadMedia(e.dataTransfer.files);
 
 			// for (let i = 0; i < e.originalEvent.dataTransfer.files.length; i++)
 			// {
