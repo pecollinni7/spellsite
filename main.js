@@ -86,36 +86,36 @@ function createWindow() {
     window.webContents.openDevTools();
 
     // Let autoUpdater check for updates, it will start downloading it automatically
-    autoUpdater.checkForUpdates().then(r => {
-    });
-
-    // Catch the update-available event
-    autoUpdater.addListener('update-available', (info) => {
-        window.webContents.send('update-available');
-    });
-
-    // Catch the update-not-available event
-    autoUpdater.addListener('update-not-available', (info) => {
-        window.webContents.send('update-not-available');
-    });
-
-    // Catch the download-progress events
-    autoUpdater.addListener('download-progress', (info) => {
-        window.webContents.send('prog-made');
-    });
-
-    // Catch the update-downloaded event
-    autoUpdater.addListener('update-downloaded', (info) => {
-        window.webContents.send('update-downloaded');
-    });
-
-    // Catch the error events
-    autoUpdater.addListener('error', (error) => {
-        window.webContents.send('error', error.toString());
-    });
-
-    ipcMain.on('quitAndInstall', (event, arg) => {
-        autoUpdater.quitAndInstall();
-    });
+    // autoUpdater.checkForUpdates().then(r => {
+    // });
+    //
+    // // Catch the update-available event
+    // autoUpdater.addListener('update-available', (info) => {
+    //     window.webContents.send('update-available');
+    // });
+    //
+    // // Catch the update-not-available event
+    // autoUpdater.addListener('update-not-available', (info) => {
+    //     window.webContents.send('update-not-available');
+    // });
+    //
+    // // Catch the download-progress events
+    // autoUpdater.addListener('download-progress', (info) => {
+    //     window.webContents.send('prog-made');
+    // });
+    //
+    // // Catch the update-downloaded event
+    // autoUpdater.addListener('update-downloaded', (info) => {
+    //     window.webContents.send('update-downloaded');
+    // });
+    //
+    // // Catch the error events
+    // autoUpdater.addListener('error', (error) => {
+    //     window.webContents.send('error', error.toString());
+    // });
+    //
+    // ipcMain.on('quitAndInstall', (event, arg) => {
+    //     autoUpdater.quitAndInstall();
+    // });
 
 }
