@@ -23,8 +23,7 @@
     "releasemajor": "npm version major && build -p always",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "release": "build",
-    "publish": "build --win -p always"
+    "postinstall": "electron-builder install-app-deps"
   },
   "repository": {
     "type": "git",
