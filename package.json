@@ -11,15 +11,12 @@
         "owner": "pecollinni7",
         "repo": "spellsite"
       }
-    ],
-    "directories": {
-      "output": "release"
-    }
+    ]
   },
   "scripts": {
     "start": "electron .",
     "shipit": "build -p always",
-    "releasepatch": "npm version patch && build -p always",
+    "releasepatch": "npm version patch && electron-builder -p always",
     "releaseminor": "npm version minor && build -p always",
     "releasemajor": "npm version major && build -p always",
     "pack": "electron-builder --dir",
