@@ -9,22 +9,24 @@
       {
         "provider": "github",
         "owner": "pecollinni7",
-        "repo": "spellsite",
-        "url": "git+https://github.com/pecollinni7/spellsite.git"
+        "repo": "spellsite"
       }
-    ]
+    ],
+    "directories": {
+      "output": "release"
+    }
   },
   "scripts": {
     "start": "electron .",
-    "build": "build",
     "shipit": "build -p always",
     "releasepatch": "npm version patch && build -p always",
     "releaseminor": "npm version minor && build -p always",
     "releasemajor": "npm version major && build -p always",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
+    "build": "electron-builder --mac --windows --linux",
     "postinstall": "electron-builder install-app-deps",
-    "publish":"electron-builder -p onTag"
+    "publish": "npm run build && electron-builder --publish=always"
   },
   "repository": {
     "type": "git",
