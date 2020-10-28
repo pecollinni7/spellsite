@@ -4,18 +4,14 @@
   "description": "Electron SpellSite application",
   "main": "main.js",
   "build": {
-    "win": {
-      "publish": [
-        "github",
-        "bintray"
-      ]
-    },
+
     "appId": "com.example.app",
     "publish": [
       {
         "provider": "github",
         "owner": "pecollinni7",
-        "repo": "spellsite"
+        "repo": "spellsite",
+        "url": "git+https://github.com/pecollinni7/spellsite.git"
       }
     ]
   },
@@ -27,7 +23,8 @@
     "releaseminor": "npm version minor && build -p always",
     "releasemajor": "npm version major && build -p always",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "release": "- always"
   },
   "repository": {
     "type": "git",
