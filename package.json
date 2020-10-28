@@ -52,7 +52,7 @@
     "stream-length": "^1.0.2"
   },
   "devDependencies": {
-    "electron": "^8.0.1",
+    "electron": "^8.5.2",
     "electron-builder": "^19.52.1"
   }
 }
