@@ -23,7 +23,8 @@
     "releasemajor": "npm version major && build -p always",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "release": "build"
+    "release": "build",
+    "publish": "build --win -p always"
   },
   "repository": {
     "type": "git",
