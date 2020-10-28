@@ -4,6 +4,12 @@
   "description": "Electron SpellSite application",
   "main": "main.js",
   "build": {
+    "win": {
+      "publish": ["github", "bintray"]
+    },
+
+    "appId": "com.example.app",
+
     "publish": [
       {
         "provider": "github",
@@ -18,7 +24,11 @@
     "shipit": "build -p always",
     "releasepatch": "npm version patch && build -p always",
     "releaseminor": "npm version minor && build -p always",
-    "releasemajor": "npm version major && build -p always"
+    "releasemajor": "npm version major && build -p always",
+
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+
   },
   "repository": {
     "type": "git",
