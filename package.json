@@ -23,7 +23,7 @@
     "start": "electron .",
     "build": "build",
     "shipit": "build -p always",
-    "releasepatch": "npm version patch && build -p always",
+    "releasepatch": "npm version patch && pack -p always",
     "releaseminor": "npm version minor && build -p always",
     "releasemajor": "npm version major && build -p always",
     "pack": "electron-builder --dir",
