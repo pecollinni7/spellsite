@@ -15,11 +15,9 @@
   },
   "scripts": {
     "start": "electron .",
-    "shipit": "build -p always",
     "releasepatch": "npm version patch && electron-builder -p always",
-    "releaseminor": "npm version minor && build -p always",
-    "releasemajor": "npm version major && build -p always",
-    "pack": "electron-builder --dir",
+    "releaseminor": "npm version minor && electron-builder -p always",
+    "releasemajor": "npm version major && electron-builder -p always",
     "dist": "electron-builder",
     "build": "electron-builder --windows ",
     "postinstall": "electron-builder install-app-deps",
