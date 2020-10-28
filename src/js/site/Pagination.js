@@ -49,7 +49,7 @@ class Pagination
 		
 		for (let i = 0; i < numPages; i++)
 		{
-			res += "<li><a class='page-link' onmousedown='site.setActivePage(this)'>" + i + "</a></li>";
+			res += "<li><a class='page-link' onmousedown='site.setActivePage(" + i + ")'>" + i + "</a></li>";
 		}
 		
 		//right arrow
@@ -92,13 +92,18 @@ class Pagination
 
 	setActiveButton(btn)
 	{
+		if (btn === undefined)
+		{
+			return;
+		}
+
 		for (let i = 0; i < this.pages.length; i++)
 			$(this.pages[i]).children().removeClass('active-link');
 
 		// this.activeButton = btn;
 		// this.activeButton.classList.add('active-link');
 
-		this.addActiveLink(parseInt(btn.innerText));
+		this.addActiveLink(parseInt(btn));
 	}
 	
 	deployHtml()

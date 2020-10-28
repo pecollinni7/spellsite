@@ -97,10 +97,11 @@ class Item
 	{
 		if (value)
 		{
-			this.itemSelector.classList.add('selected');
-		} else
+			$(this.itemSelector).addClass('selected');
+		}
+		else
 		{
-			this.itemSelector.classList.remove('selected');
+			(this.itemSelector).removeClass('selected');
 		}
 	}
 

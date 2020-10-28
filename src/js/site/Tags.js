@@ -32,6 +32,18 @@ class Tags
 	get tagsSelector() { return this._tagsSelector; }
 	
 	set tagsSelector(value) { this._tagsSelector = value; }
+
+	get tagsNameList()
+	{
+		let res = [];
+
+		for (let i = 0; i < this.tags.length; i++)
+		{
+			res.push(this.tags[i].name);
+		}
+
+		return res;
+	}
 	
 	
 	constructor()
@@ -39,7 +51,35 @@ class Tags
 		this.tags         = [];
 		this.tagsSelector = $('#tags');
 	}
-	
+
+
+	update()
+	{
+		const currentTagNames = this.tagsNameList;
+		const newTagNames = Data.tagsList;
+
+		for (let i = currentTagNames.length-1; i >= 0; i++)
+		{
+			if (newTagNames.indexOf(currentTagNames[i]) === -1)
+			{
+				//remove this current tag
+				this.removeItemsFromGrid(currentTagNames[i]);
+			}
+		}
+
+		for (let i = 0; i < newTagNames.length; i++)
+		{
+			if (currentTagNames.indexOf(newTagNames[i]) === -1)
+			{
+				//add new tag
+				this.addTagToGrid(newTagNames[i]);
+			}
+		}
+
+	}
+
+
+
 	addTag(tagName)
 	{
 		this.tags.push(new Tag((tagName)));
@@ -281,8 +321,6 @@ class Tags
 
 		//save the data file
 		Data.addNewTag(tagName);
-		
-		
 	}
 
 	removeItemsFromGrid(tagName)

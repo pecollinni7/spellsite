@@ -292,6 +292,11 @@ class Data
 	{
 		const tags = this.tagsList;
 
+		if (tags.indexOf(tagName) === -1)
+		{
+			return;
+		}
+
 		for (let i = tags.length-1; i >= 0; i--)
 		{
 			if (tags[i] === tagName)
@@ -329,8 +334,15 @@ class Data
 	static addNewTag(tagName)
 	{
 		if (this.dataFile.hasOwnProperty('tagTypes'))
+		{
+			if (this.dataFile.tagTypes.indexOf(tagName) !== -1) //so it exits already
+			{
+				return;
+			}
+
 			this.dataFile.tagTypes.push(tagName);
-		
+		}
+
 		this.patchFile.tagTypes = this.dataFile.tagTypes;
 		
 		this.saveData();
