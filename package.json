@@ -47,8 +47,7 @@
     "jquery": "^3.5.0",
     "muuri": "^0.8.0",
     "needle": "^2.3.2",
-    "slash": "^3.0.0",
-    "yarn": "^1.22.10"
+    "slash": "^3.0.0"
   },
   "devDependencies": {
     "electron": "^8.5.2",
