@@ -3,8 +3,6 @@ const needle           = require('needle');
 const FileType         = require('file-type');
 const Data             = require('../site/Data');
 const Settings = require('../site/Settings');
-const progress         = require('progress-stream');
-const streamLength     = require("stream-length");
 
 let fileDiff;
 let downloaded = [];
