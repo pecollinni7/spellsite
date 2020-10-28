@@ -1,15 +1,16 @@
 {
   "name": "spellsite",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Electron SpellSite application",
   "main": "main.js",
   "build": {
     "win": {
-      "publish": ["github", "bintray"]
+      "publish": [
+        "github",
+        "bintray"
+      ]
     },
-
     "appId": "com.example.app",
-
     "publish": [
       {
         "provider": "github",
@@ -25,10 +26,8 @@
     "releasepatch": "npm version patch && build -p always",
     "releaseminor": "npm version minor && build -p always",
     "releasemajor": "npm version major && build -p always",
-
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
-
   },
   "repository": {
     "type": "git",
