@@ -1,6 +1,6 @@
 {
   "name": "spellsite",
-  "version": "1.6.6",
+  "version": "1.6.7",
   "description": "Electron SpellSite application",
   "main": "main.js",
   "build": {
@@ -23,7 +23,8 @@
     "releasemajor": "npm version major && build -p always",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "publish":"electron-builder -p onTag"
   },
   "repository": {
     "type": "git",
