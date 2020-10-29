@@ -4,12 +4,13 @@ const Data  = require('./Data');
 
 class Tags
 {
-	
+	_site;
 	_tags;
 	_mainGrid;
 	_currentTagName;
 	_tagsSelector;
 
+	get site() { return this._site; }
 
 	get currentTagName()
 	{
@@ -46,8 +47,9 @@ class Tags
 	}
 	
 	
-	constructor()
+	constructor(site)
 	{
+		this._site        = site;
 		this.tags         = [];
 		this.tagsSelector = $('#tags');
 	}
@@ -227,6 +229,11 @@ class Tags
 		// 	element.childNodes[0].removeClass('item-content-active', 'item-content-filter-active');
 		// });
 	}
+
+	generateTagsFromData()
+	{
+		this.generateTags(Data.tagsList);
+	}
 	
 	generateTags(tagNames)
 	{
@@ -282,22 +289,23 @@ class Tags
 			}
 		});
 		
-		this.mainGrid.on('releasestart', function (item, data) {
-			// console.log(item);
-			// console.log(data);
+		this.mainGrid.on('dragReleaseStart', () => {
+			this.saveGridLayoutOrder();
 		});
 		
 		this.mainGrid.on('move', function () {
 			// saveLayout(grid1);
 		});
-		
-		// grid1.on('layoutEnd', function () {
-		// setMarginSize();
-		// });
+
+		// this.mainGrid.on('layoutEnd', () => this.saveGridLayoutOrder());
 		this.mainGrid.on('layoutStart', function () {
 			$('#content').css('margin-top', $('#navigation').height() + 30);
 		});
-		
+
+
+		// setTimeout(() => {
+		// 	this._layoutEndCallbackBlocker = false;
+		// }, 5000);
 	}
 	
 	addItemsToGrid(grid, tags)
@@ -391,6 +399,40 @@ class Tags
 		
 		return Math.ceil(width / 10) * 10;
 	}
+
+
+	sortGridByDataListOrder()
+	{
+		const items = this.mainGrid.getItems();
+		const tags = Data.tagsList;
+		let res = [];
+
+		for (let i = 0; i < tags.length; i++) {
+			for (let j = 0; j < items.length; j++) {
+				if (tags[i] === items[j]._element.innerText) {
+					res.push(items[j]);
+				}
+			}
+		}
+
+		this.mainGrid.sort(res);
+	}
+
+	saveGridLayoutOrder()
+	{
+		let res = [];
+
+		const items = this.mainGrid.getItems();
+		items.forEach(item => {
+			res.push(item._element.innerText);
+		})
+
+		Data.tagsOrderUpdate(res);
+		this.site.server.actionPerformed();
+
+		// console.log(res);
+	}
+
 }
 
 

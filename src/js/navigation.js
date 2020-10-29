@@ -39,6 +39,12 @@ function setDropdownPos()
     const dropdown = $('#mainmenu');
     dropdown.css({top: 30, left: 0, position: 'fixed'});
     dropdown.toggleClass('show');
+
+    dropdown.on('mouseleave mousedown', () => {
+        dropdown.removeClass('show');
+    });
+
+
 }
 
 function toggleNavigation(btn)

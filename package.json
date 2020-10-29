@@ -43,6 +43,7 @@
   "dependencies": {
     "@webcomponents/webcomponentsjs": "^2.4.2",
     "auto-updater": "^1.0.2",
+    "bootstrap-input-spinner": "^1.16.8",
     "electron-settings": "^3.2.0",
     "electron-updater": "^4.3.5",
     "file-type": "^14.1.3",

@@ -131,7 +131,7 @@ class Content
 			{
 				if (this.items[j].name === itemNames[i])
 				{
-					this.items[j].toggleSelection();
+					this.items[j].selectIt();
 				}
 			}
 		}

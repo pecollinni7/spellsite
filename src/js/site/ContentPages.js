@@ -1,10 +1,11 @@
 const Content = require('./Content');
+const Settings = require('./Settings');
 
 class ContentPages
 {
 	_contentPages = [];
 	_activePageIndex;
-	_pageSize     = 50;
+	_pageSize     = Settings.getSettings('pageSize');
 	_activePage;
 	_filterMode   = false;
 	_filterModeSelectedTags;
@@ -48,6 +49,11 @@ class ContentPages
 
 	deployPage(pageNum)
 	{
+		if (pageNum === undefined) {
+			console.error('pageNum is undefined');
+			return;
+		}
+
 		let num = parseInt(pageNum);
 
 		if (num >= this.contentPages.length)

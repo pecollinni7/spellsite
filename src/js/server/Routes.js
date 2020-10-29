@@ -22,12 +22,12 @@ const getData = () => needle.request(
 	(error, response, body) => {
 		if (error)
 		{
-			console.log(error); //no connection
+			console.error('Offline'); //no connection
 			$('#serverIcon').attr("src",Settings.ICON_DOT_RED);
 			return;
 		}
 
-		console.log('response statusCode = ' + response.statusCode);
+		// console.log('response statusCode = ' + response.statusCode);
 
 		if (response.statusCode === 200)
 		{
@@ -62,7 +62,7 @@ const getData = () => needle.request(
 
 		if (response.statusCode === 205)
 		{
-			console.log('you are up to date');
+			// console.log('you are up to date');
 			$('#serverIcon').attr("src",Settings.ICON_DOT_GREEN);
 		}
 

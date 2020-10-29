@@ -360,6 +360,16 @@ class Data
 		return [];
 	}
 
+	static tagsOrderUpdate(tags)
+	{
+		if (tags === undefined) return;
+
+		this.dataFile.tagTypes = this.patchFile.tagTypes = tags;
+
+		this.saveData();
+		this.savePatch();
+	}
+
 	static set tagsList(value)
 	{
 		this.dataFile.tagTypes = value;

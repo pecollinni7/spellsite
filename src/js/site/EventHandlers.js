@@ -65,17 +65,35 @@ class EventHandlers
 		});
 		
 		$(document).on('newFilesArrived', () => {
-			this.site.contentPages.activePage.holdSelection();
+			if (this.site.contentPages.activePage)
+				this.site.contentPages.activePage.holdSelection();
+
 			this.site.generatePagesAndPagination();
-			this.site.contentPages.activePage.restoreSelection();
+			// this.site.tags.update();
+			this.site.tags.generateTagsFromData();
+
+
+			if (this.site.contentPages.activePage)
+				this.site.contentPages.activePage.restoreSelection();
+
 			this.site.updateDataFileVersionLabel();
 		});
 
 		$(document).on('newDataArrived', () => {
-			this.site.contentPages.activePage.holdSelection();
-			this.site.generatePagesAndPagination();
-			this.site.contentPages.activePage.restoreSelection();
-			this.site.tags.displayTagsByName(this.site.contentPages.activePage.getSelectedItemsTags());
+			// if (this.site.contentPages.activePage)
+			// 	this.site.contentPages.activePage.holdSelection();
+
+			// this.site.generatePagesAndPagination();
+			// this.site.tags.generateTagsFromData();
+			// this.site.tags.sortGridByDataListOrder();
+
+
+			// if (this.site.contentPages.activePage)
+			// 	this.site.contentPages.activePage.restoreSelection();
+
+			// if (this.site.contentPages.activePage !== undefined)
+			// 	this.site.tags.displayTagsByName(this.site.contentPages.activePage.getSelectedItemsTags());
+
 			this.site.updateDataFileVersionLabel();
 		});
 

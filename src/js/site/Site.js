@@ -65,13 +65,13 @@ class Site
 		//try get some settings first
 		this._contentPages  = new ContentPages();
 		this._pagination    = new Pagination();
-		this._tags          = new Tags();
+		this._tags          = new Tags(this);
 		this._server        = new Server(this);
 		this._fileDrop      = new FileDrop(this.server);
 		this._eventHandlers = new EventHandlers(this);
 		this._tagOverlay    = new TagOverlay();
 
-		Data.removeInvalidMediaFiles();
+		// Data.removeInvalidMediaFiles();
 
 		this.updateDataFileVersionLabel();
 
@@ -109,16 +109,22 @@ class Site
 	{
 		if (e.button === 2)
 		{
-			console.log('right click over item');
-			return;
+			// console.log(this.contentPages.activePage.getItemByName($(item).attr('data-filename')).isSelected);
+			// return;
+			// if (this.contentPages.activePage.getItemByName($(item).attr('data-filename')).isSelected === false)
+			// {
+			// 	this.contentPages.activePage.clearSelection();
+			// }
 		}
 
-		if (!this.eventHandlers.ctrlKey)
+		if (!this.eventHandlers.ctrlKey /*&& e.button === 0*/)
 		{
 			this.contentPages.activePage.clearSelection();
 		}
 
-		this.contentPages.activePage.getItemByName($(item).attr('data-filename')).toggleSelection();
+		this.contentPages.activePage.getItemByName($(item).attr('data-filename')).selectIt();
+		$(item).addClass('selected');
+
 		this.tags.displayTagsByName(this.contentPages.activePage.getSelectedItemsTags());
 
 		if (this.contentPages.filterMode && this.contentPages.isSelectionEmpty())
@@ -182,7 +188,7 @@ class Site
 	{
 		this.pagination.setActiveButton(pageNum);
 		this.tags.clearSelection();
-		this.contentPages.deployPage(pageNum.innerText);
+		this.contentPages.deployPage(pageNum);
 	}
 
 	showChoseDirectory()
@@ -261,11 +267,13 @@ class Site
 		{
 			contextmenu = $('#tagcontextmenu');
 			this.tags.currentTagName = $(e.target).text();
+			$( "#tagcontextmenu" ).children().first().text('Delete tag ' + this.tags.currentTagName);
 		}
 
 
 		contextmenu.css({top: mouseY, left: mouseX, position: 'fixed'});
 		contextmenu.addClass('show');
+
 
 		contextmenu.on('mouseleave', () => {
 			contextmenu.removeClass('show');

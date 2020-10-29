@@ -58,16 +58,18 @@
     <div class="progress fade " id="progressBar">
         <div class="progress-bar progress-bar-gray text" id="downloadProgressBar" role="progressbar" aria-valuenow="80"
              aria-valuemin="0" aria-valuemax="100" style="width:80%">
-
         </div>
         <span id="progressBarText">Downloading 4/21</span>
+
     </div>
-
-
 
     <div class="drag-region"></div>
 
-    <a class="text-small" id="version-dataFile" data-toggle="tooltip" data-placement="bottom" title="Data version">d56</a>
+
+
+    <a class="text-small" id="version-dataFile" data-toggle="tooltip" data-placement="bottom" title="Data version">
+        d000
+    </a>
     <a class="text-small" id="version-software" data-toggle="tooltip" data-placement="bottom" title="Software version">v1.0.1</a>
     <img class="icon" id="serverIcon" data-toggle="tooltip" data-placement="bottom" title="Server online" src="../images/dot_red.png">
 
@@ -108,8 +110,17 @@
 
 <div class="dropdown-menu" id="mainmenu">
     <a class="dropdown-item" href="#">Set Media Folder</a>
-    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item " href="#">
+        Set page size
+<!--        <input class="form-control-sm" type="number" value="50" min="0" max="500" step="10"/>-->
+<!--        <input id="spinner" name="value">-->
+    </a>
+<!--    <a>-->
+<!--        <label for="spinner">Select a value:</label>-->
+<!--        <input id="spinner" name="value">-->
+<!--    </a>-->
     <a class="dropdown-item" href="#">Something else here</a>
+    <a class="dropdown-item" href="#" onmousedown="site.tags.sortGridByDataListOrder()">Test func</a>
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="#">Separated link</a>
 </div>
@@ -117,10 +128,6 @@
 <div class="dropdown-menu" id="tagcontextmenu">
     <a class="dropdown-item" onmousedown="site.deleteTag()" href="#">Delete tag</a>
     <a class="dropdown-item" href="#">Action 2</a>
-    <a class="dropdown-item" href="#">Action 3</a>
-    <a class="dropdown-item" href="#">Action 4</a>
-    <a class="dropdown-item" href="#">Action 5</a>
-    <a class="dropdown-item" href="#">Action 6</a>
 </div>
 
 <div class="dropdown-menu" id="itemcontextmenu">
@@ -180,14 +187,14 @@
 
 <div class="notificationOverlay">
     <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <strong>Notification test!</strong> Welcome stranger.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 
     <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <strong>Auto dismissible notification!</strong> blablabla release notes here...
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -218,6 +225,34 @@
 
 <div class="footer" id="footer"></div>
 
+
+
+<!--<script src="../lib/bootstrap-input-spinner.js"></script>-->
+<!--<script>-->
+<!--    var config = {-->
+<!--        decrementButton: "<strong>&minus;</strong>", // button text-->
+<!--        incrementButton: "<strong>&plus;</strong>", // ..-->
+<!--        groupClass: "", // css class of the resulting input-group-->
+<!--        // buttonsClass: "btn-outline-secondary",-->
+<!--        buttonsClass: "btn btn-outline-secondary btn-sm  p-1",-->
+<!--        buttonsWidth: "2.5rem",-->
+<!--        textAlign: "center", // alignment of the entered number-->
+<!--        autoDelay: 500, // ms threshold before auto value change-->
+<!--        autoInterval: 50, // speed of auto value change-->
+<!--        buttonsOnly: false, // set this `true` to disable the possibility to enter or paste the number via keyboard-->
+<!--        locale: navigator.language, // the locale, per default detected automatically from the browser-->
+<!--        template: // the template of the input-->
+<!--            '<div class="input-group ${groupClass}">' +-->
+<!--            '<div class="input-group-prepend"><button style="min-width: ${buttonsWidth}" class="btn btn-decrement ${buttonsClass} btn-minus" type="button">${decrementButton}</button></div>' +-->
+<!--            '<input type="text" inputmode="decimal" style="text-align: ${textAlign}" class="form-control form-control-text-input"/>' +-->
+<!--            '<div class="input-group-append"><button style="min-width: ${buttonsWidth}" class="btn btn-increment ${buttonsClass} btn-plus" type="button">${incrementButton}</button></div>' +-->
+<!--            '</div>'-->
+<!--    }-->
+
+<!--    // $("input[type='number']").inputSpinner();-->
+<!--    $("input[type='number']").inputSpinner(config);-->
+
+<!--</script>-->
 
 <script src="../js/appDownloaderService.js"></script>
 <script src="../js/titlebar.js"></script>

@@ -86,7 +86,12 @@
 }
 
 .muuri-item:hover {
-	background: #9fc0cc;
+	/*background: #9fc0cc;*/
+	background: #e3e3e3;
+	/*border: 2px solid #e5e5e5;*/
+	/*height: 25px;*/
+	/*line-height: 25px;*/
+
 
 }
 

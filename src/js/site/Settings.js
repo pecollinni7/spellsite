@@ -45,12 +45,15 @@ function setSettings(value)
 		media  : slash(path.join(value, 'media')),
 		temp   : slash(path.join(value, 'temp'))
 	});
+
 }
 
 
 
 function createDefaults()
 {
+	settings.set('pageSize', 40);
+
 	const storagePath = settings.get('path.storage');
 
 	if (!fs.existsSync(storagePath + '/json/'))
@@ -58,6 +61,9 @@ function createDefaults()
 
 	if (!fs.existsSync(storagePath + '/media/'))
 		fs.mkdirSync(storagePath + '/media/');
+
+	if (!fs.existsSync(storagePath + '/temp/'))
+		fs.mkdirSync(storagePath + '/temp/');
 
 	if (!fs.existsSync(storagePath + '/json/patch.json'))
 		fs.writeFileSync(storagePath + '/json/patch.json', JSON.stringify({}));

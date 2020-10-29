@@ -97,11 +97,16 @@ class Item
 	{
 		if (value)
 		{
-			$(this.itemSelector).addClass('selected');
+
+			// this.itemSelector.addClass('selected');
+			this.itemSelector.classList.add('selected');
+			// $(this.itemSelector).addClass('selected');
 		}
 		else
 		{
-			(this.itemSelector).removeClass('selected');
+			// this.itemSelector.classList.remove('selected');
+			this.itemSelector.removeClass('selected');
+			// $(this.itemSelector).removeClass('selected');
 		}
 	}
 

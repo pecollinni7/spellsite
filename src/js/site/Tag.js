@@ -56,20 +56,22 @@ class Tag
 	{
 		if (this.activeAsFilter)
 		{
-			this.tagSelector.classList.add('item-content-filter-active');
+			// this.tagSelector.classList.add('item-content-filter-active');
+			$(this.tagSelector).addClass('item-content-filter-active');
 		}
 		else
 		{
-			this.tagSelector.classList.remove('item-content-filter-active');
+			// this.tagSelector.classList.remove('item-content-filter-active');
+			$(this.tagSelector).removeClass('item-content-filter-active');
 		}
 		
 		if (this.active)
 		{
-			this.tagSelector.classList.add('item-content-active');
+			$(this.tagSelector).addClass('item-content-active');
 		}
 		else
 		{
-			this.tagSelector.classList.remove('item-content-active');
+			$(this.tagSelector).removeClass('item-content-active');
 		}
 	}
 	

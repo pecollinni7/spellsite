@@ -18,3 +18,21 @@
 
 .dropdown-menu.show {
 }
+
+
+
+.dropdown-item.label {
+	color: #aeaeae;
+}
+
+.dropdown-item.label:hover {
+	background-color: #2b2b2b;
+
+}
+
+
+input,
+select,
+textarea {
+	max-width: 50px;
+}
