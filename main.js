@@ -71,14 +71,17 @@ function createWindow() {
         webPreferences: {
             preload: path.join(__dirname, './src/js/preload.js'),
             nodeIntegration: true,
-            webSecurity: false
+            webSecurity: false,
+            enableRemoteModule: true
         },
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#ffffff',
         frame: false
     });
 
+
+
     window.loadFile('./src/html/index.html').then(r => {});
-    // window.webContents.openDevTools();
+    window.webContents.openDevTools();
     window.on('closed', function () {
         window = null;
     });

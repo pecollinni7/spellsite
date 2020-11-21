@@ -7,7 +7,11 @@
     <script>window.$ = window.jQuery = require('jquery');</script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="../fonts/OpenSans-Light.ttf">
+
+
+<!--    TODO: find another way to load this font. it gives you a warning like this-->
+<!--    <link rel="stylesheet" href="../fonts/OpenSans-Light.ttf">-->
+
 
     <script src="../lib/bootstrap.min.js"></script>
     <script src="../lib/jquery-ui.js"></script>
@@ -46,7 +50,7 @@
 
 
 <div class="titlebar" id="titlebar">
-    <a class="icon" onmousedown="navigation.setDropdownPos();">&#xE700;</a>
+    <a class="icon" onmousedown="setDropdownPos();">&#xE700;</a>
     <a class="icon" onmousedown="site.reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
     <a class="icon" onmousedown="site.addTagButton();" data-toggle="tooltip" data-placement="bottom" title="Add new Tag">&#xE948;</a>
 
@@ -74,8 +78,8 @@
     <img class="icon" id="serverIcon" data-toggle="tooltip" data-placement="bottom" title="Server online" src="../images/dot_red.png">
 
 
-    <a class="text" onmousedown="site.contentPages.activePage.clearSelection(); site.tags.clearSelection();">Deselect</a>
-    <a class="icon navButton" onclick="navigation.toggleNavigation(this)" data-toggle="tooltip"
+    <a class="text" onmousedown="site.clearSelection();">Deselect</a>
+    <a class="icon navButton" onclick="toggleNavigation(this)" data-toggle="tooltip"
        data-placement="bottom" title="Toggle Navigation">&#xE70E;</a>
 
     <div class="window-controls" id="window-controls">
@@ -109,7 +113,7 @@
 </div>
 
 <div class="dropdown-menu" id="mainmenu">
-    <a class="dropdown-item" href="#">Set Media Folder</a>
+    <a class="dropdown-item" href="#" onmousedown="choseMediaDirectory()">Set Storage Folder</a>
     <a class="dropdown-item " href="#">
         Set page size
 <!--        <input class="form-control-sm" type="number" value="50" min="0" max="500" step="10"/>-->
@@ -119,7 +123,7 @@
 <!--        <label for="spinner">Select a value:</label>-->
 <!--        <input id="spinner" name="value">-->
 <!--    </a>-->
-    <a class="dropdown-item" href="#">Something else here</a>
+    <a class="dropdown-item" href="#" onmousedown="settings.clearSettings()">Clear Settings</a>
     <a class="dropdown-item" href="#" onmousedown="site.tags.sortGridByDataListOrder()">Test func</a>
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="#">Separated link</a>
@@ -150,7 +154,8 @@
     <div class="text-center" style="margin-top: 20px">
         <button type="button"
                 class="btn btn-primary btn-lg btn-light"
-                onclick="site.choseMediaDirectory()">Select</button>
+                onclick="choseMediaDirectory()">Select</button>
+<!--                onclick="site.choseMediaDirectory()">Select</button>-->
     </div>
 
 
@@ -161,6 +166,7 @@
 
     <label class="text-center  h5" for="addTagInputName">Please specify the name for the new tag:</label>
 
+    <!--    TODO: add regex for letter matching     -->
     <input type="text" class="addTagInputName" id="addTagInputName" name="name"
            placeholder="TagName..." autofocus required minlength="1"
            onkeyup="site.tagOverlay.handleKeyPress()">
@@ -211,7 +217,7 @@
             $('#myAlert').alert('close');
             // $('#progressBar').toggleClass('show');
 
-        }, 3000);
+        }, 1000);
 
     $('#myAlert').on('closed.bs.alert', function () {
         // do something…
@@ -254,12 +260,28 @@
 
 <!--</script>-->
 
-<script src="../js/appDownloaderService.js"></script>
+<!--<script src="../js/appDownloaderService.js"></script>-->
 <script src="../js/titlebar.js"></script>
+<!--<script src="../js/backend/App.js"></script>-->
 <script src="../js/Start.js"></script>
 
 <!--<script src="../js/GUI.js"></script>-->
-<!--<script src="../js/navigation.js"></script>-->
+<script src="../js/navigation.js"></script>
 <script src="../js/renderer.js"></script>
+
+<script>
+    function setDropdownPos()
+    {
+        const dropdown = $('#mainmenu');
+        dropdown.css({top: 30, left: 0, position: 'fixed'});
+        dropdown.toggleClass('show');
+
+        dropdown.on('mouseleave mousedown', () => {
+            dropdown.removeClass('show');
+        });
+
+
+    }
+</script>
 </body>
 </html>

@@ -46,7 +46,7 @@ class Tags
 		return res;
 	}
 	
-	
+
 	constructor(site)
 	{
 		this._site        = site;
@@ -321,7 +321,7 @@ class Tags
 	}
 
 
-
+	//
 	addTagToGrid(tagName)
 	{
 		this.addTag(tagName);

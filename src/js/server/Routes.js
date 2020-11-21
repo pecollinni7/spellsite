@@ -24,6 +24,8 @@ const getData = () => needle.request(
 		{
 			console.error('Offline'); //no connection
 			$('#serverIcon').attr("src",Settings.ICON_DOT_RED);
+			$('#serverIcon').attr("data-original-title","Server offline");
+
 			return;
 		}
 
