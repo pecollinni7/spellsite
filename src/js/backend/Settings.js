@@ -99,11 +99,30 @@ function fileExists(fileName)
     return fs.existsSync(this.getMediaPathForFileName(fileName));
 }
 
+function numOfMediaFiles()
+{
+    return fs.readdirSync(module.exports.path_mediaFolder).length;
+}
+
 function clearSettings()
 {
     settings.set('path', undefined);
     settings.set('app', undefined);
 }
+
+const IP_LOCAL              = "http://127.0.0.1";
+const IP_PUBLIC             = "http://144.91.87.68";
+const SRV_IP                = IP_PUBLIC;
+const SRV_PORT              = "12345";
+const SRV_GET_FILE          = "";
+const SRV_SET_DATA_FILE     = SRV_IP + ":" + SRV_PORT + "/setDataFile";
+const SRV_CHECK_FOR_UPDATES = SRV_IP + ":" + SRV_PORT + "/checkForUpdates";
+const SRV_DOWNLOAD_MEDIA    = SRV_IP + ":" + SRV_PORT + "/downloadFile/";
+const SRV_UPLOAD_FILE       = SRV_IP + ":" + SRV_PORT + "/uploadFile";
+const SRV_UPLOAD_MULTIPLE   = SRV_IP + ":" + SRV_PORT + "/uploadMultipleFiles";
+
+const ICON_DOT_GREEN    = '../images/dot_green.png';
+const ICON_DOT_RED      = '../images/dot_red.png';
 
 
 
@@ -114,6 +133,7 @@ module.exports = {
     fileExists,
     clearSettings,
     listAllSettings,
+    numOfMediaFiles,
 
     get path_storage() {return settings.get('path.storage')},
     get path_dataFile() {return settings.get('path.data')}, //TODO: catch error - return default file
@@ -123,6 +143,18 @@ module.exports = {
     get app_pageSize() {return settings.get('app.pageSize')},
     get app_tagsOrder() {return settings.get('app.tagsOrder')},
     get app_saveSelectionOnPageSwitch() {return settings.get('app.saveSelectionOnPageSwitch')},
+
+    IP_LOCAL,
+    IP_PUBLIC,
+    SRV_IP,
+    SRV_PORT,
+    SRV_GET_FILE,
+    SRV_SET_DATA_FILE,
+    SRV_CHECK_FOR_UPDATES,
+    SRV_DOWNLOAD_MEDIA,
+
+    ICON_DOT_GREEN,
+    ICON_DOT_RED,
 
 
 }

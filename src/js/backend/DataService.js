@@ -28,6 +28,17 @@ class DataService
     static get filterModeTags() { return this._filterModeTags; }
     static set filterModeTags(value) { this._filterModeTags = value; }
 
+    static get version()
+    {
+        if (this.dataFile.hasOwnProperty('version'))
+        {
+            return this.dataFile['version'];
+        }
+
+        console.log(this.dataFile['version']);
+        return 0;
+    }
+
     static get dataFile()
     {
         if (this._dataFile === undefined) this._dataFile = StorageService.readFile(Settings.path_dataFile);
@@ -52,6 +63,17 @@ class DataService
         this._patchFile = value;
     }
 
+    static get tagsList()
+    {
+        if (this.dataFile.hasOwnProperty('tagTypes'))
+        {
+            return this.dataFile.tagTypes;
+        }
+
+        console.error('No tagTypes in the dataFile!');
+        return [];
+    }
+
     static clearPatch()
     {
         this.patchFile = {};
@@ -66,6 +88,11 @@ class DataService
     static savePatch()
     {
         StorageService.writeFile(this.patchFile, Settings.path_patchFile);
+    }
+
+    static reloadData()
+    {
+        this._dataFile = StorageService.readFile(Settings.path_dataFile);
     }
 
     static addToCurrentlyDownloading(fileName)
@@ -202,17 +229,6 @@ class DataService
         return res;
     }
 
-    static get tagsList()
-    {
-        if (this.dataFile.hasOwnProperty('tagTypes'))
-        {
-            return this.dataFile.tagTypes;
-        }
-
-        console.error('No tagTypes in the dataFile!');
-        return [];
-    }
-
     static getTagsForFileName(fileName)
     {
         if (this.dataFile.hasOwnProperty(fileName))
@@ -277,17 +293,49 @@ class DataService
         })
     }
 
-    // when new file arrives
-    // pagination should be calculated based on the page items content
-    generatePagination() {};
+    static getAllFileNamesNoExistCheck()
+    {
+        let res = [];
+        for (const fileName in this.dataFile)
+        {
+            if (this.dataFile.hasOwnProperty(fileName))
+            {
+                if (fileName !== 'version' && fileName !== 'tagTypes')
+                {
+                    res.push(fileName);
+                }
+            }
+        }
 
-    updatePagination() {}; // easy. just generate the numbers based on the num of data
+        return res;
+    }
 
-    generateTags() {};
 
-    updateTags() {};
 
-    updateTagsLayout() {};
+    //---------------------------------
+
+
+    static whatChangedInData(site)
+    {
+        if (this.getNames().length !== Settings.numOfMediaFiles())
+        {
+            $(document).trigger(DataServiceEvents.CONTENT_UPDATE);
+        }
+
+        if (this.areArraysMatch(site.tagsController.tagsNameList, this.getFileTags()) === false)
+        {
+            $(document).trigger(DataServiceEvents.TAGS_UPDATE);
+        }
+
+
+
+
+    }
+
+    static areArraysMatch(arr1, arr2)
+    {
+        return arr1.sort().toString() === arr2.sort().toString();
+    }
 
 }
 

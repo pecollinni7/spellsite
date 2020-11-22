@@ -1,4 +1,10 @@
+
+
+
 module.exports = {
-    ITEMS_CHANGED: 'itemsChanged',
-    ITEMS_DATA_UPDATE: 'itemsDataUpdate'
+
+    NEW_DATA_FILE    : 'newDataFile',
+    ITEMS_DATA_UPDATE: 'itemsDataUpdate',
+    CONTENT_UPDATE   : 'itemsChanged',
+    TAGS_UPDATE      : 'tagsUpdate',
 }

@@ -2,7 +2,8 @@ const ContentController = require('./ContentController');
 const TagsController    = require('./TagsController');
 const EventHandlers     = require('./EventHandlers');
 const DataService       = require('./DataService');
-const Overlay           = require('./Overlay')
+const Overlay           = require('./Overlay');
+const Server            = require('./Server');
 const remote            = require('electron').remote;
 
 class Site
@@ -12,11 +13,14 @@ class Site
     _tagsController;
     _eventHandlers;
     _overlay;
+    _server;
 
     get contentController() {return this._contentController;}
     set contentController(value) {this._contentController = value;}
     get paginationController() {return this._paginationController;}
     set paginationController(value) {this._paginationController = value;}
+    get server() { return this._server; }
+    set server(value) { this._server = value; }
     get eventHandlers() { return this._eventHandlers; }
     set eventHandlers(value) { this._eventHandlers = value; }
     get tagsController() { return this._tagsController; }
@@ -27,18 +31,18 @@ class Site
     constructor()
     {
         this.contentController = new ContentController();
-        // this.paginationController = new PaginationController();
         this.tagsController    = new TagsController();
         this.eventHandlers     = new EventHandlers(this);
+        this.server            = new Server(this);
     }
 
     initialize()
     {
         this.contentController.generate();
-        // this.paginationController.generate(this.contentController.numOfPages);
         this.tagsController.generate();
+        this.server.polling.run();
 
-        // this.setActivePage(0);
+        this.updateDataFileVersionLabel();
     }
 
     handleItemClick(item, e)
@@ -94,7 +98,7 @@ class Site
         else
         {
             this.tagsController.toggleTag(tagName);
-            // this.server.actionPerformed();
+            this.server.actionPerformed();
         }
     }
 
@@ -153,15 +157,13 @@ class Site
 
         if ($(e.target).hasClass('item-content'))
         {
-            contextmenu = $('#tagcontextmenu');
+            contextmenu          = $('#tagcontextmenu');
             const currentTagName = $(e.target).text();
-            $( "#tagcontextmenu" ).children().first().text('Delete tag ' + currentTagName);
+            $("#tagcontextmenu").children().first().text('Delete tag ' + currentTagName);
         }
-
 
         contextmenu.css({top: mouseY, left: mouseX, position: 'fixed'});
         contextmenu.addClass('show');
-
 
         contextmenu.on('mouseleave', () => {
             contextmenu.removeClass('show');
@@ -175,6 +177,10 @@ class Site
         });
     }
 
+    updateDataFileVersionLabel()
+    {
+        document.getElementById("version-dataFile").innerText = 'd' + DataService.version;
+    }
 }
 
 module.exports = Site;

@@ -1,157 +1,164 @@
-const DataService = require('./DataService');
+const DataService       = require('./DataService');
+const DataServiceEvents = require('./DataServiceEvents');
 
 class EventHandlers
 {
-	_site;
-	_ctrlKey;
-	
-	get site() { return this._site; }
-	get ctrlKey() { return this._ctrlKey; }
-	set ctrlKey(value) { this._ctrlKey = value; }
-	
-	
-	constructor(site)
-	{
-		this._site   = site;
-		this.ctrlKey = false;
+    _site;
+    _ctrlKey;
 
+    get site() { return this._site; }
+    get ctrlKey() { return this._ctrlKey; }
+    set ctrlKey(value) { this._ctrlKey = value; }
 
-		
-		$('#navigation').on('hide.bs.collapse', () => {
-			$('#content').css('margin-top', 0);
-		});
-		
-		$('#navigation').on('show.bs.collapse', () => {
-			$('#content').css('margin-top', $('#navigation').height() + 30 );
-		});
+    constructor(site)
+    {
+        this._site   = site;
+        this.ctrlKey = false;
 
-		$('#navigation').on('shown.bs.collapse', () => {
-			// grid1.layout();
-			this.site.tagsController.mainGrid.layout();
-		});
-		
-		$(window).on('resize', () => {
-			clearTimeout(window.resizedFinished);
-			window.resizedFinished = setTimeout(() => {
-				if ($('#navigation').hasClass('inactive') === false) {
-					this.site.tagsController.mainGrid.layout();
-				}
-			}, 200);
-		});
+        $('#navigation').on('hide.bs.collapse', () => {
+            $('#content').css('margin-top', 0);
+        });
 
-		
-		$('#tags').on('tagClick', function (e, tagElement, tagName) {
-			site.handleTagClick(tagElement.innerText);
-		});
-		
-		$(document).on('keydown', e => {
+        $('#navigation').on('show.bs.collapse', () => {
+            $('#content').css('margin-top', $('#navigation').height() + 30);
+        });
 
-			this.ctrlKey = e.ctrlKey;
+        $('#navigation').on('shown.bs.collapse', () => {
+            // grid1.layout();
+            this.site.tagsController.mainGrid.layout();
+        });
 
-			switch (e.keyCode)
-			{
-				case 37: this.site.callPreviousPage(); break;	//left
-				case 39: this.site.callNextPage(); break;		//right
-				case 27: this.site.clearSelection(); break;		//escape
-			}
-		});
-		
-		$(document).on('keyup', e => {
-			this.ctrlKey = e.ctrlKey;
-		});
-		
-		$(document).on('newFilesArrived', () => {
-			if (this.site.contentPages.activePage)
-				this.site.contentPages.activePage.holdSelection();
+        $(window).on('resize', () => {
+            clearTimeout(window.resizedFinished);
+            window.resizedFinished = setTimeout(() => {
+                if ($('#navigation').hasClass('inactive') === false)
+                {
+                    this.site.tagsController.mainGrid.layout();
+                }
+            }, 200);
+        });
 
-			this.site.generatePagesAndPagination();
-			// this.site.tags.update();
-			this.site.tags.generateTagsFromData();
+        $('#tags').on('tagClick', function (e, tagElement, tagName) {
+            site.handleTagClick(tagElement.innerText);
+        });
 
+        $(document).on('keydown', e => {
 
-			if (this.site.contentPages.activePage)
-				this.site.contentPages.activePage.restoreSelection();
+            this.ctrlKey = e.ctrlKey;
 
-			this.site.updateDataFileVersionLabel();
-		});
+            switch (e.keyCode)
+            {
+                case 37:
+                    this.site.callPreviousPage();
+                    break;	//left
+                case 39:
+                    this.site.callNextPage();
+                    break;		//right
+                case 27:
+                    this.site.clearSelection();
+                    break;		//escape
+            }
+        });
 
-		$(document).on('newDataArrived', () => {
-			// if (this.site.contentPages.activePage)
-			// 	this.site.contentPages.activePage.holdSelection();
+        $(document).on('keyup', e => {
+            this.ctrlKey = e.ctrlKey;
+        });
 
-			// this.site.generatePagesAndPagination();
-			// this.site.tags.generateTagsFromData();
-			// this.site.tags.sortGridByDataListOrder();
+        $(document).on('newFilesArrived', () => {
+            // if (this.site.contentPages.activePage) this.site.contentPages.activePage.holdSelection();
+            //
+            // this.site.generatePagesAndPagination();
+            // this.site.tags.generateTagsFromData();
+            //
+            // if (this.site.contentPages.activePage) this.site.contentPages.activePage.restoreSelection();
+            //
+            // this.site.updateDataFileVersionLabel();
 
+            console.log('new files arrived');
+        });
 
-			// if (this.site.contentPages.activePage)
-			// 	this.site.contentPages.activePage.restoreSelection();
+        $(document).on(DataServiceEvents.NEW_DATA_FILE, () => {
 
-			// if (this.site.contentPages.activePage !== undefined)
-			// 	this.site.tags.displayTagsByName(this.site.contentPages.activePage.getSelectedItemsTags());
+            // DataService.whatChangedInData(this.site);
 
-			this.site.updateDataFileVersionLabel();
-		});
+            /*
+            NEW TAG LIST:
+            figure out the difference between old and new tag list
+            remove some tags if you need to
+            and add the new ones
+            update the tags selection for the selected items
+            respect the filter mode
+             */
 
-		// jQuery(function () {
-		$(document).on('mousedown', e => {
-			const element = $(e.target);
+            /*
+            CONTENT CHANGE:
+            add/remove some items
+            naaaaaah
+            regenerate the pages completely
+            no escape from it i think
+            maybe remove the fade in
+            just show it on page switch
+            oh yeah, also regenerate the pagination duh
+             */
 
-			if (element.hasClass('navigation') 	||
-				element.hasClass('pagination') 	||
-				element.hasClass('content') 		||
-				element.hasClass('html') 		||
-				element.hasClass('tags'))
-			{
-				this.site.clearSelection();
-			}
-		});
-
-		// $('#tags').contextmenu(function() {
-		// 	alert( "Handler for .contextmenu() called." );
-		// });
+            /*
+            ITEMS DATA UPDATE:
+            just update the tags active selection
+            from the currently selected items
+             */
+            this.site.tagsController.displaySelectedItemsActiveTags();
 
 
 
+            // if (this.site.contentPages.activePage)
+            // 	this.site.contentPages.activePage.holdSelection();
 
-			let clicked = false,
-			clickY,
-			clickYStart;
-		$(document).on({
-			// 'mousemove': function (e) {
-			// 	clicked && updateScrollPos(e);
-			// },
-			'mousedown': (e) => {
-				if (e.which === 3)
-				{
-					clicked     = true;
-					clickY      = e.pageY;
-					clickYStart = e.clientY;
-				}
-			},
-			'mouseup': (e) => {
-				clicked = false;
-				$('html').css('cursor', 'auto');
-				if (clickYStart === e.clientY)
-				{
-					// console.log('end = ' + e.clientY);
-					site.openContextMenu(e, e.clientX - 5, e.clientY - 5);
-				}
-			}
-		});
+            // this.site.contentController.generate();
+            // this.site.tagsController.generate();
+            // this.site.tags.sortGridByDataListOrder();
 
-		// window.addEventListener("contextmenu", e => {
-		// 	console.log(e);
-		// 	e.preventDefault();
-		// });
-		
-		
-		
-		
-		
-	}
-	
-	
+            // if (this.site.contentPages.activePage)
+            // 	this.site.contentPages.activePage.restoreSelection();
+
+            // if (this.site.contentPages.activePage !== undefined)
+            // 	this.site.tags.displayTagsByName(this.site.contentPages.activePage.getSelectedItemsTags());
+
+            this.site.updateDataFileVersionLabel();
+
+            console.log('new data arrived');
+        });
+
+        $(document).on('mousedown', e => {
+            const element = $(e.target);
+
+            if (element.hasClass('navigation') || element.hasClass('pagination') || element.hasClass('content') || element.hasClass('html') || element.hasClass(
+                'tags'))
+            {
+                this.site.clearSelection();
+            }
+        });
+
+        let clicked = false, clickY, clickYStart;
+        $(document).on({
+            'mousedown' : (e) => {
+                if (e.which === 3)
+                {
+                    clicked     = true;
+                    clickY      = e.pageY;
+                    clickYStart = e.clientY;
+                }
+            }, 'mouseup': (e) => {
+                clicked = false;
+                $('html').css('cursor', 'auto');
+                if (clickYStart === e.clientY)
+                {
+                    site.openContextMenu(e, e.clientX - 5, e.clientY - 5);
+                }
+            }
+        });
+
+    }
+
 }
 
 module.exports = EventHandlers;

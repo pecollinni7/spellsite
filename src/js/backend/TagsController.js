@@ -7,7 +7,6 @@ class TagsController
 
     _muuriGrid;
     _tags;
-    // _site;
 
     //TODO: eventHandlers needs this. move it somewhere else.
     get mainGrid() { return this.muuriGrid.grid; }
@@ -16,8 +15,17 @@ class TagsController
     set muuriGrid(value) { this._muuriGrid = value; }
     get tags() { return this._tags; }
     set tags(value) { this._tags = value; }
-    // get site() { return this._site; }
-    // set site(value) { this._site = value; }
+
+    get tagsNameList()
+    {
+        let res = [];
+
+        this.tags.forEach(tag => {
+            res.push(tag.name);
+        });
+
+        return res;
+    }
 
     get hasActiveTags()
     {
