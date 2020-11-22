@@ -59,11 +59,11 @@ function createDefaultFolders()
 function createDefaultFiles()
 {
     if (fs.existsSync(module.exports.path_dataFile) === false)
-        fs.copyFileSync('../../json/defaultData.json', module.exports.path_dataFile);
+        fs.copyFileSync('../json/defaultData.json', module.exports.path_dataFile);
         // fs.copyFileSync('src/json/defaultData.json', module.exports.path_dataFile);
 
     if (fs.existsSync(module.exports.path_patchFile) === false)
-        fs.copyFileSync('../../json/defaultPatch.json', module.exports.path_patchFile);
+        fs.copyFileSync('../json/defaultPatch.json', module.exports.path_patchFile);
 }
 
 function createDirectory(dirPath)
