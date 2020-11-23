@@ -22,8 +22,6 @@ app.on('ready', () => {
     //     console.log('registration failed');
     // }
 
-
-
     // createLoaderWindow();
     createWindow();
 
