@@ -147,13 +147,12 @@ function createWindow()
     autoUpdater.on('update-downloaded', (info) => {
         browserLog('Software update downloaded.');
 
-        const releaseNotes = info.releaseNotes;
+        // const releaseNotes = info.releaseNotes;
+        //
+        // browserLog(info.releaseNotes.toString());
+        // browserLog(JSON.stringify(info.releaseNotes));
 
-        browserLog(releaseNotes.toString());
-        browserLog(JSON.stringify(releaseNotes));
-
-        fs.appendFileSync('src/resources/release-notes.md', JSON.stringify(releaseNotes) + '\n',{encoding: 'utf8'});
-
+        fs.appendFileSync('src/resources/release-notes.md', JSON.stringify(info.releaseNotes) + '\n',{encoding: 'utf8'});
 
         sendStatusToWindow('Update downloaded');
     });
