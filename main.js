@@ -154,6 +154,8 @@ function createWindow()
         }
 
         sendStatusToWindow('Update downloaded');
+
+
     });
 
     /*
