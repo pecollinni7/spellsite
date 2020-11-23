@@ -31,6 +31,8 @@ app.on('ready', () => {
         autoUpdater.checkForUpdatesAndNotify().then();
     }, 30 * 60000);
 
+    browserLog(fs.readFileSync('src/resources/release-notes.md'));
+
 });
 /*
  app.on('window-all-closed', function () {
