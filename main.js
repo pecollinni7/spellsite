@@ -31,7 +31,7 @@ app.on('ready', () => {
         autoUpdater.checkForUpdatesAndNotify().then();
     }, 30 * 60000);
 
-    browserLog(fs.readFileSync('src/resources/release-notes.md'));
+    browserLog(fs.readFileSync(path.resolve(__dirname, 'src/resources/release-notes.md')));
 
 });
 /*
@@ -152,7 +152,7 @@ function createWindow()
         // browserLog(info.releaseNotes.toString());
         // browserLog(JSON.stringify(info.releaseNotes));
 
-        fs.appendFileSync('src/resources/release-notes.md', JSON.stringify(info.releaseNotes) + '\n',{encoding: 'utf8'});
+        fs.appendFileSync(path.resolve(__dirname, 'src/resources/release-notes.md'), JSON.stringify(info.releaseNotes) + '\n',{encoding: 'utf8'});
 
         sendStatusToWindow('Update downloaded');
     });
