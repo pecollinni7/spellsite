@@ -2,10 +2,10 @@ const {app, ipcMain, BrowserWindow, globalShortcut} = require('electron');
 const {autoUpdater}                                 = require('electron-updater');
 const path                                          = require('path');
 const log                                           = require('electron-log');
-
+const fs                                            = require('fs');
 let loaderWindow;
 let window;
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS']   = 'true';
 
 autoUpdater.logger                       = log;
 autoUpdater.logger.transports.file.level = 'info';
@@ -142,7 +142,6 @@ function createWindow()
         sendStatusToWindow(log_message);
     });
 
-
     autoUpdater.on('update-downloaded', (info) => {
         browserLog('Software update downloaded.');
 
@@ -150,6 +149,9 @@ function createWindow()
 
         browserLog(releaseNotes.toString());
         browserLog(JSON.stringify(releaseNotes));
+
+        fs.appendFileSync('src/resources/release-notes.md', JSON.stringify(releaseNotes) + '\n',{encoding: 'utf8'});
+
 
         sendStatusToWindow('Update downloaded');
     });
