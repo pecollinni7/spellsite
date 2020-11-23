@@ -142,20 +142,16 @@ function createWindow()
     })
     autoUpdater.on('update-downloaded', (info) => {
         browserLog('Software update downloaded.');
-        browserLog(info);
 
-        for (const key in info) {
-            browserLog(`${key}: ${info[key]}`);
-        }
+        const releaseNotes = info.releaseNotes;
 
-        for (const k in info)
+        for (const key in info.releaseNotes)
         {
-            browserLog(info[k]);
+            browserLog(key);
+            browserLog(info.releaseNotes[key]);
         }
 
         sendStatusToWindow('Update downloaded');
-
-
     });
 
     /*
