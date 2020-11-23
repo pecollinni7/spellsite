@@ -9,7 +9,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 autoUpdater.logger                       = log;
 autoUpdater.logger.transports.file.level = 'info';
-autoUpdater.fullChangelog = true;
+autoUpdater.fullChangelog                = true;
 
 log.info('App starting...');
 
@@ -109,11 +109,12 @@ function createWindow()
 
     window.loadFile('./src/html/index.html').then(r => {});
     window.webContents.openDevTools();
+
     window.on('closed', function () {
         window = null;
     });
+
     window.show();
-    // window.hide();
 
     // Let autoUpdater check for updates, it will start downloading it automatically
     autoUpdater.on('checking-for-update', () => {
@@ -139,7 +140,9 @@ function createWindow()
         log_message     = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
         browserLog(log_message);
         sendStatusToWindow(log_message);
-    })
+    });
+
+
     autoUpdater.on('update-downloaded', (info) => {
         browserLog('Software update downloaded.');
 
@@ -147,7 +150,6 @@ function createWindow()
 
         browserLog(releaseNotes.toString());
         browserLog(JSON.stringify(releaseNotes));
-
 
         sendStatusToWindow('Update downloaded');
     });
