@@ -1,6 +1,3 @@
-
-
-
 function displayTextWidth(text, font)
 {
     const myCanvas = displayTextWidth.canvas || (displayTextWidth.canvas = document.createElement("canvas"));
@@ -20,7 +17,7 @@ function getCorrespondingWidthClass(width)
 
 function removeDuplicatesFromArray(arr)
 {
-    let s = new Set(arr);
+    let s  = new Set(arr);
     let it = s.values();
     return Array.from(it);
 }
