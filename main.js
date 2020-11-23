@@ -145,11 +145,9 @@ function createWindow()
 
         const releaseNotes = info.releaseNotes;
 
-        for (const key in info.releaseNotes)
-        {
-            browserLog(key);
-            browserLog(info.releaseNotes[key]);
-        }
+        browserLog(releaseNotes.toString());
+        browserLog(JSON.stringify(releaseNotes));
+
 
         sendStatusToWindow('Update downloaded');
     });
