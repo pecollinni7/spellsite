@@ -4,9 +4,18 @@ class Data
     static _filterMode           = false;
     static _filterModeTags       = [];
     static _currentPageItemNames = [];
-    static _selectedItemNames    = [];
-    static _tagNameList          = [];
+    static _selectedItemNames = [];
+    static _tagNameList       = [];
+    static _currentTagName;
 
+    static get currentTagName()
+    {
+        return this._currentTagName;
+    }
+    static set currentTagName(value)
+    {
+        this._currentTagName = value;
+    }
     static get filterMode()                 { return this._filterMode;              }
     static get selectedItemNames()          { return this._selectedItemNames;       }
     static get currentPageIndex()           { return this._currentPageIndex;        }

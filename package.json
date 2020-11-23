@@ -4,7 +4,7 @@
   "description": "Electron SpellSite application",
   "main": "main.js",
   "build": {
-    "appId": "com.example.app",
+    "appId": "com.github.pecollinni7/spellsite",
     "publish": [
       {
         "provider": "github",
@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "electron": "^8.5.2",
-    "electron-builder": "^22.9.1"
+    "electron-builder": "^22.9.1",
+    "electron-log": "^4.3.0"
   }
 }

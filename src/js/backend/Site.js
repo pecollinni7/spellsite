@@ -19,6 +19,8 @@ class Site
 
     _overlayManager;
 
+    get data() {return Data;}
+
     get om() {return this.overlayManager};
     get om_newTag() {return this.overlayManager.getOverlay(OverlayManager.NEW_TAG_OVERLAY);}
     get om_settings() {return this.overlayManager.getOverlay(OverlayManager.SETTINGS_OVERLAY);}
@@ -179,8 +181,8 @@ class Site
         if ($(e.target).hasClass('item-content'))
         {
             contextmenu          = $('#tagcontextmenu');
-            const currentTagName = $(e.target).text();
-            $("#tagcontextmenu").children().first().text('Delete tag ' + currentTagName);
+            Data.currentTagName = $(e.target).text();
+            $("#tagcontextmenu").children().first().text('Delete tag ' + Data.currentTagName);
         }
 
         contextmenu.css({top: mouseY, left: mouseX, position: 'fixed'});

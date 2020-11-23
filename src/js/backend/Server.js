@@ -3,17 +3,11 @@ const polling = require('./Polling').polling;
 
 class Server
 {
-    _site;
-
-    get site() { return this._site; }
     get polling() { return polling; }
 
-    constructor(site)
-    {
-        this._site = site;
-    }
+    constructor() { }
 
-    actionPerformed()
+    static actionPerformed()
     {
         polling.stop();
         Routes.setData(function () {

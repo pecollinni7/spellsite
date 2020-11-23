@@ -4,8 +4,6 @@ console.log('app updater running');
 
 ipcRenderer.on('update-downloaded', function (event, text) {
     console.log('Software update downloaded.');
-    // var container = document.getElementById('rdy-button');
-    // container.removeAttribute('disabled');
 });
 ipcRenderer.on('update-available', function (event, text) {
     console.log('Software update available.')

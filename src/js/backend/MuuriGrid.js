@@ -60,9 +60,11 @@ class MuuriGrid
 
     removeItemsFromGrid(tagNames)
     {
-        const gridItems = (this.grid.getItems());
+        tagNames = [].concat(tagNames);
 
-        for (let i = gridItems.length - 1; i >= 0; i++)
+        const gridItems = this.grid.getItems();
+
+        for (let i = gridItems.length - 1; i >= 0; i--)
         {
             const currentTagText = gridItems[i]._child.innerText;
 
@@ -70,7 +72,7 @@ class MuuriGrid
             {
                 if (currentTagText === tagNames[j])
                 {
-                    this.grid.remove(i, {removeElements: true});
+                    this.grid.remove(gridItems[i], {removeElements: true});
                 }
             }
         }

@@ -2,6 +2,7 @@ const DataService = require('./DataService');
 const Data        = require('./Data');
 const TagObject   = require('./TagObject');
 const MuuriGrid   = require('./MuuriGrid');
+const Server      = require('./Server');
 
 class TagsController
 {
@@ -76,7 +77,7 @@ class TagsController
 
         /*
 
-        TODO: you will need to make this to work with filter mode as well. maybe regenerate the pages idk...
+         TODO: you will need to make this to work with filter mode as well. maybe regenerate the pages idk...
 
          */
 
@@ -160,9 +161,11 @@ class TagsController
     }
 
     removeTag(tagName)
+
     {
         this.removeTagsFromGrid(tagName);
         DataService.removeTag(tagName);
+        Server.actionPerformed();
     }
 
     addTagsToGrid(tagNames)

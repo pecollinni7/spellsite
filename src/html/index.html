@@ -130,7 +130,7 @@
 </div>
 
 <div class="dropdown-menu" id="tagcontextmenu">
-    <a class="dropdown-item" onmousedown="site.tagsController.removeTag()" href="#">Delete tag</a>
+    <a class="dropdown-item" onmousedown="site.tagsController.removeTag(site.data.currentTagName)" href="#">Delete tag</a>
     <a class="dropdown-item" href="#">Action 2</a>
 </div>
 
@@ -260,7 +260,7 @@
 
 <!--</script>-->
 
-<script src="../js/appDownloaderService.js"></script>
+<!--<script src="../js/appDownloaderService.js"></script>-->
 <script src="../js/titlebar.js"></script>
 <!--<script src="../js/backend/App.js"></script>-->
 <script src="../js/Start.js"></script>

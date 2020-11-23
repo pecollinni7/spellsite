@@ -2,11 +2,15 @@ const {app, ipcMain, BrowserWindow, globalShortcut} = require('electron');
 const {autoUpdater} = require('electron-updater');
 const path = require('path');
 const settings = require('electron-settings');
-
+const log = require('electron-log');
 
 let loaderWindow;
 let window;
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
 
 app.on('ready', () => {
     
@@ -22,6 +26,9 @@ app.on('ready', () => {
 
     // createLoaderWindow();
     createWindow();
+
+    log.info('checking for updates');
+    autoUpdater.checkForUpdatesAndNotify();
     
 });
 // app.on('window-all-closed', function () {
@@ -37,6 +44,7 @@ app.on('will-quit', () => {
     // Unregister all shortcuts.
     globalShortcut.unregisterAll()
 });
+
 
 
 function createLoaderWindow()
@@ -78,7 +86,10 @@ function createWindow() {
         frame: false
     });
 
-
+    function sendStatusToWindow(text) {
+        log.info(text);
+        window.webContents.send('message', text);
+    }
 
     window.loadFile('./src/html/index.html').then(r => {});
     window.webContents.openDevTools();
@@ -89,33 +100,29 @@ function createWindow() {
     // window.webContents.openDevTools();
 
     // Let autoUpdater check for updates, it will start downloading it automatically
-    // autoUpdater.checkForUpdates().then(r => {
-    // });
-    //
-    // // Catch the update-available event
-    // autoUpdater.addListener('update-available', (info) => {
-    //     window.webContents.send('update-available');
-    // });
-    //
-    // // Catch the update-not-available event
-    // autoUpdater.addListener('update-not-available', (info) => {
-    //     window.webContents.send('update-not-available');
-    // });
-    //
-    // // Catch the download-progress events
-    // autoUpdater.addListener('download-progress', (info) => {
-    //     window.webContents.send('prog-made');
-    // });
-    //
-    // // Catch the update-downloaded event
-    // autoUpdater.addListener('update-downloaded', (info) => {
-    //     window.webContents.send('update-downloaded');
-    // });
-    //
-    // // Catch the error events
-    // autoUpdater.addListener('error', (error) => {
-    //     window.webContents.send('error', error.toString());
-    // });
+    autoUpdater.on('checking-for-update', () => {
+        sendStatusToWindow('Checking for update...');
+    })
+    autoUpdater.on('update-available', (info) => {
+        sendStatusToWindow('Update available.');
+    })
+    autoUpdater.on('update-not-available', (info) => {
+        sendStatusToWindow('Update not available.');
+    })
+    autoUpdater.on('error', (err) => {
+        sendStatusToWindow('Error in auto-updater. ' + err);
+    })
+    autoUpdater.on('download-progress', (progressObj) => {
+        let log_message = "Download speed: " + progressObj.bytesPerSecond;
+        log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+        log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+        sendStatusToWindow(log_message);
+    })
+    autoUpdater.on('update-downloaded', (info) => {
+        sendStatusToWindow('Update downloaded');
+    });
+
+
     //
     // ipcMain.on('quitAndInstall', (event, arg) => {
     //     autoUpdater.quitAndInstall();
