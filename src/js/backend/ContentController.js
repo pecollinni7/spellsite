@@ -3,7 +3,6 @@ const Item                 = require('./Item');
 const DataService          = require('./DataService');
 const Data                 = require('./Data');
 const Settings             = require('./Settings');
-const NotifyServer         = require('./Server').actionPerformed;
 
 class ContentController
 {
@@ -51,7 +50,7 @@ class ContentController
         if (this.regenerateItems() === true)
         {
             this.generatePages();
-            this.deployPage(Data.currentPageIndex);
+            this.deployPage(Data.currentPageIndex, false);
         }
     }
 
@@ -104,6 +103,8 @@ class ContentController
         }
 
         this.fileNames = newFileNames;
+
+        return true;
     }
 
     generateItems()
@@ -151,6 +152,13 @@ class ContentController
 
     removeItems(itemNames = [])
     {
+        itemNames.forEach(itemName => {
+            const index = Data.selectedItemNames.indexOf(itemName);
+
+            if (index > -1)
+                Data.selectedItemNames.splice(index, 1);
+        });
+
         for (let i = this.items.length - 1; i >= 0; i--)
         {
             for (let j = 0; j < itemNames.length; j++)
@@ -167,11 +175,10 @@ class ContentController
     {
         const selectedItemNames = this.getSelectedItemNames();
         this.removeItems(selectedItemNames);
-        DataService.removeItems(selectedItemNames);
-        NotifyServer();
-
         this.generatePages();
         this.deployPage(Data.currentPageIndex, false);
+
+        DataService.removeItems(selectedItemNames);
     }
 
     deployPage(pageNum, transition = true)
@@ -310,12 +317,28 @@ class ContentController
         // Data.selectedItemNames.forEach(itemName => {
         //     this.getItemByName(itemName).select(false);
         // });
+        /*
 
-        const selectedItems = this.items.filter(item => item.isSelected === true);
+         const selectedItems = this.items.filter(item => item.isSelected === true);
+         console.log('selected items in this.items: ' + selectedItems);
 
-        selectedItems.forEach(item => {
-            item.select(false);
-        })
+         for (let i = selectedItems.length-1; i >= 0; i--)
+         {
+         selectedItems[i].select(false);
+         }
+         */
+
+        for (let i = 0; i < this.items.length; i++)
+        {
+            for (let j = Data.selectedItemNames.length - 1; j >= 0; j--)
+            {
+                if (this.items[i].name === Data.selectedItemNames[j])
+                {
+                    this.items[i].select(false);
+                }
+            }
+        }
+
     }
 
     getItemByName(itemName)

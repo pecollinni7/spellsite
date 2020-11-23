@@ -30,7 +30,7 @@ const getData = () => needle.request('get',
 
         if (response.statusCode === 200)
         {
-            console.log('new data arrived');
+            // console.log('new data arrived');
             $('#serverIcon').attr("src", Settings.ICON_DOT_GREEN);
 
             fs.writeFile(

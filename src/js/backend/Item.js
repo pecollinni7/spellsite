@@ -24,24 +24,14 @@ class Item
     }
 
     get name() {return this._name;}
-
     set name(value) {this._name = value;}
-
     get src() {return this._src;}
-
     set src(value) { this._src = value; }
-
     get isSelected() { return this._isSelected; }
-
     set isSelected(value) { this._isSelected = value; }
-
     set ext(value) { this._ext = value; }
-
     get ext() { return this._ext; }
-
     set html(value) { this._html = value; }
-
-    // get html() { return this._html; }
     get html() { return this.generateHtml(this.ext); }
 
     get itemSelector()
@@ -108,26 +98,13 @@ class Item
         if (this.isSelected === true)
         {
             if (Data.selectedItemNames.includes(this) === false)
-            {
                 Data.selectedItemNames.push(this.name);
-            }
         }
         else
         {
-            // for (let i = DataService.selectedItems.length - 1; i >= 0; i--)
-            // {
-            //     if (DataService.selectedItems[i].name === this.name)
-            //     {
-            //         DataService.selectedItems.splice(i, 1);
-            //     }
-            // }
-            //
-
             const selectedItemIndex = Data.selectedItemNames.indexOf(this.name);
             if (selectedItemIndex > -1)
-            {
                 Data.selectedItemNames.splice(selectedItemIndex, 1);
-            }
         }
 
         this.deploySelection(this.isSelected);

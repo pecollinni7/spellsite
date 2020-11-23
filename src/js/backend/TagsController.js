@@ -165,7 +165,6 @@ class TagsController
     {
         this.removeTagsFromGrid(tagName);
         DataService.removeTag(tagName);
-        Server.actionPerformed();
     }
 
     addTagsToGrid(tagNames)

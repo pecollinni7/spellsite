@@ -5,11 +5,13 @@ class Server
 {
     get polling() { return polling; }
 
-    constructor() { }
-
+    constructor()
+    {
+        $(document).on('notifyServer', this.actionPerformed);
+    }
 
     //rename to notifyServer
-    static actionPerformed()
+    actionPerformed()
     {
         polling.stop();
         Routes.setData(function () {

@@ -22,6 +22,8 @@ class Site
     get data() {return Data;}
 
     get om() {return this.overlayManager};
+
+    //TODO: move this to separate file
     get om_newTag() {return this.overlayManager.getOverlay(OverlayManager.NEW_TAG_OVERLAY);}
     get om_settings() {return this.overlayManager.getOverlay(OverlayManager.SETTINGS_OVERLAY);}
     get om_dropZone() {return this.overlayManager.getOverlay(OverlayManager.DROP_ZONE_OVERLAY);}
@@ -59,7 +61,6 @@ class Site
         this.server.polling.run();
 
         this.updateDataFileVersionLabel();
-
     }
 
     handleItemClick(item, e)
@@ -100,9 +101,6 @@ class Site
         }
     }
 
-    test() {
-        console.log('testetste');
-    }
     handleTagClick(tagName)
     {
         if (Data.isSelectionEmpty)

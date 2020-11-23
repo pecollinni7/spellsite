@@ -1,6 +1,8 @@
 const OverlayBase = require('./OverlayBase');
 const DataService = require("./DataService");
 
+
+
 module.exports = class NewTagOverlay extends OverlayBase
 {
     get inputText() { return $('#addTagInputName').val(); }
@@ -51,7 +53,7 @@ module.exports = class NewTagOverlay extends OverlayBase
 
             this.hide();
 
-            this.site.server.actionPerformed();
+            // this.site.server.actionPerformed();
         }
     }
 

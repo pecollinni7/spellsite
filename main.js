@@ -1,7 +1,6 @@
 const {app, ipcMain, BrowserWindow, globalShortcut} = require('electron');
 const {autoUpdater}                                 = require('electron-updater');
 const path                                          = require('path');
-const settings                                      = require('electron-settings');
 const log                                           = require('electron-log');
 
 let loaderWindow;
@@ -10,6 +9,9 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 autoUpdater.logger                       = log;
 autoUpdater.logger.transports.file.level = 'info';
+autoUpdater.fullChangelog = true;
+
+
 log.info('App starting...');
 
 app.on('ready', () => {
@@ -25,19 +27,21 @@ app.on('ready', () => {
     // createLoaderWindow();
     createWindow();
 
-    log.info('checking for updates');
-    autoUpdater.checkForUpdatesAndNotify();
-    // logEverywhere('test');
+    autoUpdater.checkForUpdatesAndNotify().then();
+
+    setInterval(() => {
+        autoUpdater.checkForUpdatesAndNotify().then();
+    }, 30 * 60000);
 
 });
 /*
-app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit()
-});
-app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-});
-*/
+ app.on('window-all-closed', function () {
+ if (process.platform !== 'darwin') app.quit()
+ });
+ app.on('activate', function () {
+ if (BrowserWindow.getAllWindows().length === 0) createWindow()
+ });
+ */
 app.on('will-quit', () => {
     // Unregister a shortcut.
     globalShortcut.unregister('CommandOrControl+Q');
@@ -46,32 +50,27 @@ app.on('will-quit', () => {
     globalShortcut.unregisterAll()
 });
 
-function logEverywhere(s)
+function browserLog(s)
 {
-    if (true === true)
+    if (window && window.webContents)
     {
-        console.log(s);
-        // mainWindow is main browser window of your app
-        if (window && window.webContents)
-        {
-            window.webContents.executeJavaScript(`console.log("${s}")`).then();
-        }
+        window.webContents.executeJavaScript(`console.log("${s}")`).then();
     }
 }
 
 function createLoaderWindow()
 {
     loaderWindow = new BrowserWindow({
-        width          : 540,
-        height         : 540,
-        show           : true,
-        webPreferences : {
+        width         : 540,
+        height        : 540,
+        show          : true,
+        webPreferences: {
             nodeIntegration: true,
             webSecurity    : false
         },
         // backgroundColor: '#00000000',
-        frame: false,
-        transparent: true,
+        frame         : false,
+        transparent   : true,
     });
 
     loaderWindow.loadFile('./src/html/loader.html').then(r => {
@@ -79,8 +78,6 @@ function createLoaderWindow()
 
     });
     // loaderWindow.webContents.openDevTools();
-
-
 
     loaderWindow.on('closed', function () {
         // loaderWindow = null;
@@ -122,33 +119,43 @@ function createWindow()
 
     // Let autoUpdater check for updates, it will start downloading it automatically
     autoUpdater.on('checking-for-update', () => {
+        browserLog('Checking for software update...');
         sendStatusToWindow('Checking for update...');
-        logEverywhere('Checking for update...');
     })
     autoUpdater.on('update-available', (info) => {
+        browserLog('Software update available.');
         sendStatusToWindow('Update available.');
+
     })
     autoUpdater.on('update-not-available', (info) => {
+        browserLog('Software update not available.');
         sendStatusToWindow('Update not available.');
     })
     autoUpdater.on('error', (err) => {
+        browserLog('Error in auto-updater.');
         sendStatusToWindow('Error in auto-updater. ' + err);
     })
     autoUpdater.on('download-progress', (progressObj) => {
         let log_message = "Download speed: " + progressObj.bytesPerSecond;
         log_message     = log_message + ' - Downloaded ' + progressObj.percent + '%';
         log_message     = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+        browserLog(log_message);
         sendStatusToWindow(log_message);
     })
-    autoUpdater.on('update-downloaded', (info) => {
+    autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateURL) => {
+        browserLog('Software update downloaded.');
+        browserLog(event);
+        browserLog(releaseNotes);
+        browserLog(releaseName);
+        browserLog(releaseDate);
+        browserLog(updateURL);
         sendStatusToWindow('Update downloaded');
     });
 
-
     /*
-    ipcMain.on('quitAndInstall', (event, arg) => {
-        autoUpdater.quitAndInstall();
-    });
-    */
+     ipcMain.on('quitAndInstall', (event, arg) => {
+     autoUpdater.quitAndInstall();
+     });
+     */
 
 }

@@ -79,6 +79,8 @@ class EventHandlers
 
         $(document).on(DataServiceEvents.NEW_DATA_FILE, () => {
 
+            console.log('new data arrived');
+
             this.site.updateDataFileVersionLabel();
 
 
@@ -130,7 +132,6 @@ class EventHandlers
             // 	this.site.tags.displayTagsByName(this.site.contentPages.activePage.getSelectedItemsTags());
 
 
-            console.log('new data arrived');
         });
 
         $(document).on('mousedown', e => {

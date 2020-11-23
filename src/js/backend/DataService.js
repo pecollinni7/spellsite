@@ -263,6 +263,9 @@ class DataService
 
         this.saveData();
         this.savePatch();
+
+        $(document).trigger('notifyServer');
+
     }
 
     static removeTag(tagName)
@@ -288,6 +291,8 @@ class DataService
         this.saveData();
         this.savePatch();
 
+        $(document).trigger('notifyServer');
+
     }
 
     static removeItems(itemNames)
@@ -307,6 +312,7 @@ class DataService
         this.saveData();
         this.savePatch();
 
+        $(document).trigger('notifyServer');
     }
 
     static removeTagPatch(tagName)
