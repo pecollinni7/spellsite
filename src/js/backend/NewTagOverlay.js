@@ -6,16 +6,22 @@ module.exports = class NewTagOverlay extends OverlayBase
     get inputText() { return $('#addTagInputName').val(); }
 
 
-    constructor(site)
+    constructor(overlayManager)
     {
-        super(site);
+        super(overlayManager);
         super.selector = $('#addTag');
     }
 
     show()
     {
+        this.overlayContainerDiv.addClass('show');
+        this.overlayContainerDiv.css('visibility', 'visible');
+
         this.selector.addClass('show');
         this.selector.css('visibility', 'visible');
+
+        $('#navigation').removeClass('faded');
+
     }
 
     hide()
@@ -30,6 +36,10 @@ module.exports = class NewTagOverlay extends OverlayBase
         });
 
         this.selector.removeClass('show');
+        this.overlayContainerDiv.removeClass('show');
+        this.overlayContainerDiv.css('visibility', 'hidden');
+
+
     }
 
     confirm()

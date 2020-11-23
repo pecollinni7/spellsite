@@ -86,8 +86,11 @@ class Site
 
     handleItemDoubleClick(item)
     {
-        this.overlay = new Overlay($(item).attr('data-filename'));
-        this.overlay.showOverlay().then();
+        this.overlayManager.showOverlay(OverlayManager.ITEM_VIEW_OVERLAY, $(item).attr('data-filename'));
+
+
+        // this.overlay = new Overlay($(item).attr('data-filename'));
+        // this.overlay.showOverlay().then();
 
         //workaround for ctrl + toggle double click on the item. it can deselect the item prior to overlay view
         const itemObj = this.contentController.getItemByName($(item).attr('data-filename'));
@@ -97,6 +100,9 @@ class Site
         }
     }
 
+    test() {
+        console.log('testetste');
+    }
     handleTagClick(tagName)
     {
         if (Data.isSelectionEmpty)

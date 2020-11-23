@@ -43,20 +43,20 @@ module.exports = class OverlayManager
         this.site = site;
 
         this.overlays = {
-            'newTagOverlay'  : new NewTagOverlay(this.site),
-            'itemViewOverlay': new ItemViewOverlay(this.site),
-            'dropZoneOverlay': new DropZoneOverlay(this.site),
-            'settingsOverlay': new SettingsOverlay(this.site),
+            'newTagOverlay'  : new NewTagOverlay(this),
+            'itemViewOverlay': new ItemViewOverlay(this),
+            'dropZoneOverlay': new DropZoneOverlay(this),
+            'settingsOverlay': new SettingsOverlay(this),
         }
     }
 
-    showOverlay(overlayType)
+    showOverlay(overlayType, param1=null)
     {
         if (this.activeOverlay)
             this.activeOverlay.hide();
 
         this.activeOverlay = this.getOverlay(overlayType);
-        this.activeOverlay.show();
+        this.activeOverlay.show(param1);
     }
 
     hideOverlay()

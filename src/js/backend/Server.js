@@ -7,6 +7,8 @@ class Server
 
     constructor() { }
 
+
+    //rename to notifyServer
     static actionPerformed()
     {
         polling.stop();

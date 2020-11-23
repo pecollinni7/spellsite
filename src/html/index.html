@@ -181,20 +181,15 @@
 <!--    </h6>-->
 
     <div>
-
-        <button type="button"
-                class="btn btn-secondary  btn-light"
-                onclick="site.om.hideOverlay();">
-            Cancel
-        </button>
-
-        <button type="button"
-                class="btn btn-secondary  btn-light"
-                onclick="site.om_newTag.confirm();">
-            Confirm
-        </button>
+        <button type="button" class="btn btn-secondary  btn-light" onclick="site.om.hideOverlay();">Cancel</button>
+        <button type="button" class="btn btn-secondary  btn-light" onclick="site.om_newTag.confirm();">Confirm</button>
     </div>
 </div>
+
+
+
+
+
 
 <div class="notificationOverlay">
     <div class="alert alert-secondary alert-dismissible fade show" role="alert">
@@ -213,8 +208,6 @@
 </div>
 
 <script>
-
-
     setTimeout(
         function()
         {
@@ -230,7 +223,11 @@
     })
 </script>
 
-<div class="overlay" id="overlay" onclick="site.om.hideOverlay()" ></div>
+
+
+
+
+<div class="overlay" id="overlay" onclick="site.overlayManager.hideOverlay();" ></div>
 
 <div class="content" id="content"></div>
 

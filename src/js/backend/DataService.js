@@ -12,7 +12,6 @@ class DataService
     static _patchFile;
     static _currentlyDownloading = [];
 
-
     static get version()
     {
         if (this.dataFile.hasOwnProperty('version'))
@@ -275,7 +274,7 @@ class DataService
             return;
         }
 
-        for (let i = tags.length-1; i >= 0; i--)
+        for (let i = tags.length - 1; i >= 0; i--)
         {
             if (tags[i] === tagName)
             {
@@ -288,6 +287,7 @@ class DataService
 
         this.saveData();
         this.savePatch();
+
     }
 
     static removeItems(itemNames)
@@ -304,9 +304,9 @@ class DataService
             }
         }
 
-
         this.saveData();
         this.savePatch();
+
     }
 
     static removeTagPatch(tagName)

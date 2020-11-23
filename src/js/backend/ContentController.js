@@ -3,6 +3,7 @@ const Item                 = require('./Item');
 const DataService          = require('./DataService');
 const Data                 = require('./Data');
 const Settings             = require('./Settings');
+const NotifyServer         = require('./Server').actionPerformed;
 
 class ContentController
 {
@@ -167,12 +168,13 @@ class ContentController
         const selectedItemNames = this.getSelectedItemNames();
         this.removeItems(selectedItemNames);
         DataService.removeItems(selectedItemNames);
+        NotifyServer();
 
         this.generatePages();
         this.deployPage(Data.currentPageIndex, false);
     }
 
-    deployPage(pageNum, transition=true)
+    deployPage(pageNum, transition = true)
     {
         if (pageNum === undefined)
         {
@@ -190,7 +192,7 @@ class ContentController
         this.paginationController.setActivePage(num);
     }
 
-    generateHtml(pageNum, transition=true)
+    generateHtml(pageNum, transition = true)
     {
         const contentSelector = $('#content');
 

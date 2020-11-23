@@ -22,20 +22,22 @@ app.on('ready', () => {
     //     console.log('registration failed');
     // }
 
-    createLoaderWindow();
-    // createWindow();
+    // createLoaderWindow();
+    createWindow();
 
     log.info('checking for updates');
     autoUpdater.checkForUpdatesAndNotify();
-    logEverywhere('test');
+    // logEverywhere('test');
 
 });
-// app.on('window-all-closed', function () {
-//     if (process.platform !== 'darwin') app.quit()
-// });
-// app.on('activate', function () {
-//     if (BrowserWindow.getAllWindows().length === 0) createWindow()
-// });
+/*
+app.on('window-all-closed', function () {
+    if (process.platform !== 'darwin') app.quit()
+});
+app.on('activate', function () {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+});
+*/
 app.on('will-quit', () => {
     // Unregister a shortcut.
     globalShortcut.unregister('CommandOrControl+Q');
@@ -60,24 +62,32 @@ function logEverywhere(s)
 function createLoaderWindow()
 {
     loaderWindow = new BrowserWindow({
-        width          : 300,
-        height         : 400,
+        width          : 540,
+        height         : 540,
         show           : true,
         webPreferences : {
             nodeIntegration: true,
             webSecurity    : false
         },
-        backgroundColor: '#FFFFFF',
-        // frame: false
+        // backgroundColor: '#00000000',
+        frame: false,
+        transparent: true,
     });
 
-    loaderWindow.loadFile('./src/html/loader.html').then(r => {});
+    loaderWindow.loadFile('./src/html/loader.html').then(r => {
+        createWindow();
+
+    });
     // loaderWindow.webContents.openDevTools();
+
+
 
     loaderWindow.on('closed', function () {
         // loaderWindow = null;
-        createWindow();
+        // createWindow();
+        window.show();
     });
+
 }
 
 function createWindow()
@@ -85,7 +95,7 @@ function createWindow()
     window = new BrowserWindow({
         width          : 1600,
         height         : 1200,
-        show           : true,
+        show           : false,
         webPreferences : {
             preload           : path.join(__dirname, './src/js/preload.js'),
             nodeIntegration   : true,
@@ -108,7 +118,7 @@ function createWindow()
         window = null;
     });
     window.show();
-    // window.webContents.openDevTools();
+    // window.hide();
 
     // Let autoUpdater check for updates, it will start downloading it automatically
     autoUpdater.on('checking-for-update', () => {
@@ -134,9 +144,11 @@ function createWindow()
         sendStatusToWindow('Update downloaded');
     });
 
-    //
-    // ipcMain.on('quitAndInstall', (event, arg) => {
-    //     autoUpdater.quitAndInstall();
-    // });
+
+    /*
+    ipcMain.on('quitAndInstall', (event, arg) => {
+        autoUpdater.quitAndInstall();
+    });
+    */
 
 }

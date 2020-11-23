@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Loader</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/loaderWindow.css"/>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+
+
 </head>
 <body>
 
+<div class="container" id="loaderContainer">
+
+<!--    <img src="../images/placeholder.png"/>-->
+    <img src="../images/logo3.gif"/>
+<!--    <video src="../images/output.webm" autoplay muted ></video>-->
+
+
+</div>
 
 
 <script>
@@ -20,9 +33,15 @@
 	// 	console.log(path);
 	// }
 
+
     setTimeout(()=>{
-    	// require('electron').remote.getCurrentWindow().close();
-	}, 1000);
+        $('#loaderContainer').fadeOut('fast',  () => {
+            require('electron').remote.getCurrentWindow().close();
+        });
+    }, 3000);
+
+
+
 
 
 </script>
