@@ -1,4 +1,5 @@
 const Path        = require('path');
+const Data        = require('./Data');
 const DataService = require('./DataService');
 const settings    = require('./Settings');
 
@@ -40,7 +41,8 @@ class Item
 
     set html(value) { this._html = value; }
 
-    get html() { return this._html; }
+    // get html() { return this._html; }
+    get html() { return this.generateHtml(this.ext); }
 
     get itemSelector()
     {
@@ -54,14 +56,7 @@ class Item
             }
         }
     }
-    //
-    // get tags() { return Data.getTagsForFileName(this.name) }
-    //
-    // set tags(value)
-    // {
-    //     this._tags = value;
-    //     Data.setTagsForFileName(this.name, this._tags);
-    // }
+
     get tags() { return DataService.getActiveTagsForFileName(this.name) }
 
     set tags(value)
@@ -72,24 +67,20 @@ class Item
 
     getActiveTags()
     {
-        const res  = [];
-        const tags = this.tags;
+        // const res  = [];
+        // const tags = this.tags;
+        //
+        // for (const tag in tags)
+        // {
+        //     if (tags[tag] === 1)
+        //     {
+        //         res.push(tag);
+        //     }
+        // }
+        //
+        // return res;
 
-        for (const tag in tags)
-        {
-            if (tags[tag] === 1)
-            {
-                res.push(tag);
-            }
-        }
-
-        return res;
-    }
-
-    updateTag(tagName, tagValue)
-    {
-        // Data.updateTag(this.name, tagName, tagValue);
-        this.tags = Data.getTagsForFileName(this.name);
+        return DataService.getActiveTagsForFileName(this.name);
     }
 
     deploySelection(value)
@@ -114,12 +105,11 @@ class Item
     {
         this.isSelected = bool;
 
-        //Managing the DataService.selectedItems here...
         if (this.isSelected === true)
         {
-            if (DataService.selectedItems.includes(this) === false)
+            if (Data.selectedItemNames.includes(this) === false)
             {
-                DataService.selectedItems.push(this);
+                Data.selectedItemNames.push(this.name);
             }
         }
         else
@@ -132,19 +122,14 @@ class Item
             //     }
             // }
             //
-            const selectedItemIndex = DataService.selectedItems.indexOf(this);
+
+            const selectedItemIndex = Data.selectedItemNames.indexOf(this.name);
             if (selectedItemIndex > -1)
             {
-                DataService.selectedItems.splice(selectedItemIndex, 1);
+                Data.selectedItemNames.splice(selectedItemIndex, 1);
             }
         }
 
-        this.deploySelection(this.isSelected);
-    }
-
-    selectIt()
-    {
-        this.isSelected = true;
         this.deploySelection(this.isSelected);
     }
 
@@ -164,11 +149,11 @@ class Item
             case ".jpg":
             case ".png":
                 res = "<img " + //TODO: add isSelected in the class list
-                    "class='image " + (this.isSelected ? "selected" : "") + "' src='" + this.src + "'" + " onmousedown='site.handleItemClick(this, event)' " + " oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " + " ondblclick='site.handleItemDoubleClick(this)' " + "data-fileName='" + this.name + "'" + ">";
+                    "class='image " + this.htmlSelectedOrNot() + "' src='" + this.src + "'" + " onmousedown='site.handleItemClick(this, event)' " + " oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " + " ondblclick='site.handleItemDoubleClick(this)' " + "data-fileName='" + this.name + "'" + ">";
                 return res;
 
             case ".mp4":
-                res = "<video class='videoInsert " + (this.isSelected ? "selected" : "") + " ' " + "onmousedown='site.handleItemClick(this, event)' " + "ondblclick='site.handleItemDoubleClick(this)' " + "oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " + "data-fileName='" + this.name + "' " + "autoplay loop muted>" + "<source src=" + this.src + " type='video/mp4'>" + "</video>";
+                res = "<video class='videoInsert " + this.htmlSelectedOrNot() + " ' " + "onmousedown='site.handleItemClick(this, event)' " + "ondblclick='site.handleItemDoubleClick(this)' " + "oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " + "data-fileName='" + this.name + "' " + "autoplay loop muted>" + "<source src=" + this.src + " type='video/mp4'>" + "</video>";
 
                 // console.log(res);
                 return res;
@@ -177,6 +162,18 @@ class Item
             //TODO: return html block for unsupported fileType
             default:
                 return res;
+        }
+    }
+
+    htmlSelectedOrNot()
+    {
+        if (this.isSelected === true)
+        {
+            return 'selected';
+        }
+        else
+        {
+            return '';
         }
     }
 }

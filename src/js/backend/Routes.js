@@ -26,7 +26,7 @@ const getData = () => needle.request('get',
             return;
         }
 
-        console.log('response statusCode = ' + response.statusCode);
+        // console.log('response statusCode = ' + response.statusCode);
 
         if (response.statusCode === 200)
         {

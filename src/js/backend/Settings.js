@@ -25,8 +25,6 @@ function setAll(baseStorageFolderPath)
     createDefaultFiles();
 
     listAllSettings();
-
-    console.log(slash(path.join(process.cwd(), 'src/json/defaultData.json')));
 }
 
 function setDefaultPaths(baseFolderPath)
@@ -44,7 +42,7 @@ function setDefaultPaths(baseFolderPath)
         tagsOrder: [],
         saveSelectionOnPageSwitch: true,
         enableLogger: false,
-        pageTransitionDuration: 150
+        transitionDuration: 150
     })
 }
 
@@ -66,6 +64,8 @@ function createDefaultFiles()
     // if (fs.existsSync(module.exports.path_patchFile) === false)
     //     fs.copyFileSync(slash(path.join(process.cwd(), 'src/json/defaultPatch.json')), module.exports.path_patchFile);
 
+
+    //TODO error escape the paths
     if (fs.existsSync(module.exports.path_patchFile) === false)
         fs.writeFileSync(module.exports.path_patchFile, JSON.stringify({}));
 
@@ -159,6 +159,8 @@ module.exports = {
     get app_pageSize() {return settings.get('app.pageSize')},
     get app_tagsOrder() {return settings.get('app.tagsOrder')},
     get app_saveSelectionOnPageSwitch() {return settings.get('app.saveSelectionOnPageSwitch')},
+    get app_enableLogger() {return settings.get('app.enableLogger')},
+    get app_transitionDuration() {return settings.get('app.transitionDuration')},
 
     IP_LOCAL,
     IP_PUBLIC,
@@ -168,6 +170,8 @@ module.exports = {
     SRV_SET_DATA_FILE,
     SRV_CHECK_FOR_UPDATES,
     SRV_DOWNLOAD_MEDIA,
+    SRV_UPLOAD_FILE,
+    SRV_UPLOAD_MULTIPLE,
 
     ICON_DOT_GREEN,
     ICON_DOT_RED,

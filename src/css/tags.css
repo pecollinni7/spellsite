@@ -19,6 +19,7 @@
 	z-index: 1;
 	/*border-radius: 3px;*/
 	text-align: center;
+	padding: 0 0;
 	cursor: pointer;
 	display: block;
 	
@@ -29,21 +30,25 @@
 	border-radius: 3px;
 
 
-	box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.15);
+	/*box-shadow: 1px 3px 5px 0 rgba(0, 0, 0, 0.55);*/
 
-	height: 26px;
-	line-height: 26px;
+	height: 24px;
+	/*line-height: 24px;*/
 
 	/*transition: background-color 0.3s ease;*/
+	/*border: 1px solid #bdbdbd;*/
+
+
 
 	left: 0;
 	top: 0;
 	right: 0;
 	bottom: 0;
-	transition: background-color 0.2s ease;
+	transition: background-color 0.1s ease;
 
-	font-family: 'Open Sans', sans-serif;
-	font-weight: bold;
+	font-family: 'OpenS', sans-serif;
+	font-weight: normal;
+	font-size: 12pt;
 
 }
 
@@ -58,7 +63,7 @@
 	/*outline: solid #f900ff 1px;*/
 	box-shadow: 0 0 3pt 3pt #c900ff;
 	color: #674700;
-	font-weight: bolder;
+	font-weight: bold;
 	border-radius: 5px;
 
 	animation-name: tag-color-pulse;
@@ -88,7 +93,7 @@
 .muuri-item:hover {
 	/*background: #9fc0cc;*/
 	background: #e3e3e3;
-	/*border: 2px solid #e5e5e5;*/
+	/*border: 1px solid #ffffff;*/
 	/*height: 25px;*/
 	/*line-height: 25px;*/
 

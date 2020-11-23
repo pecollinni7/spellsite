@@ -1,6 +1,7 @@
 const PaginationController = require('./PaginationController');
 const Item                 = require('./Item');
 const DataService          = require('./DataService');
+const Data                 = require('./Data');
 const Settings             = require('./Settings');
 
 class ContentController
@@ -9,6 +10,10 @@ class ContentController
     _items = [];
     _pages = [];
 
+    _fileNames = [];
+
+    get fileNames() { return this._fileNames; }
+    set fileNames(value) { this._fileNames = value; }
     get paginationController() { return this._paginationController; }
     set paginationController(value) { this._paginationController = value; }
     get items() { return this._items; }
@@ -17,8 +22,8 @@ class ContentController
     set pages(value) { this._pages = value; }
     get numOfItems() { return this.items.length; }
     get numOfPages() { return this.pages.length; }
-    set activePage(value) {this.pages[DataService.activePageIndex] = value;} //TODO: you could move this to some static class. same for selected items.
-    get activePage() { return this.pages[DataService.activePageIndex]; }
+    set activePage(value) {this.pages[Data.currentPageIndex] = value;} //TODO: you could move this to some static class. same for selected items.
+    get activePage() { return this.pages[Data.currentPageIndex]; }
 
     constructor()
     {
@@ -33,22 +38,80 @@ class ContentController
     generate()
     {
         this.items = [];
-        this.pages = [];
 
         this.generateItems();
         this.generatePages();
-        this.generatePagination();
 
         this.deployPage(0);
+    }
+
+    regenerate()
+    {
+        if (this.regenerateItems() === true)
+        {
+            this.generatePages();
+            this.deployPage(Data.currentPageIndex);
+        }
+    }
+
+    regenerateItems()
+    {
+        let newFileNames      = [];
+        let itemNamesToAdd    = [];
+        let itemNamesToRemove = [];
+
+        if (Data.filterMode)
+        {
+            newFileNames = DataService.getFileNames(Data.filterModeTags);
+        }
+        else
+        {
+            newFileNames = DataService.getFileNames();
+        }
+
+        if (this.fileNames.length === newFileNames.length && this.fileNames.toString() === newFileNames.toString())
+        {
+            // arrays are the same
+            // console.log('Arrays are the same. old content and new content items are the same - no change.');
+            return false;
+        }
+        else
+        {
+            //items to remove
+            for (let i = 0; i < this.fileNames.length; i++)
+            {
+                if (newFileNames.includes(this.fileNames[i]) === false)
+                {
+                    itemNamesToRemove.push(this.fileNames[i]);
+                }
+
+            }
+
+            //items to add
+            for (let i = 0; i < newFileNames.length; i++)
+            {
+                if (this.items.find(item => item.name === newFileNames[i]) === undefined)
+                {
+                    itemNamesToAdd.push(newFileNames[i]);
+                }
+            }
+
+            this.removeItems(itemNamesToRemove);
+            this.addItems(itemNamesToAdd);
+
+            // console.log('Content items regenerate:\nremoved: ' + itemNamesToRemove + '\nadded: ' + itemNamesToAdd);
+        }
+
+        this.fileNames = newFileNames;
     }
 
     generateItems()
     {
         let fileNames;
 
-        if (DataService.filterMode)
+        if (Data.filterMode)
         {
-            fileNames = DataService.getFileNames(DataService.filterModeTags);
+            fileNames = DataService.getFileNames(Data.filterModeTags);
         }
         else
         {
@@ -66,6 +129,8 @@ class ContentController
 
             this.addItem(fileNames[i]);
         }
+
+        this.fileNames = fileNames;
     }
 
     generatePagination()
@@ -73,32 +138,42 @@ class ContentController
         this.paginationController.generate(this.numOfPages);
     }
 
+    addItems(itemNames = [])
+    {
+        itemNames.forEach(item => this.addItem(item));
+    }
+
     addItem(itemName)
     {
         this.items.push(new Item(itemName));
     }
 
-    removeItem(itemName)
+    removeItems(itemNames = [])
     {
-        for (let i = this.items.length; i > 0; i--)
+        for (let i = this.items.length - 1; i >= 0; i--)
         {
-            if (this.items.name === itemName)
+            for (let j = 0; j < itemNames.length; j++)
             {
-                this.items.slice(i, 1);
+                if (this.items[i].name === itemNames[j])
+                {
+                    this.items.splice(i, 1);
+                }
             }
         }
     }
 
-    removeItems(itemNames)
+    deleteSelectedItems()
     {
-        itemNames.forEach(item => {
-            this.removeItem(item)
-        });
+        const selectedItemNames = this.getSelectedItemNames();
+        this.removeItems(selectedItemNames);
+        DataService.removeItems(selectedItemNames);
+
+        this.generatePages();
+        this.deployPage(Data.currentPageIndex, false);
     }
 
-    deployPage(pageNum)
+    deployPage(pageNum, transition=true)
     {
-
         if (pageNum === undefined)
         {
             console.error('pageNum is undefined');
@@ -111,33 +186,39 @@ class ContentController
 
         if (num < 0) num = 0;
 
-        this.generateHtml(num);
-
-        // if (this.activePage !== undefined)
-        //     this.activePage.clearSelection();
-
-        // this.activePageIndex = num;
-        // this.deployActivePage();
-
+        this.generateHtml(num, transition);
         this.paginationController.setActivePage(num);
-
-
-
     }
 
-    generateHtml(pageNum)
+    generateHtml(pageNum, transition=true)
     {
-        let c = $('#content');
+        const contentSelector = $('#content');
 
-        $('#content').hide();
+        if (transition)
+            contentSelector.hide();
 
-        $('#content').html(this.pages[pageNum] + '');
+        contentSelector.html(this.pages[pageNum] + '');
 
-        DataService.selectedItems.forEach(item => {
-            this.getItemByName(item.name).select();
+        if (transition)
+            contentSelector.fadeIn(Settings.app_transitionDuration);
+
+        this.reselectItems();
+    }
+
+    reselectItems()
+    {
+        this.getSelectedItems().forEach(item => {
+            item.select(true);
         })
+    }
 
-        $('#content').fadeIn(150);
+    pageContainsItem(itemName)
+    {
+        for (let i = 0; i < this.activePage.length; i++)
+            if (this.activePage[i].name === itemName)
+                return true;
+
+        return false;
     }
 
     getSelectedItemsActiveTags()
@@ -169,14 +250,32 @@ class ContentController
 
     getSelectedItems()
     {
+        /*
+         let res = [];
+
+         this.items.forEach(item => {
+         if (item.isSelected)
+         {
+         res.push(item);
+         }
+         });
+
+         return res;
+         */
+
+        return this.items.filter(item => item.isSelected === true);
+    }
+
+    getSelectedItemNames()
+    {
+        const selectedItems = this.getSelectedItems();
+
         let res = [];
 
-        this.items.forEach(item => {
-            if (item.isSelected)
-            {
-                res.push(item);
-            }
-        });
+        for (let i = 0; i < selectedItems.length; i++)
+        {
+            res.push(selectedItems[i].name);
+        }
 
         return res;
     }
@@ -199,27 +298,55 @@ class ContentController
         //     if (selectedItemIndex > -1)
         //         DataService.selectedItems.splice(selectedItemIndex, 1);
         // }
-        //
+
         // if (Settings.app_saveSelectionOnPageSwitch === true) //TODO: clear selection on page switch if its false
         //     this.activePage = $('#content').html();
     }
 
     clearSelection()
     {
-        for (let i = DataService.selectedItems.length-1; i >= 0; i--)
-        {
-            DataService.selectedItems[i].select(false);
-        }
+        // Data.selectedItemNames.forEach(itemName => {
+        //     this.getItemByName(itemName).select(false);
+        // });
+
+        const selectedItems = this.items.filter(item => item.isSelected === true);
+
+        selectedItems.forEach(item => {
+            item.select(false);
+        })
     }
 
     getItemByName(itemName)
     {
-        for (let i = 0; i < this.items.length; i++) if (this.items[i].name === itemName) return this.items[i];
+        // let res;
+        // const t0 = performance.now();
+        // for (let i = 0; i < this.items.length; i++)
+        // {
+        //     if (this.items[i].name === itemName)
+        //     {
+        //         res = this.items[i];
+        //         break;
+        //     }
+        // }
+
+        return this.items.find(({name}) => name === itemName);
+        // return this.items.find(({name}) => name === Data.selectedItemNames);
+
+        // const t1 = performance.now();
+        // console.log("Call to getItemByName took " + (t1 - t0) + " milliseconds.");
+        //
+        // return res;
+
     }
 
     generatePages()
     {
+        const previousPagesCount = this.numOfPages;
+
         this.pages = this.chunk(this.items, Settings.app_pageSize);
+
+        if (this.numOfPages !== previousPagesCount)
+            this.generatePagination();
     }
 
     chunk(arr, len)

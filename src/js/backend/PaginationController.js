@@ -1,4 +1,5 @@
-const DataService = require('./DataService');
+const Data = require('./Data');
+const Settings    = require('./Settings');
 
 class PaginationController
 {
@@ -34,12 +35,11 @@ class PaginationController
 
     deployHtml(html)
     {
-        $('#pagination').hide();
+        const pagination = $('#pagination');
 
-        $('#pagination').html(html);
-
-        //TODO: this should go in the settings
-        $('#pagination').fadeIn(200);
+        // pagination.hide();
+        pagination.html(html);
+        // pagination.fadeIn(Settings.app_transitionDuration);
     }
 
     setActivePage(num)
@@ -54,7 +54,7 @@ class PaginationController
 
         if (num < 0) num = 0;
 
-        DataService.activePageIndex = num;
+        Data.currentPageIndex = num;
 
         // this.activePageIndex = num;
 

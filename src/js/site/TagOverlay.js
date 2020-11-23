@@ -89,6 +89,8 @@ class TagOverlay
 		ctrl.setSelectionRange(pos, pos);
 	}
 
+
+
 // Set the cursor position of the "#test-input" element to the end when the page loads
 
 

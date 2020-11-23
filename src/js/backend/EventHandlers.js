@@ -79,6 +79,9 @@ class EventHandlers
 
         $(document).on(DataServiceEvents.NEW_DATA_FILE, () => {
 
+            this.site.updateDataFileVersionLabel();
+
+
             // DataService.whatChangedInData(this.site);
 
             /*
@@ -106,7 +109,10 @@ class EventHandlers
             just update the tags active selection
             from the currently selected items
              */
-            this.site.tagsController.displaySelectedItemsActiveTags();
+            this.site.tagsController.regenerate();
+            this.site.contentController.regenerate();
+            this.site.displaySelectedItemsActiveTags();
+            //todo update the contet for filter mode
 
 
 
@@ -123,7 +129,6 @@ class EventHandlers
             // if (this.site.contentPages.activePage !== undefined)
             // 	this.site.tags.displayTagsByName(this.site.contentPages.activePage.getSelectedItemsTags());
 
-            this.site.updateDataFileVersionLabel();
 
             console.log('new data arrived');
         });
@@ -131,8 +136,11 @@ class EventHandlers
         $(document).on('mousedown', e => {
             const element = $(e.target);
 
-            if (element.hasClass('navigation') || element.hasClass('pagination') || element.hasClass('content') || element.hasClass('html') || element.hasClass(
-                'tags'))
+            if (element.hasClass('navigation') ||
+                element.hasClass('pagination') ||
+                element.hasClass('content') ||
+                element.hasClass('html') ||
+                element.hasClass('tags'))
             {
                 this.site.clearSelection();
             }

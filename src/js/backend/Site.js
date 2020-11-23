@@ -2,9 +2,11 @@ const ContentController = require('./ContentController');
 const TagsController    = require('./TagsController');
 const EventHandlers     = require('./EventHandlers');
 const DataService       = require('./DataService');
+const Data              = require('./Data');
 const Overlay           = require('./Overlay');
 const Server            = require('./Server');
 const remote            = require('electron').remote;
+const OverlayManager    = require('./OverlayManager');
 
 class Site
 {
@@ -14,6 +16,14 @@ class Site
     _eventHandlers;
     _overlay;
     _server;
+
+    _overlayManager;
+
+    get om() {return this.overlayManager};
+    get om_newTag() {return this.overlayManager.getOverlay(OverlayManager.NEW_TAG_OVERLAY);}
+    get om_settings() {return this.overlayManager.getOverlay(OverlayManager.SETTINGS_OVERLAY);}
+    get om_dropZone() {return this.overlayManager.getOverlay(OverlayManager.DROP_ZONE_OVERLAY);}
+    get om_viewItem() {return this.overlayManager.getOverlay(OverlayManager.ITEM_VIEW_OVERLAY);}
 
     get contentController() {return this._contentController;}
     set contentController(value) {this._contentController = value;}
@@ -27,6 +37,8 @@ class Site
     set tagsController(value) { this._tagsController = value; }
     get overlay() { return this._overlay; }
     set overlay(value) { this._overlay = value; }
+    get overlayManager() { return this._overlayManager; }
+    set overlayManager(value) { this._overlayManager = value; }
 
     constructor()
     {
@@ -34,6 +46,8 @@ class Site
         this.tagsController    = new TagsController();
         this.eventHandlers     = new EventHandlers(this);
         this.server            = new Server(this);
+
+        this.overlayManager = new OverlayManager(this);
     }
 
     initialize()
@@ -43,6 +57,7 @@ class Site
         this.server.polling.run();
 
         this.updateDataFileVersionLabel();
+
     }
 
     handleItemClick(item, e)
@@ -59,7 +74,12 @@ class Site
             this.contentController.toggleItemSelection(item);
         }
 
-        this.tagsController.displaySelectedItemsActiveTags();
+        this.displaySelectedItemsActiveTags();
+    }
+
+    displaySelectedItemsActiveTags()
+    {
+        this.tagsController.displayTags(this.contentController.getSelectedItemsActiveTags());
     }
 
     handleItemDoubleClick(item)
@@ -67,7 +87,7 @@ class Site
         this.overlay = new Overlay($(item).attr('data-filename'));
         this.overlay.showOverlay().then();
 
-        //workaround for ctrl + toggle click on the item. it can deselect the item prior to overlay view
+        //workaround for ctrl + toggle double click on the item. it can deselect the item prior to overlay view
         const itemObj = this.contentController.getItemByName($(item).attr('data-filename'));
         if (itemObj.isSelected === false)
         {
@@ -78,20 +98,20 @@ class Site
     handleTagClick(tagName)
     {
 
-        if (DataService.isSelectionEmpty)
+        if (Data.isSelectionEmpty)
         {
             this.tagsController.toggleTag(tagName, true);
 
             if (this.tagsController.hasActiveTags)
             {
-                DataService.filterMode     = true;
-                DataService.filterModeTags = this.tagsController.activeTags;
+                Data.filterMode     = true;
+                Data.filterModeTags = this.tagsController.activeTags;
                 this.contentController.generate();
             }
             else
             {
-                DataService.filterMode     = false;
-                DataService.filterModeTags = [];
+                Data.filterMode     = false;
+                Data.filterModeTags = [];
                 this.contentController.generate();
             }
         }
@@ -105,13 +125,13 @@ class Site
     callNextPage()
     {
         // this.tags.clearSelection();
-        this.setActivePage(DataService.activePageIndex + 1);
+        this.setActivePage(Data.currentPageIndex + 1);
     }
 
     callPreviousPage()
     {
         // this.tags.clearSelection();
-        this.setActivePage(DataService.activePageIndex - 1);
+        this.setActivePage(Data.currentPageIndex - 1);
 
     }
 
@@ -133,7 +153,8 @@ class Site
 
     clearSelection()
     {
-        if (DataService.filterMode && DataService.isSelectionEmpty)
+
+        if (Data.filterMode === true && Data.isSelectionEmpty === true)
         {
             this.tagsController.clearFilterSelection();
             this.contentController.generate();

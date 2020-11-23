@@ -2,6 +2,7 @@ const Enums             = require('./Enums');
 const StorageService    = require('./StorageService');
 const DataServiceEvents = require('./DataServiceEvents');
 const Settings          = require('./Settings');
+const Data              = require('./Data');
 
 class DataService
 {
@@ -11,22 +12,6 @@ class DataService
     static _patchFile;
     static _currentlyDownloading = [];
 
-    static _selectedItems   = [];
-    static _activePageIndex = 0;
-
-    static _filterMode     = false;
-    static _filterModeTags = [];
-
-    static get selectedItems() { return this._selectedItems; }
-    static set selectedItems(value) { this._selectedItems = value; }
-    static get activePageIndex() { return this._activePageIndex; }
-    static set activePageIndex(value) { this._activePageIndex = value; }
-    static get isSelectionEmpty() { return this.selectedItems.length === 0}
-
-    static get filterMode() { return this._filterMode; }
-    static set filterMode(value) { this._filterMode = value; }
-    static get filterModeTags() { return this._filterModeTags; }
-    static set filterModeTags(value) { this._filterModeTags = value; }
 
     static get version()
     {
@@ -263,6 +248,94 @@ class DataService
         return res;
     }
 
+    static addNewTag(tagName)
+    {
+        if (this.dataFile.hasOwnProperty('tagTypes'))
+        {
+            if (this.dataFile.tagTypes.indexOf(tagName) !== -1) //so it exits already
+            {
+                return;
+            }
+
+            this.dataFile.tagTypes.push(tagName);
+        }
+
+        this.patchFile.tagTypes = this.dataFile.tagTypes;
+
+        this.saveData();
+        this.savePatch();
+    }
+
+    static removeTag(tagName)
+    {
+        const tags = this.tagsList;
+
+        if (tags.indexOf(tagName) === -1)
+        {
+            return;
+        }
+
+        for (let i = tags.length-1; i >= 0; i--)
+        {
+            if (tags[i] === tagName)
+            {
+                tags.splice(i, 1);
+                break;
+            }
+        }
+
+        this.removeTagPatch(tagName);
+
+        this.saveData();
+        this.savePatch();
+    }
+
+    static removeItems(itemNames)
+    {
+        for (let i = 0; i < itemNames.length; i++)
+        {
+            const itemName = itemNames[i];
+
+            if (this.dataFile.hasOwnProperty(itemName))
+            {
+                delete this.dataFile[itemName];
+                this.removeItemPatch(itemName);
+                StorageService.deleteFile(itemName);
+            }
+        }
+
+
+        this.saveData();
+        this.savePatch();
+    }
+
+    static removeTagPatch(tagName)
+    {
+        if (this.patchFile.hasOwnProperty('removeTags') === false)
+        {
+            this.patchFile['removeTags'] = [];
+        }
+
+        if (this.patchFile['removeTags'].indexOf(tagName) === -1)
+        {
+            this.patchFile['removeTags'].push(tagName);
+        }
+    }
+
+    static removeItemPatch(itemName)
+    {
+        if (this.patchFile.hasOwnProperty('removeItems') === false)
+        {
+            this.patchFile['removeItems'] = [];
+        }
+
+        if (this.patchFile['removeItems'].indexOf(itemName) === -1)
+        {
+            this.patchFile['removeItems'].push(itemName);
+        }
+
+    }
+
     static updateTag(fileName, tagName, value)
     {
         switch (value)
@@ -288,8 +361,8 @@ class DataService
 
     static updateTagsForSelectedItems(tagName, tagValue)
     {
-        this.selectedItems.forEach(item => {
-            this.updateTag(item.name, tagName, tagValue);
+        Data.selectedItemNames.forEach(itemName => {
+            this.updateTag(itemName, tagName, tagValue);
         })
     }
 
@@ -310,10 +383,7 @@ class DataService
         return res;
     }
 
-
-
     //---------------------------------
-
 
     static whatChangedInData(site)
     {
@@ -326,9 +396,6 @@ class DataService
         {
             $(document).trigger(DataServiceEvents.TAGS_UPDATE);
         }
-
-
-
 
     }
 

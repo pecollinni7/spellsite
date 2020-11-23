@@ -52,7 +52,7 @@
 <div class="titlebar" id="titlebar">
     <a class="icon" onmousedown="setDropdownPos();">&#xE700;</a>
     <a class="icon" onmousedown="site.reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
-    <a class="icon" onmousedown="site.addTagButton();" data-toggle="tooltip" data-placement="bottom" title="Add new Tag">&#xE948;</a>
+    <a class="icon" onmousedown="site.overlayManager.showOverlay(OM.NEW_TAG_OVERLAY);" data-toggle="tooltip" data-placement="bottom" title="Add new Tag">&#xE948;</a>
 
     <!--    <a  data-toggle="tooltip" data-placement="bottom" title="Server is online">-->
 <!--    </a>-->
@@ -124,18 +124,18 @@
 <!--        <input id="spinner" name="value">-->
 <!--    </a>-->
     <a class="dropdown-item" href="#" onmousedown="settings.clearSettings()">Clear Settings</a>
-    <a class="dropdown-item" href="#" onmousedown="site.tags.sortGridByDataListOrder()">Test func</a>
+    <a class="dropdown-item" href="#" onmousedown="console.log('test')">Test func</a>
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="#">Separated link</a>
 </div>
 
 <div class="dropdown-menu" id="tagcontextmenu">
-    <a class="dropdown-item" onmousedown="site.deleteTag()" href="#">Delete tag</a>
+    <a class="dropdown-item" onmousedown="site.tagsController.removeTag()" href="#">Delete tag</a>
     <a class="dropdown-item" href="#">Action 2</a>
 </div>
 
 <div class="dropdown-menu" id="itemcontextmenu">
-    <a class="dropdown-item" onmousedown="site.deleteSelectedItems()" href="#">Delete selected items</a>
+    <a class="dropdown-item" onmousedown="site.contentController.deleteSelectedItems()" href="#">Delete selected items</a>
     <a class="dropdown-item" href="#">Action 2</a>
 </div>
 
@@ -169,7 +169,7 @@
     <!--    TODO: add regex for letter matching     -->
     <input type="text" class="addTagInputName" id="addTagInputName" name="name"
            placeholder="TagName..." autofocus required minlength="1"
-           onkeyup="site.tagOverlay.handleKeyPress()">
+           onkeyup="site.om_newTag.handleKeyPress();">
 
 <!--    <h6 class="text-danger text-center " id="errorText" style="display: none">-->
 <!--        * Tag with that name already exists-->
@@ -179,13 +179,13 @@
 
         <button type="button"
                 class="btn btn-secondary  btn-light"
-                onclick="site.addTagButtonCancel()">
+                onclick="site.om.hideOverlay();">
             Cancel
         </button>
 
         <button type="button"
                 class="btn btn-secondary  btn-light"
-                onclick="site.addTagButtonConfirm()">
+                onclick="site.om_newTag.confirm();">
             Confirm
         </button>
     </div>
@@ -225,7 +225,7 @@
     })
 </script>
 
-<div class="overlay" id="overlay" onclick="site.overlay.hideOverlay(this)" ></div>
+<div class="overlay" id="overlay" onclick="site.om.hideOverlay()" ></div>
 
 <div class="content" id="content"></div>
 
@@ -264,6 +264,7 @@
 <script src="../js/titlebar.js"></script>
 <!--<script src="../js/backend/App.js"></script>-->
 <script src="../js/Start.js"></script>
+<!--<script src="../js/backend/TagOverlay.js"></script>-->
 
 <!--<script src="../js/GUI.js"></script>-->
 <script src="../js/navigation.js"></script>
@@ -282,6 +283,8 @@
 
 
     }
+
+    const OM = require('../js/backend/OverlayManager');
 </script>
 </body>
 </html>

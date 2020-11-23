@@ -1,4 +1,5 @@
 const DataService = require('./DataService');
+const Data        = require('./Data');
 const TagObject   = require('./TagObject');
 const MuuriGrid   = require('./MuuriGrid');
 
@@ -62,13 +63,58 @@ class TagsController
     generate()
     {
         $('#tags').html('');
-        const tagNames = DataService.tagsList;
-        this.muuriGrid.generateGrid(tagNames);
-
+        Data.tagNameList = DataService.tagsList;
+        this.muuriGrid.generateGrid(Data.tagNameList);
         this.tags = [];
-        tagNames.forEach(name => {
+        Data.tagNameList.forEach(name => {
             this.createTagObject(name);
         });
+    }
+
+    regenerate()
+    {
+
+        /*
+
+        TODO: you will need to make this to work with filter mode as well. maybe regenerate the pages idk...
+
+         */
+
+        const newTags    = DataService.tagsList;
+        let tagsToAdd    = [];
+        let tagsToRemove = [];
+
+        if (Data.tagNameList.length === newTags.length && Data.tagNameList.toString() === newTags.toString())
+        {
+            // tags are the same
+            return false;
+        }
+        else
+        {
+            //items to remove
+            for (let i = 0; i < Data.tagNameList.length; i++)
+            {
+                if (newTags.includes(Data.tagNameList[i]) === false)
+                {
+                    tagsToRemove.push(Data.tagNameList[i]);
+                }
+
+            }
+
+            //items to add
+            for (let i = 0; i < newTags.length; i++)
+            {
+                if (this.tags.find(item => item.name === newTags[i]) === undefined)
+                {
+                    tagsToAdd.push(newTags[i]);
+                }
+            }
+
+            this.removeTagsFromGrid(tagsToRemove);
+            this.addTagsToGrid(tagsToAdd);
+        }
+
+        Data.tagNameList = newTags;
     }
 
     createTagObject(tagName)
@@ -85,14 +131,18 @@ class TagsController
         this.tags.push(new TagObject((tagName)));
     }
 
-    removeTagObject(tagName)
+    removeTagObjects(tagNames)
     {
-        for (let i = this.tags.length; i >= 0; i--)
+        tagNames = [].concat(tagNames);
+
+        for (let i = this.tags.length - 1; i >= 0; i--)
         {
-            if (this.tags[i].name === tagName)
+            for (let j = 0; j < tagNames.length; j++)
             {
-                this.tags.splice(i, 1);
-                return;
+                if (this.tags[i].name === tagNames[j])
+                {
+                    this.tags.splice(i, 1);
+                }
             }
         }
     }
@@ -100,6 +150,38 @@ class TagsController
     updateTagObject(tagName)
     {
 
+    }
+
+    addTags(tagNames)
+    {
+        tagNames.forEach(tagName => {
+            this.addTagToGrid(tagName);
+        })
+    }
+
+    removeTag(tagName)
+    {
+        this.removeTagsFromGrid(tagName);
+        DataService.removeTag(tagName);
+    }
+
+    addTagsToGrid(tagNames)
+    {
+        tagNames = [].concat(tagNames);
+
+        tagNames.forEach(tagName => {
+
+            this.createTagObject(tagName);
+            this.muuriGrid.addItemsToGrid(tagName);
+        })
+
+        // DataService.addNewTag(tagName);
+    }
+
+    removeTagsFromGrid(tagNames)
+    {
+        this.removeTagObjects(tagNames);
+        this.muuriGrid.removeItemsFromGrid(tagNames);
     }
 
     getTags(tagNames)
@@ -125,23 +207,13 @@ class TagsController
 
     displayTags(tagNames)
     {
-        // tagNames = [].concat(tagNames);
-
-        // tagNames.forEach(tagName => {
-        //     this.displayTag(tagName);
-        // })
+        this.clearSelection();
 
         const tags = this.getTags(tagNames);
 
         tags.forEach(tag => {
             tag.displayTag();
         })
-    }
-
-    displaySelectedItemsActiveTags()
-    {
-        this.clearSelection();
-        this.displayTags(this.getSelectedItemsActiveTagNames());
     }
 
     clearSelection()
@@ -154,8 +226,8 @@ class TagsController
 
     clearFilterSelection()
     {
-        DataService.filterMode = false;
-        DataService.filterModeTags = [];
+        Data.filterMode     = false;
+        Data.filterModeTags = [];
 
         this.tags.forEach(tag => {
             tag.activeAsFilter = false;
@@ -163,23 +235,29 @@ class TagsController
         });
     }
 
-    getSelectedItemsActiveTagNames()
-    {
-        let res = [];
+    // displaySelectedItemsActiveTags()
+    // {
+    //     this.clearSelection();
+    //     this.displayTags(this.getSelectedItemsActiveTagNames()); //TODO: possible error here if the item does not exists anymore
+    // }
 
-        DataService.selectedItems.forEach(item => {
-            const itemTags = item.tags;
-
-            itemTags.forEach(tag => {
-                if (res.includes(tag) === false)
-                {
-                    res.push(tag);
-                }
-            })
-        })
-
-        return res;
-    }
+    // getSelectedItemsActiveTagNames()
+    // {
+    //     let res = [];
+    //
+    //     Data.selectedItemNames.forEach(item => {
+    //         const itemTags = item.tags;
+    //
+    //         itemTags.forEach(tag => {
+    //             if (res.includes(tag) === false)
+    //             {
+    //                 res.push(tag);
+    //             }
+    //         })
+    //     })
+    //
+    //     return res;
+    // }
 
 }
 
