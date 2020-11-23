@@ -99,7 +99,6 @@ class Site
 
     handleTagClick(tagName)
     {
-
         if (Data.isSelectionEmpty)
         {
             this.tagsController.toggleTag(tagName, true);
@@ -120,7 +119,7 @@ class Site
         else
         {
             this.tagsController.toggleTag(tagName);
-            this.server.actionPerformed();
+            Server.actionPerformed();
         }
     }
 
