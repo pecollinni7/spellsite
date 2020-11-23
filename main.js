@@ -11,7 +11,6 @@ autoUpdater.logger                       = log;
 autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.fullChangelog = true;
 
-
 log.info('App starting...');
 
 app.on('ready', () => {
@@ -26,7 +25,6 @@ app.on('ready', () => {
 
     // createLoaderWindow();
     createWindow();
-
     autoUpdater.checkForUpdatesAndNotify().then();
 
     setInterval(() => {
