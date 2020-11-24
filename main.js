@@ -31,7 +31,7 @@ app.on('ready', () => {
         autoUpdater.checkForUpdatesAndNotify().then();
     }, 30 * 60000);
 
-    browserLog(fs.readFileSync(path.resolve(__dirname, 'src/resources/release-notes.md')));
+    browserLog(fs.readFileSync(path.resolve(__dirname, 'release-notes.md')));
 
 });
 /*
@@ -147,7 +147,7 @@ function createWindow()
     autoUpdater.on('update-downloaded', (info) => {
         browserLog('Software update downloaded.');
 
-        fs.appendFileSync(path.resolve(__dirname, 'src/resources/release-notes.md'), JSON.stringify(info.releaseNotes),{encoding: 'utf8'});
+        // fs.appendFileSync(path.resolve(__dirname, 'release-notes.md'), JSON.stringify(info.releaseNotes),{encoding: 'utf8'});
 
         sendStatusToWindow('Update downloaded');
     });
