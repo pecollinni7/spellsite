@@ -147,7 +147,7 @@ function createWindow()
     autoUpdater.on('update-downloaded', (info) => {
         browserLog('Software update downloaded.');
 
-        fs.appendFileSync(path.resolve(__dirname, 'src/resources/release-notes.md'), JSON.stringify(info.releaseNotes) + '\n',{encoding: 'utf8'});
+        fs.appendFileSync(path.resolve(__dirname, 'src/resources/release-notes.md'), JSON.stringify(info.releaseNotes),{encoding: 'utf8'});
 
         sendStatusToWindow('Update downloaded');
     });
