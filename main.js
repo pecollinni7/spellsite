@@ -31,7 +31,7 @@ app.on('ready', () => {
         autoUpdater.checkForUpdatesAndNotify().then();
     }, 30 * 60000);
 
-    browserLog(fs.readFileSync(path.resolve(__dirname, 'release-notes.md')));
+    // browserLog(fs.readFileSync(path.resolve(__dirname, 'release-notes.md')));
 
 });
 /*
