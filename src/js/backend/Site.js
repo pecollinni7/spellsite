@@ -1,12 +1,11 @@
-const ContentController = require('./ContentController');
-const TagsController    = require('./TagsController');
+const ContentController = require('./content/ContentController');
+const TagsController    = require('./tags/TagsController');
 const EventHandlers     = require('./EventHandlers');
-const DataService       = require('./DataService');
-const Data              = require('./Data');
-const Overlay           = require('./Overlay');
-const Server            = require('./Server');
+const DataService       = require('./data/DataService');
+const Data              = require('./data/Data');
+const Server            = require('./server/Server');
 const remote            = require('electron').remote;
-const OverlayManager    = require('./OverlayManager');
+const OverlayManager    = require('./overlay/OverlayManager');
 
 class Site
 {
@@ -52,6 +51,7 @@ class Site
         this.server            = new Server(this);
 
         this.overlayManager = new OverlayManager(this);
+        this.overlayManager.init();
     }
 
     initialize()

@@ -1,8 +1,8 @@
 const PaginationController = require('./PaginationController');
 const Item                 = require('./Item');
-const DataService          = require('./DataService');
-const Data                 = require('./Data');
-const Settings             = require('./Settings');
+const DataService          = require('../data/DataService');
+const Data                 = require('../data/Data');
+const Settings             = require('../Settings');
 
 class ContentController
 {

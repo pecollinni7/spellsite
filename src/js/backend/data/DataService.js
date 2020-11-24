@@ -1,7 +1,6 @@
-const Enums             = require('./Enums');
 const StorageService    = require('./StorageService');
 const DataServiceEvents = require('./DataServiceEvents');
-const Settings          = require('./Settings');
+const Settings          = require('../Settings');
 const Data              = require('./Data');
 
 class DataService

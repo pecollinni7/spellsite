@@ -1,9 +1,9 @@
 const fs                = require('fs');
 const needle            = require('needle');
 const FileType          = require('file-type');
-const DataService       = require('./DataService');
-const Settings          = require('./Settings');
-const DataServiceEvents = require('./DataServiceEvents');
+const DataService       = require('../data/DataService');
+const Settings          = require('../Settings');
+const DataServiceEvents = require('../data/DataServiceEvents');
 
 let fileDiff;
 let downloaded      = [];
@@ -19,7 +19,7 @@ const getData = () => needle.request('get',
         if (error)
         {
 
-            console.error('Offline ' + Settings.SRV_CHECK_FOR_UPDATES); //no connection
+            console.error('Server error:\n' + error); //no connection
             $('#serverIcon').attr("src", Settings.ICON_DOT_RED);
             $('#serverIcon').attr("data-original-title", "Server offline");
 

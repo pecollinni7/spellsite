@@ -1,7 +1,7 @@
 const Path        = require('path');
-const Data        = require('./Data');
-const DataService = require('./DataService');
-const settings    = require('./Settings');
+const Data        = require('../data/Data');
+const DataService = require('../data/DataService');
+const settings    = require('../Settings');
 
 class Item
 {

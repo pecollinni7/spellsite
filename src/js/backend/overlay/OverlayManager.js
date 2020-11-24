@@ -2,11 +2,8 @@ const NewTagOverlay   = require('./NewTagOverlay');
 const ItemViewOverlay = require('./ItemViewOverlay');
 const DropZoneOverlay = require('./DropZoneOverlay');
 const SettingsOverlay = require('./SettingsOverlay');
-const DataService     = require('./DataService');
-const Data            = require('./Data');
-const TagOverlay      = require('./TagOverlay');
 
-module.exports = class OverlayManager
+class OverlayManager
 {
     _site;
 
@@ -50,6 +47,14 @@ module.exports = class OverlayManager
         }
     }
 
+    init()
+    {
+        for (const key in this.overlays)
+        {
+            this.overlays[key].init();
+        }
+    }
+
     showOverlay(overlayType, param1=null)
     {
         if (this.activeOverlay)
@@ -72,3 +77,4 @@ module.exports = class OverlayManager
 
 }
 
+module.exports = OverlayManager;

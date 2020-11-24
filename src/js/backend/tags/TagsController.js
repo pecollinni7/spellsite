@@ -1,8 +1,8 @@
-const DataService = require('./DataService');
-const Data        = require('./Data');
+const DataService = require('../data/DataService');
+const Data        = require('../data/Data');
 const TagObject   = require('./TagObject');
 const MuuriGrid   = require('./MuuriGrid');
-const Server      = require('./Server');
+const Server      = require('../server/Server');
 
 class TagsController
 {

@@ -13,11 +13,12 @@ module.exports = class OverlayBase
 
     constructor(overlayManager)
     {
-        this._site                = overlayManager.site;
         this._overlayManager      = overlayManager;
         this._overlayContainerDiv = $('#Overlay');
+        this._site                = overlayManager.site;
     }
 
     show() {};
     hide() {};
+    init() {};
 }

@@ -1,5 +1,4 @@
-const Data = require('./Data');
-const Settings    = require('./Settings');
+const Data = require('../data/Data');
 
 class PaginationController
 {

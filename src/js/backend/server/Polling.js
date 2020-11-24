@@ -1,4 +1,4 @@
-const AsyncPolling = require('../../lib/async-polling');
+const AsyncPolling = require('../../../lib/async-polling');
 const Routes       = require('./Routes');
 const interval     = 3000;
 

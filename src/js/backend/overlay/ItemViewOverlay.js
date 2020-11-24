@@ -1,5 +1,5 @@
 const OverlayBase = require('./OverlayBase');
-const Settings    = require('./Settings');
+const Settings    = require('../Settings');
 const ImageSize   = require('image-size');
 const Path        = require('path');
 
@@ -20,6 +20,11 @@ module.exports = class ItemViewOverlay extends OverlayBase
     {
         super(overlayManager);
         super.selector = $('#overlay');
+    }
+
+    init()
+    {
+        super.init();
     }
 
     show(fileName)
@@ -143,4 +148,6 @@ module.exports = class ItemViewOverlay extends OverlayBase
                 return '';
         }
     }
+
+
 };

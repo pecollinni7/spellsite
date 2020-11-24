@@ -1,4 +1,4 @@
-const settings = require('./Settings');
+const settings = require('../Settings');
 const fs       = require('fs');
 const path     = require('path');
 

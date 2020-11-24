@@ -1,4 +1,4 @@
-const DataService = require('./DataService');
+const DataService = require('../data/DataService');
 
 class TagObject
 {

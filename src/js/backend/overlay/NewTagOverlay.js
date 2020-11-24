@@ -1,17 +1,19 @@
 const OverlayBase = require('./OverlayBase');
-const DataService = require("./DataService");
-
-
+const DataService = require("../data/DataService");
 
 module.exports = class NewTagOverlay extends OverlayBase
 {
     get inputText() { return $('#addTagInputName').val(); }
 
-
     constructor(overlayManager)
     {
         super(overlayManager);
         super.selector = $('#addTag');
+    }
+
+    init()
+    {
+        super.init();
     }
 
     show()
@@ -23,7 +25,6 @@ module.exports = class NewTagOverlay extends OverlayBase
         this.selector.css('visibility', 'visible');
 
         $('#navigation').removeClass('faded');
-
     }
 
     hide()
@@ -40,7 +41,6 @@ module.exports = class NewTagOverlay extends OverlayBase
         this.selector.removeClass('show');
         this.overlayContainerDiv.removeClass('show');
         this.overlayContainerDiv.css('visibility', 'hidden');
-
 
     }
 

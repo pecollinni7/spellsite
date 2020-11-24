@@ -1,5 +1,5 @@
-const DataService       = require('./DataService');
-const DataServiceEvents = require('./DataServiceEvents');
+const DataService       = require('./data/DataService');
+const DataServiceEvents = require('./data/DataServiceEvents');
 
 class EventHandlers
 {
@@ -79,59 +79,12 @@ class EventHandlers
 
         $(document).on(DataServiceEvents.NEW_DATA_FILE, () => {
 
-            console.log('new data arrived');
-
             this.site.updateDataFileVersionLabel();
 
-
-            // DataService.whatChangedInData(this.site);
-
-            /*
-            NEW TAG LIST:
-            figure out the difference between old and new tag list
-            remove some tags if you need to
-            and add the new ones
-            update the tags selection for the selected items
-            respect the filter mode
-             */
-
-            /*
-            CONTENT CHANGE:
-            add/remove some items
-            naaaaaah
-            regenerate the pages completely
-            no escape from it i think
-            maybe remove the fade in
-            just show it on page switch
-            oh yeah, also regenerate the pagination duh
-             */
-
-            /*
-            ITEMS DATA UPDATE:
-            just update the tags active selection
-            from the currently selected items
-             */
             this.site.tagsController.regenerate();
             this.site.contentController.regenerate();
             this.site.displaySelectedItemsActiveTags();
-            //todo update the contet for filter mode
-
-
-
-            // if (this.site.contentPages.activePage)
-            // 	this.site.contentPages.activePage.holdSelection();
-
-            // this.site.contentController.generate();
-            // this.site.tagsController.generate();
-            // this.site.tags.sortGridByDataListOrder();
-
-            // if (this.site.contentPages.activePage)
-            // 	this.site.contentPages.activePage.restoreSelection();
-
-            // if (this.site.contentPages.activePage !== undefined)
-            // 	this.site.tags.displayTagsByName(this.site.contentPages.activePage.getSelectedItemsTags());
-
-
+            //todo update the content for filter mode
         });
 
         $(document).on('mousedown', e => {
