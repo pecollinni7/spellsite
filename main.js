@@ -1,11 +1,17 @@
-const {app, ipcMain, BrowserWindow, globalShortcut, clipboard} = require('electron');
+const {app, ipcMain, BrowserWindow, globalShortcut, clipboard, Menu, MenuItem} = require('electron');
 const {autoUpdater}                                            = require('electron-updater');
 const path                                                     = require('path');
 const log                                                      = require('electron-log');
 const fs                                                       = require('fs');
+const windowsClipboard                                         = require('windows-file-clipboard');
+const electronLocalshortcut = require('electron-localshortcut');
+
+const Data = require('./src/js/backend/data/Data');
+
 let loaderWindow;
 let window;
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS']              = 'true';
+
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 let platform                             = process.platform;
 autoUpdater.logger                       = log;
@@ -33,46 +39,28 @@ app.on('ready', () => {
     }, 30 * 60000);
 
     // browserLog(fs.readFileSync(path.resolve(__dirname, 'release-notes.md')));
-    browserLog(process.platform);
-    browserLog(clipboard.readBuffer("CF_HDROP").toString("ucs2"));
-    browserLog(process.versions['chrome']);
-    browserLog(process.versions['node']);
-    browserLog(process.versions['electron']);
+    // browserLog(clipboard.readBuffer("CF_HDROP").toString("ucs2"));
+    // browserLog(process.versions['electron']);
+
+    electronLocalshortcut.register(window, 'Ctrl+V', () => {
+        const paths = windowsClipboard.readPaths();
+        browserLog(paths);
+    });
+
 
 });
 
 app.whenReady().then(() => {
-    ipcMain.on("clipboad-multiple-get", (event) => {
-        if (platform === "darwin")
-        {
-            if (clipboard.has("NSFilenamesPboardType"))
-            {
-                const res = clipboard.read("NSFilenamesPboardType");
-                console.log(res);
-                event.reply("clipboad-multiple-get-reply", `has NSFilenamesPboardType ${res}`);
-            }
-            else
-            {
-                console.log("no NSFilenamesPboardType");
-                event.reply("clipboad-multiple-get-reply", `no NSFilenamesPboardType`);
-            }
-        }
-        else
-        {
-            if (clipboard.has("CF_HDROP"))
-            {
-                const res = clipboard.readBuffer("CF_HDROP").toString("ucs2");
-                console.log(res);
-                event.reply("clipboad-multiple-get-reply", `has CF_HDROP ${res}`);
-            }
-            else
-            {
-                console.log("no CF_HDROP");
-                event.reply("clipboad-multiple-get-reply", `no CF_HDROP`);
-            }
-        }
+
+    // globalShortcut.register('Ctrl+V', () => {
+    //     browserLog('Electron loves global shortcuts!')
+    // })
+
+    ipcMain.on("send-to-clipboard", (event, dataForClipboard) => {
+        // browserLog(dataForClipboard);
+        windowsClipboard.writePaths(dataForClipboard);
     });
-})
+});
 /*
  app.on('window-all-closed', function () {
  if (process.platform !== 'darwin') app.quit()
@@ -88,6 +76,18 @@ app.on('will-quit', () => {
     // Unregister all shortcuts.
     globalShortcut.unregisterAll()
 });
+
+const menu = new Menu()
+menu.append(new MenuItem({
+    label: 'Electron',
+    submenu: [{
+        role: 'help',
+        accelerator: process.platform === 'darwin' ? 'Ctrl+V' : 'Ctrl+V',
+        click: () => { browserLog('Electron rocks!') }
+    }]
+}))
+
+Menu.setApplicationMenu(menu)
 
 function browserLog(s)
 {

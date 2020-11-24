@@ -2,6 +2,7 @@ const OverlayBase              = require('./OverlayBase');
 const {clipboard, ipcRenderer} = require('electron');
 // const clipboardy  = require('clipboardy');
 // const ipcMain = require('electron').ipcMain;
+const fs = require('fs');
 
 module.exports = class DropZoneOverlay extends OverlayBase
 {
@@ -24,87 +25,35 @@ module.exports = class DropZoneOverlay extends OverlayBase
         $('#filedrop').removeClass('show');
     }
 
-    getClipboardMultiple()
-    {
-        ipcRenderer.send("clipboad-multiple-get");
-    }
+    // getClipboardMultiple()
+    // {
+    //     ipcRenderer.send("clipboad-multiple-get");
+    // }
 
     init()
     {
 
-        ipcRenderer.on("clipboad-multiple-get-reply", (_, res) => {
-            console.log(res);
-        });
-        // const electron = require('electron')
-
-        // Importing the clipboard Module
-        // const clipboard = electron.clipboard;
-
-        // clipboard.clear();
-        // const formats = clipboard.availableFormats();
-        // console.log(clipboard.readHTML());
-        // clipboard.readRTF();
-        // console.log(formats);
-
-        $(window).on('keydown', e => {
-
+        /*$(window).on('keydown', e => {
             if (e.ctrlKey && e.keyCode === 86)
             {
-                // e.stopPropagation();
-                // e.preventDefault();
+                e.stopPropagation();
+                e.preventDefault();
 
                 const res = clipboard.readBuffer("CF_HDROP").toString("ucs2");
-                console.log(res);
+                const encoded = encodeURI(res).split('%00');
 
-                this.getClipboardMultiple();
+                for (let i = encoded.length - 1; i >= 0; i--)
+                {
+                    encoded[i] = decodeURI(encoded[i]);
+                    if (fs.existsSync(encoded[i]) === false)
+                    {
+                        encoded.splice(i, 1);
+                    }
+                }
 
-                // console.log(clipboard.readText('selection'))
-                // const formats = clipboard.availableFormats();
-                // console.log(clipboard.readHTML());
-                // console.log(clipboard.readRTF());
-                // console.log(formats);
-                // clipboard.clear();
-
-                // navigator.clipboard.readText().then(clipText => {
-                //     console.log(clipText);
-                // });
-
-                // var clipboardData, pastedData;
-                // const clipboard = electron.clipboard;
-                // Stop data actually being pasted into div
-
-                // var rawFilePath = clipboard.read('FileNameW');
-                // var filePath = rawFilePath.replace(new RegExp(String.fromCharCode(0), 'g'), '');
-                //
-                // console.log(rawFilePath);
-                // console.log(filePath);
-
-                // var rawFilePath = clipboard.read("FileGroupDescriptorW");
-                // var filePath = rawFilePath.replace(new RegExp(String.fromCharCode(0), 'g'), '');
-                // console.log("Clipboard(RAW): ", rawFilePath);
-                // console.log("Clipboard(File): ", filePath);
-
-                // const clipboard = require('clipboard-files')
-                // let fileNames = clipboard.readFiles()
-
-                // let filePath;
-                // const singl = clipboard.readBuffer('FileNameW').toString('ucs2');
-                // const mult  = clipboard.readBuffer('FileGroupDescriptorW').toString('ucs2');
-
-                // console.log(singl);
-                // console.log(singl);
-                // console.log(a);
-                // Get pasted data via clipboard API
-                // clipboardData = e.clipboardData || window.clipboardData;
-
-                // pastedData = clipboardData.getData('Text');
-
-                // Do whatever with pasteddata
-                // console.log(pastedData);
-
+                console.log(encoded);
             }
-
-        });
+        });*/
 
         $(window).on('dragenter', (e) => {this.show(); });
         $('#filedrop').on('click', (e) => {this.hide(); });

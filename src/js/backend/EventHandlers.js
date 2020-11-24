@@ -1,5 +1,10 @@
+const Data              = require('./data/Data');
 const DataService       = require('./data/DataService');
 const DataServiceEvents = require('./data/DataServiceEvents');
+const {spawnSync}       = require('child_process');
+const {clipboard, ipcRenderer, remote}       = require('electron');
+const path              = require('path');
+const Settings          = require('./Settings');
 
 class EventHandlers
 {
@@ -48,6 +53,15 @@ class EventHandlers
 
             switch (e.keyCode)
             {
+                case 67:
+                    //copy selection files to clipboard
+                    let paths = [];
+                    for (let i = 0; i < Data.selectedItemNames.length; i++)
+                        paths.push(Settings.getMediaPathForFileName(Data.selectedItemNames[i]));
+
+                    ipcRenderer.send("send-to-clipboard", paths);
+                    break;
+
                 case 37:
                     this.site.callPreviousPage();
                     break;	//left
