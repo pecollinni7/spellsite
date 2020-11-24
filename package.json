@@ -11,8 +11,7 @@
         "owner": "pecollinni7",
         "repo": "spellsite"
       }
-    ],
-    "build": "--release-notes.md=release-notes.md"
+    ]
   },
   "scripts": {
     "start": "electron .",
