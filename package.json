@@ -11,7 +11,8 @@
         "owner": "pecollinni7",
         "repo": "spellsite"
       }
-    ]
+    ],
+    "build": "--release-notes.md=release-notes.md"
   },
   "scripts": {
     "start": "electron .",
@@ -19,7 +20,7 @@
     "releaseminor": "npm version minor && electron-builder -p always",
     "releasemajor": "npm version major && electron-builder -p always",
     "dist": "electron-builder",
-    "build": "electron-builder --windows ",
+    "build": "electron-builder --windows",
     "postinstall": "electron-builder install-app-deps",
     "publish": "npm run build && electron-builder --publish=always"
   },
