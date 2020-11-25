@@ -151,6 +151,7 @@ class Data
 		this.dataFile[fileName].tags = newTags;
 	}
 
+
 	static updateTag(fileName, tagName, value)
 	{
 		switch (value)

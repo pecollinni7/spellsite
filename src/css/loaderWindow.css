@@ -1,0 +1,13 @@
+.container {
+    /*margin: 0 0 0 0;*/
+    /*padding: 0 0 0 0;*/
+    /*display: block;*/
+
+    /*background-color: rgba(0,0,0,0);*/
+    /*opacity: 0.2;*/
+
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

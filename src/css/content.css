@@ -29,7 +29,8 @@
 	width: 100% !important;
 	height: auto !important;
 	border: transparent solid 1px;
-	-webkit-user-drag: none;
+	/*-webkit-user-drag: none;*/
+
 }
 
 .content img.selected {

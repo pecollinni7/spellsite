@@ -40,14 +40,14 @@ class Content
 		})
 	}
 
-	updateTagsForSelectedItems(tagName, tagValue)
-	{
-		const selectedItems = this.getSelectedItems();
-
-		selectedItems.forEach(selectedItem => {
-			selectedItem.updateTag(tagName, tagValue);
-		})
-	}
+	// updateTagsForSelectedItems(tagName, tagValue)
+	// {
+	// 	const selectedItems = this.getSelectedItems();
+	//
+	// 	selectedItems.forEach(selectedItem => {
+	// 		selectedItem.updateTag(tagName, tagValue);
+	// 	});
+	// }
 
 	removeSelectedItems()
 	{

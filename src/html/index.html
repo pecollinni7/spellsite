@@ -7,7 +7,11 @@
     <script>window.$ = window.jQuery = require('jquery');</script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="../fonts/OpenSans-Light.ttf">
+
+
+<!--    TODO: find another way to load this font. it gives you a warning like this-->
+<!--    <link rel="stylesheet" href="../fonts/OpenSans-Light.ttf">-->
+
 
     <script src="../lib/bootstrap.min.js"></script>
     <script src="../lib/jquery-ui.js"></script>
@@ -15,6 +19,11 @@
 
     <script src="../lib/gif-player.es6.js"></script>
     <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+
+
+<!--    3d viewer-->
+<!--    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>-->
+<!--    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>-->
 
 
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
@@ -46,9 +55,9 @@
 
 
 <div class="titlebar" id="titlebar">
-    <a class="icon" onmousedown="navigation.setDropdownPos();">&#xE700;</a>
+    <a class="icon" onmousedown="setDropdownPos();">&#xE700;</a>
     <a class="icon" onmousedown="site.reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
-    <a class="icon" onmousedown="site.addTagButton();" data-toggle="tooltip" data-placement="bottom" title="Add new Tag">&#xE948;</a>
+    <a class="icon" onmousedown="site.overlayManager.showOverlay(OM.NEW_TAG_OVERLAY);" data-toggle="tooltip" data-placement="bottom" title="Add new Tag">&#xE948;</a>
 
     <!--    <a  data-toggle="tooltip" data-placement="bottom" title="Server is online">-->
 <!--    </a>-->
@@ -74,8 +83,8 @@
     <img class="icon" id="serverIcon" data-toggle="tooltip" data-placement="bottom" title="Server online" src="../images/dot_red.png">
 
 
-    <a class="text" onmousedown="site.contentPages.activePage.clearSelection(); site.tags.clearSelection();">Deselect</a>
-    <a class="icon navButton" onclick="navigation.toggleNavigation(this)" data-toggle="tooltip"
+    <a class="text" onmousedown="site.clearSelection();">Deselect</a>
+    <a class="icon navButton" onclick="toggleNavigation(this)" data-toggle="tooltip"
        data-placement="bottom" title="Toggle Navigation">&#xE70E;</a>
 
     <div class="window-controls" id="window-controls">
@@ -109,7 +118,7 @@
 </div>
 
 <div class="dropdown-menu" id="mainmenu">
-    <a class="dropdown-item" href="#">Set Media Folder</a>
+    <a class="dropdown-item" href="#" onmousedown="choseMediaDirectory()">Set Storage Folder</a>
     <a class="dropdown-item " href="#">
         Set page size
 <!--        <input class="form-control-sm" type="number" value="50" min="0" max="500" step="10"/>-->
@@ -119,19 +128,19 @@
 <!--        <label for="spinner">Select a value:</label>-->
 <!--        <input id="spinner" name="value">-->
 <!--    </a>-->
-    <a class="dropdown-item" href="#">Something else here</a>
-    <a class="dropdown-item" href="#" onmousedown="site.tags.sortGridByDataListOrder()">Test func</a>
+    <a class="dropdown-item" href="#" onmousedown="settings.clearSettings()">Clear Settings</a>
+    <a class="dropdown-item" href="#" onmousedown="console.log('test')">Test func</a>
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="#">Separated link</a>
 </div>
 
 <div class="dropdown-menu" id="tagcontextmenu">
-    <a class="dropdown-item" onmousedown="site.deleteTag()" href="#">Delete tag</a>
+    <a class="dropdown-item" onmousedown="site.tagsController.removeTag(site.data.currentTagName)" href="#">Delete tag</a>
     <a class="dropdown-item" href="#">Action 2</a>
 </div>
 
 <div class="dropdown-menu" id="itemcontextmenu">
-    <a class="dropdown-item" onmousedown="site.deleteSelectedItems()" href="#">Delete selected items</a>
+    <a class="dropdown-item" onmousedown="site.contentController.deleteSelectedItems()" href="#">Delete selected items</a>
     <a class="dropdown-item" href="#">Action 2</a>
 </div>
 
@@ -150,7 +159,8 @@
     <div class="text-center" style="margin-top: 20px">
         <button type="button"
                 class="btn btn-primary btn-lg btn-light"
-                onclick="site.choseMediaDirectory()">Select</button>
+                onclick="choseMediaDirectory()">Select</button>
+<!--                onclick="site.choseMediaDirectory()">Select</button>-->
     </div>
 
 
@@ -161,49 +171,45 @@
 
     <label class="text-center  h5" for="addTagInputName">Please specify the name for the new tag:</label>
 
+    <!--    TODO: add regex for letter matching     -->
     <input type="text" class="addTagInputName" id="addTagInputName" name="name"
            placeholder="TagName..." autofocus required minlength="1"
-           onkeyup="site.tagOverlay.handleKeyPress()">
+           onkeyup="site.om_newTag.handleKeyPress();">
 
 <!--    <h6 class="text-danger text-center " id="errorText" style="display: none">-->
 <!--        * Tag with that name already exists-->
 <!--    </h6>-->
 
     <div>
-
-        <button type="button"
-                class="btn btn-secondary  btn-light"
-                onclick="site.addTagButtonCancel()">
-            Cancel
-        </button>
-
-        <button type="button"
-                class="btn btn-secondary  btn-light"
-                onclick="site.addTagButtonConfirm()">
-            Confirm
-        </button>
+        <button type="button" class="btn btn-secondary  btn-light" onclick="site.om.hideOverlay();">Cancel</button>
+        <button type="button" class="btn btn-secondary  btn-light" onclick="site.om_newTag.confirm();">Confirm</button>
     </div>
 </div>
 
-<div class="notificationOverlay">
-    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-        <strong>Notification test!</strong> Welcome stranger.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
 
-    <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-        <strong>Auto dismissible notification!</strong> blablabla release notes here...
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+
+
+
+
+<div class="notificationOverlay" id="notificationOverlay">
+<!--    <div class="alert alert-secondary alert-dismissible fade show" role="alert">-->
+<!--        <strong>Notification test!</strong> Welcome stranger.-->
+<!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
+
+<!--    <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">-->
+<!--        <strong>Auto dismissible notification!</strong> blablabla release notes here...-->
+<!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
+
+
 </div>
 
 <script>
-
-
     setTimeout(
         function()
         {
@@ -211,19 +217,27 @@
             $('#myAlert').alert('close');
             // $('#progressBar').toggleClass('show');
 
-        }, 3000);
+        }, 2000);
 
     $('#myAlert').on('closed.bs.alert', function () {
         // do something…
         // alert('asdad');
-    })
+    });
+
+
 </script>
 
-<div class="overlay" id="overlay" onclick="site.overlay.hideOverlay(this)" ></div>
+
+
+
+
+<div class="overlay" id="overlay" onclick="site.overlayManager.hideOverlay();" ></div>
 
 <div class="content" id="content"></div>
 
 <div class="footer" id="footer"></div>
+
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" auto-rotate camera-controls></model-viewer>-->
 
 
 
@@ -254,12 +268,31 @@
 
 <!--</script>-->
 
-<script src="../js/appDownloaderService.js"></script>
+<!--<script src="../js/appDownloaderService.js"></script>-->
 <script src="../js/titlebar.js"></script>
+<!--<script src="../js/backend/App.js"></script>-->
 <script src="../js/Start.js"></script>
+<!--<script src="../js/backend/TagOverlay.js"></script>-->
 
 <!--<script src="../js/GUI.js"></script>-->
-<!--<script src="../js/navigation.js"></script>-->
+<script src="../js/navigation.js"></script>
 <script src="../js/renderer.js"></script>
+
+<script>
+    function setDropdownPos()
+    {
+        const dropdown = $('#mainmenu');
+        dropdown.css({top: 30, left: 0, position: 'fixed'});
+        dropdown.toggleClass('show');
+
+        dropdown.on('mouseleave mousedown', () => {
+            dropdown.removeClass('show');
+        });
+
+
+    }
+
+    const OM = require('../js/backend/overlay/OverlayManager');
+</script>
 </body>
 </html>

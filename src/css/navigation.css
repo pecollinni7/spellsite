@@ -56,7 +56,7 @@
 	background-color: #bdbdbd;
 	color: #424242;
 
-	transition: background-color 0.15s ease;
+	/*transition: background-color 0.5s ease;*/
 }
 
 .pagination>li:first-child>a, .pagination>li:first-child>span {
