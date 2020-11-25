@@ -51,7 +51,8 @@ app.whenReady().then(() => {
     ipcMain.on('ondragstart', (event, filePaths) => {
         event.sender.startDrag({
             files: filePaths,
-            icon: 'D:\\_WebStorm\\spellsite\\src\\images\\dot_green.png'
+            icon: 'D:\\_WebStorm\\spellsite\\src\\images\\icon_Copy.png',
+
         })
     })
 });
