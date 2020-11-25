@@ -23,7 +23,11 @@ class MuuriGrid
 
         this.grid = new Muuri('.tags', {
 
-            dragEnabled: true, dragContainer: document.body, justifyContent: 'center', layoutOnResize: false, layoutOnInit: true,
+            dragEnabled: true,
+            dragContainer: document.body,
+            justifyContent: 'center',
+            layoutOnResize: false,
+            layoutOnInit: true,
 
             dragStartPredicate: (item, e) => {
 
@@ -40,7 +44,11 @@ class MuuriGrid
             },
 
             layout: {
-                fillGaps: false, horizontal: false, alignRight: false, alignBottom: false, rounding: true
+                fillGaps: false,
+                horizontal: false,
+                alignRight: false,
+                alignBottom: false,
+                rounding: true
             }
 
         });

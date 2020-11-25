@@ -191,20 +191,22 @@
 
 
 
-<div class="notificationOverlay">
-    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-        <strong>Notification test!</strong> Welcome stranger.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+<div class="notificationOverlay" id="notificationOverlay">
+<!--    <div class="alert alert-secondary alert-dismissible fade show" role="alert">-->
+<!--        <strong>Notification test!</strong> Welcome stranger.-->
+<!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
 
-    <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-        <strong>Auto dismissible notification!</strong> blablabla release notes here...
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+<!--    <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">-->
+<!--        <strong>Auto dismissible notification!</strong> blablabla release notes here...-->
+<!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
+
+
 </div>
 
 <script>
@@ -215,12 +217,14 @@
             $('#myAlert').alert('close');
             // $('#progressBar').toggleClass('show');
 
-        }, 1000);
+        }, 2000);
 
     $('#myAlert').on('closed.bs.alert', function () {
         // do something…
         // alert('asdad');
-    })
+    });
+
+
 </script>
 
 

@@ -1,12 +1,12 @@
-const {app, ipcMain, BrowserWindow, globalShortcut, clipboard, Menu, MenuItem} = require('electron');
-const {autoUpdater}                                            = require('electron-updater');
-const path                                                     = require('path');
-const log                                                      = require('electron-log');
-const fs                                                       = require('fs');
-const windowsClipboard                                         = require('windows-file-clipboard');
-const electronLocalshortcut = require('electron-localshortcut');
+const {app, ipcMain, globalShortcut} = require('electron');
+const {BrowserWindow}                = require('electron');
+const {autoUpdater}                  = require('electron-updater');
+const electronLocalshortcut          = require('electron-localshortcut');
+const windowsClipboard               = require('windows-file-clipboard');
+const slash                          = require('slash');
+const path                           = require('path');
+const log                            = require('electron-log');
 
-const Data = require('./src/js/backend/data/Data');
 
 let loaderWindow;
 let window;
@@ -16,19 +16,8 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 let platform                             = process.platform;
 autoUpdater.logger                       = log;
 autoUpdater.logger.transports.file.level = 'info';
-autoUpdater.fullChangelog                = true;
 
-log.info('App starting...');
-
-app.on('ready', () => {
-
-    // const ret = globalShortcut.register('CommandOrControl+Q', () => {
-    //     app.quit();
-    // });
-    //
-    // if (!ret) {
-    //     console.log('registration failed');
-    // }
+app.whenReady().then(() => {
 
     // createLoaderWindow();
     createWindow();
@@ -42,25 +31,31 @@ app.on('ready', () => {
     // browserLog(clipboard.readBuffer("CF_HDROP").toString("ucs2"));
     // browserLog(process.versions['electron']);
 
-    electronLocalshortcut.register(window, 'Ctrl+V', () => {
-        const paths = windowsClipboard.readPaths();
-        browserLog(paths);
-    });
-
-
-});
-
-app.whenReady().then(() => {
-
-    // globalShortcut.register('Ctrl+V', () => {
-    //     browserLog('Electron loves global shortcuts!')
-    // })
-
     ipcMain.on("send-to-clipboard", (event, dataForClipboard) => {
-        // browserLog(dataForClipboard);
+
+        //TODO: you need to check are the paths valid first and error escape them
+        console.log(dataForClipboard);
         windowsClipboard.writePaths(dataForClipboard);
     });
+
+    electronLocalshortcut.register(window, 'Ctrl+V', () => {
+        let clipboardPaths = windowsClipboard.readPaths();
+
+        for (let i = 0; i < clipboardPaths.length; i++)
+            clipboardPaths[i] = slash(clipboardPaths[i]);
+
+        //TODO: you need to check are the paths valid first and error escape
+        console.log(clipboardPaths);
+    });
+
+    ipcMain.on('ondragstart', (event, filePaths) => {
+        event.sender.startDrag({
+            files: filePaths,
+            icon: 'D:\\_WebStorm\\spellsite\\src\\images\\dot_green.png'
+        })
+    })
 });
+
 /*
  app.on('window-all-closed', function () {
  if (process.platform !== 'darwin') app.quit()
@@ -69,6 +64,7 @@ app.whenReady().then(() => {
  if (BrowserWindow.getAllWindows().length === 0) createWindow()
  });
  */
+
 app.on('will-quit', () => {
     // Unregister a shortcut.
     globalShortcut.unregister('CommandOrControl+Q');
@@ -77,24 +73,10 @@ app.on('will-quit', () => {
     globalShortcut.unregisterAll()
 });
 
-const menu = new Menu()
-menu.append(new MenuItem({
-    label: 'Electron',
-    submenu: [{
-        role: 'help',
-        accelerator: process.platform === 'darwin' ? 'Ctrl+V' : 'Ctrl+V',
-        click: () => { browserLog('Electron rocks!') }
-    }]
-}))
-
-Menu.setApplicationMenu(menu)
-
 function browserLog(s)
 {
     if (window && window.webContents)
-    {
         window.webContents.executeJavaScript(`console.log("${s}")`).then();
-    }
 }
 
 function createLoaderWindow()

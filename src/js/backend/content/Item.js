@@ -119,6 +119,8 @@ class Item
     {
         // const filePath = encodeURI(this.src);
         let res;
+        const test = "adsasdsdsaadsd";
+
 
         switch (extension)
         {
@@ -126,11 +128,24 @@ class Item
             case ".jpg":
             case ".png":
                 res = "<img " + //TODO: add isSelected in the class list
-                    "class='image " + this.htmlSelectedOrNot() + "' src='" + this.src + "'" + " onmousedown='site.handleItemClick(this, event)' " + " oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " + " ondblclick='site.handleItemDoubleClick(this)' " + "data-fileName='" + this.name + "'" + ">";
+                    "class='image " + this.htmlSelectedOrNot() +
+                    "' src='" + this.src + "'" +
+                    " onmouseup='site.handleItemClick(this, event)' " +
+                    " oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " +
+                    " ondblclick='site.handleItemDoubleClick(this)' " +
+                    " ondragstart='site.handleItemDragStart(this, event);' " +
+                    " data-fileName='" + this.name + "'" + ">";
                 return res;
 
             case ".mp4":
-                res = "<video class='videoInsert " + this.htmlSelectedOrNot() + " ' " + "onmousedown='site.handleItemClick(this, event)' " + "ondblclick='site.handleItemDoubleClick(this)' " + "oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " + "data-fileName='" + this.name + "' " + "autoplay loop muted>" + "<source src=" + this.src + " type='video/mp4'>" + "</video>";
+                res = "<video class='videoInsert " + this.htmlSelectedOrNot() + " ' " +
+                    "onmouseup='site.handleItemClick(this, event)' " +
+                    "ondblclick='site.handleItemDoubleClick(this)' " +
+                    "oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " +
+                    "draggable='true' " +
+                    "ondragstart='site.handleItemDragStart(this, event);' " +
+                    "data-fileName='" + this.name + "' " + "autoplay loop muted>" +
+                    "<source src=" + this.src + " type='video/mp4'>" + "</video>";
 
                 // console.log(res);
                 return res;

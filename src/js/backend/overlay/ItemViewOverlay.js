@@ -33,9 +33,9 @@ module.exports = class ItemViewOverlay extends OverlayBase
         this.ext      = Path.extname(this.fileName);
         this.filePath = Settings.getMediaPathForFileName(this.fileName);
 
-        this.selector.html(this.generateHtml()); //append
-        this.selector.addClass('show');
-        this.selector.css('visibility', 'visible');
+        $('#overlay').html(this.generateHtml()); //append
+        $('#overlay').addClass('show');
+        $('#overlay').css('visibility', 'visible');
         $('#navigation').removeClass('faded');
 
         switch (this.ext)
@@ -48,24 +48,35 @@ module.exports = class ItemViewOverlay extends OverlayBase
             case '.gif':
                 setTimeout(() => {
                     $('#gifContent').css('pointer-events', 'auto')
-                }, 50);
+                }, 100);
                 break;
 
             case '.mp4':
                 let mouseX;
-                let video = $('#videoOverlay').get(0);
+                let videoOverlay = $('#videoOverlay');
+                let video        = $(videoOverlay).get(0);
 
-                $('#videoOverlay').on('mousemove', function moveFunc(e) {
-
+                $(videoOverlay).on('mouseenter', (e) => {
                     video.pause();
-                    mouseX = e.offsetX;
+                });
 
-                    let timV = video.duration;
-                    let valV = (timV * mouseX / $(document).width());
+                $(videoOverlay).on('mouseleave', (e) => {
+                    video.play();
+                });
 
-                    valV              = Math.round(valV * 100) / 100;
+                $(videoOverlay).on('mousemove', function moveFunc(e) {
+
+                    mouseX           = e.offsetX;
+                    const timV       = video.duration;
+                    const docWidth   = $(document).width();
+                    const videoWidth = $(video).width();
+
+                    let valV = (timV * mouseX / (docWidth - (docWidth - videoWidth)));
+                    valV     = Math.round(valV * 100) / 100;
+
                     video.currentTime = valV;
                 });
+
                 break;
         }
     }
@@ -149,5 +160,38 @@ module.exports = class ItemViewOverlay extends OverlayBase
         }
     }
 
+    /*async showOverlay()
+     {
+     this.deployHtml();
+     this.selector.addClass('show');
+     this.selector.css('visibility', 'visible');
+     $('#navigation').removeClass('faded');
+
+     switch (this.ext)
+     {
+     case '.gif':
+     setTimeout(() => {
+     $('#gifContent').css('pointer-events', 'auto')
+     }, 30);
+     break;
+
+     case '.mp4':
+     let mouseX;
+     let video = $('#videoOverlay').get(0);
+
+     $('#videoOverlay').on('mousemove', function moveFunc(e) {
+
+     video.pause();
+     mouseX = e.offsetX;
+
+     let timV = video.duration;
+     let valV = (timV * mouseX / $(document).width());
+
+     valV              = Math.round(valV * 100) / 100;
+     video.currentTime = valV;
+     });
+     break;
+     }
+     }*/
 
 };

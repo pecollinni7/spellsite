@@ -6,6 +6,7 @@ class Data
     static _currentPageItemNames = [];
     static _selectedItemNames    = [];
     static _tagNameList          = [];
+    static _mouseDown;
     static _currentTagName;
 
     static get currentTagName() { return this._currentTagName; }
@@ -22,7 +23,8 @@ class Data
     static set currentPageItemNames(value) { this._currentPageItemNames = value; }
     static get tagNameList() { return this._tagNameList; }
     static set tagNameList(value) { this._tagNameList = value; }
-
+    static get mouseDown() { return this._mouseDown; }
+    static set mouseDown(value) { this._mouseDown = value; }
     static get isSelectionEmpty() {return this.selectedItemNames.length === 0;}
 
     constructor() { }

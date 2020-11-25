@@ -5,7 +5,9 @@ const DataService       = require('./data/DataService');
 const Data              = require('./data/Data');
 const Server            = require('./server/Server');
 const remote            = require('electron').remote;
+const {ipcRenderer}     = require('electron');
 const OverlayManager    = require('./overlay/OverlayManager');
+const Settings          = require('./Settings');
 
 class Site
 {
@@ -19,7 +21,6 @@ class Site
     _overlayManager;
 
     get data() {return Data;}
-
     get om() {return this.overlayManager};
 
     //TODO: move this to separate file
@@ -63,6 +64,11 @@ class Site
         this.updateDataFileVersionLabel();
     }
 
+    displaySelectedItemsActiveTags()
+    {
+        this.tagsController.displayTags(this.contentController.getSelectedItemsActiveTags());
+    }
+
     handleItemClick(item, e)
     {
         if (this.eventHandlers.ctrlKey === false)
@@ -80,15 +86,9 @@ class Site
         this.displaySelectedItemsActiveTags();
     }
 
-    displaySelectedItemsActiveTags()
-    {
-        this.tagsController.displayTags(this.contentController.getSelectedItemsActiveTags());
-    }
-
     handleItemDoubleClick(item)
     {
         this.overlayManager.showOverlay(OverlayManager.ITEM_VIEW_OVERLAY, $(item).attr('data-filename'));
-
 
         // this.overlay = new Overlay($(item).attr('data-filename'));
         // this.overlay.showOverlay().then();
@@ -123,8 +123,24 @@ class Site
         else
         {
             this.tagsController.toggleTag(tagName);
-            Server.actionPerformed();
         }
+    }
+
+    handleItemDragStart(item, e)
+    {
+        e.preventDefault();
+        // const fileName = ($(item).attr('data-filename'));
+        // const filePath = Settings.getMediaPathForFileName(fileName);
+        //
+        // ipcRenderer.send('ondragstart', filePath);
+
+        let filePaths = [];
+
+        for (let i = 0; i < Data.selectedItemNames.length; i++)
+            filePaths.push(Settings.getMediaPathForFileName(Data.selectedItemNames[i]));
+
+        ipcRenderer.send('ondragstart', filePaths);
+
     }
 
     callNextPage()
@@ -183,7 +199,7 @@ class Site
 
         if ($(e.target).hasClass('item-content'))
         {
-            contextmenu          = $('#tagcontextmenu');
+            contextmenu         = $('#tagcontextmenu');
             Data.currentTagName = $(e.target).text();
             $("#tagcontextmenu").children().first().text('Delete tag ' + Data.currentTagName);
         }

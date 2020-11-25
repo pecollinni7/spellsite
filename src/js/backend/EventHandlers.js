@@ -1,10 +1,12 @@
-const Data              = require('./data/Data');
-const DataService       = require('./data/DataService');
-const DataServiceEvents = require('./data/DataServiceEvents');
-const {spawnSync}       = require('child_process');
-const {clipboard, ipcRenderer, remote}       = require('electron');
-const path              = require('path');
-const Settings          = require('./Settings');
+const Data                             = require('./data/Data');
+const DataService                      = require('./data/DataService');
+const DataServiceEvents                = require('./data/DataServiceEvents');
+const {spawnSync}                      = require('child_process');
+const {clipboard, ipcRenderer, remote} = require('electron');
+const path                             = require('path');
+const Settings                         = require('./Settings');
+
+const NotificationManager = require('./NotificationManager');
 
 class EventHandlers
 {
@@ -60,6 +62,7 @@ class EventHandlers
                         paths.push(Settings.getMediaPathForFileName(Data.selectedItemNames[i]));
 
                     ipcRenderer.send("send-to-clipboard", paths);
+                    NotificationManager.addNotification("Copied " + paths.length + (paths.length > 1 ? ' files.' : ' file.'), '', true);
                     break;
 
                 case 37:
@@ -117,6 +120,8 @@ class EventHandlers
         let clicked = false, clickY, clickYStart;
         $(document).on({
             'mousedown' : (e) => {
+                Data.mouseDown = true;
+
                 if (e.which === 3)
                 {
                     clicked     = true;
@@ -124,7 +129,8 @@ class EventHandlers
                     clickYStart = e.clientY;
                 }
             }, 'mouseup': (e) => {
-                clicked = false;
+                Data.mouseDown = false;
+                clicked        = false;
                 $('html').css('cursor', 'auto');
                 if (clickYStart === e.clientY)
                 {

@@ -269,18 +269,16 @@ class DataService
 
     static removeTag(tagName)
     {
-        const tags = this.tagsList;
-
-        if (tags.indexOf(tagName) === -1)
+        if (this.tagsList.indexOf(tagName) === -1)
         {
             return;
         }
 
-        for (let i = tags.length - 1; i >= 0; i--)
+        for (let i = this.tagsList.length - 1; i >= 0; i--)
         {
-            if (tags[i] === tagName)
+            if (this.tagsList[i] === tagName)
             {
-                tags.splice(i, 1);
+                this.tagsList.splice(i, 1);
                 break;
             }
         }
@@ -368,7 +366,9 @@ class DataService
     {
         Data.selectedItemNames.forEach(itemName => {
             this.updateTag(itemName, tagName, tagValue);
-        })
+        });
+
+        $(document).trigger('notifyServer');
     }
 
     static getAllFileNamesNoExistCheck()

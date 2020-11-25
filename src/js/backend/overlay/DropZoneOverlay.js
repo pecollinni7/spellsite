@@ -1,8 +1,12 @@
+const Data = require('../data/Data');
 const OverlayBase              = require('./OverlayBase');
 const {clipboard, ipcRenderer} = require('electron');
 // const clipboardy  = require('clipboardy');
 // const ipcMain = require('electron').ipcMain;
 const fs = require('fs');
+
+const NotificationManager = require('../NotificationManager');
+
 
 module.exports = class DropZoneOverlay extends OverlayBase
 {
@@ -15,6 +19,9 @@ module.exports = class DropZoneOverlay extends OverlayBase
 
     show()
     {
+        if (Data.mouseDown)
+            return;
+
         this.overlayManager.hideOverlay();
         $('#filedrop').addClass('show');
         $('#filedrop').css('visibility', 'visible');
@@ -80,6 +87,8 @@ module.exports = class DropZoneOverlay extends OverlayBase
             console.log(droppedHTML);
             console.log(this.process_pinterestPost(droppedHTML));
             console.log(imgURL);
+
+            NotificationManager.addNotification("Dropped link.", '', true);
             // console.log(e.dataTransfer.files);
             // this.server.uploadMedia(e.dataTransfer.files);
 

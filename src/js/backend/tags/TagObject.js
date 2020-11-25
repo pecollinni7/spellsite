@@ -44,7 +44,6 @@ class TagObject
 
             //add tag change to patch
             DataService.updateTagsForSelectedItems(this.name, this.active);
-
         }
 
         this.deploy();

@@ -161,7 +161,6 @@ class TagsController
     }
 
     removeTag(tagName)
-
     {
         this.removeTagsFromGrid(tagName);
         DataService.removeTag(tagName);
