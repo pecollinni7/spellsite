@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.7.33 (26/11/2020)
+Backend enhancements:
+- Reimplemented drag and drop on the app
+- Reimplemented drag and drop out of the app
+- Differentiated server notifications for data and file updates
+- Implemented notifications [NotificationManager]
+- Implemented sound 
+
+Fixes:
+- Content regenerate on file download
+- File upload
+- Added some test sound and img files
+
+---
+
+## 1.7.32 (25/11/2020)
+added Gren changelog.md
+---
+
 ## 1.7.31 (25/11/2020)
 fixed server notifying for changes. implemented drag n drop onto the window as well as drag n drop out of the window. copy n paste also works both ways.
 ---
@@ -110,11 +129,3 @@ Rebuilded a lot of things from scratch.
 ---
 
 ## 1.6.9 (28/10/2020)
-
----
-
-## 1.5.1 (26/10/2020)
-
----
-
-## 1.5.0 (26/10/2020)
