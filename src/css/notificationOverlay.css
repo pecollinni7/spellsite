@@ -10,5 +10,7 @@
     /*background-color: #1d2124;*/
     /*opacity: 80%;*/
 
-    /*pointer-events: none;*/
+
+    cursor: pointer;
+
 }

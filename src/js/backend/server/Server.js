@@ -8,6 +8,7 @@ class Server
     constructor()
     {
         $(document).on('notifyServer', this.actionPerformed);
+        $(document).on('uploadMedia', (e, files)=>{this.uploadMedia(files)});
     }
 
     //rename to notifyServer

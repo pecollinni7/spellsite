@@ -49,12 +49,17 @@ app.whenReady().then(() => {
     });
 
     ipcMain.on('ondragstart', (event, filePaths) => {
+
+        console.log(filePaths);
+
         event.sender.startDrag({
             files: filePaths,
-            icon: 'D:\\_WebStorm\\spellsite\\src\\images\\icon_Copy.png',
+            icon: 'D:/_WebStorm/spellsite/src/images/icon_copy_x256x64.png'
+        });
 
-        })
-    })
+    });
+
+
 });
 
 /*

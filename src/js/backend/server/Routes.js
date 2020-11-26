@@ -135,15 +135,18 @@ const setData = (cb) => needle.request('post', Settings.SRV_SET_DATA_FILE,
 
 const uploadFile = (data) => {
 
-    needle.request('post', Settings.SRV_UPLOAD_FILE, {file: data}, {multipart: true}, (error, response, body) => {
+    needle.request('post', Settings.SRV_UPLOAD_FILE,
+        {file: data},
+        {multipart: true},
+        (error, response, body) => {
         if (error) console.log(error);
         console.log(body);
     })
 };
 
-const uploadMedia = function (files) {
+function uploadMedia (files) {
 
-    for (let i = 0; i < files.length; i++)
+    for (let i=0; i<files.length; i++)
     {
         constructUploadData(files[i]).then((data) => {
 
@@ -153,12 +156,14 @@ const uploadMedia = function (files) {
             console.log(err);
         })
     }
-};
+}
 
 async function constructUploadData(file)
 {
     return {
-        buffer: await fs.readFileSync(file.path), filename: await file.name, content_type: (await FileType.fromFile(file.path)).mime
+        buffer: await fs.readFileSync(file.path),
+        filename: await file.name,
+        content_type: (await FileType.fromFile(file.path)).mime
     };
 }
 
@@ -211,7 +216,7 @@ function updateDownloadProgressBar()
             $('#progressBar').removeClass('show');
             filesToDownload = 0;
             filesDownloaded = 0;
-            $(document).trigger("newFilesArrived");
+            $(document).trigger(DataServiceEvents.CONTENT_UPDATE);
 
         }, 3000);
     }

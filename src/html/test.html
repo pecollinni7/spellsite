@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Title</title>
 
-	<link rel="stylesheet" type="text/css" href="../../src/css/dropArea.css"/>
+<!--	<link rel="stylesheet" type="text/css" href="../../src/css/dropArea.css"/>-->
 
 </head>
 <body>
@@ -15,5 +15,21 @@
 	</div>
 </div>
 
+
+<img src="../images/logo3.gif" ondragstart="dragStart(event)" ondragend="dragEnd(event)" draggable="true">
+
 </body>
+
+<script>
+
+	function dragStart(event) {
+		console.log('dragstart');
+	}
+
+	function dragEnd(event) {
+		console.log('dragEnd');
+	}
+
+</script>
+
 </html>

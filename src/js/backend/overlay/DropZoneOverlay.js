@@ -1,11 +1,15 @@
-const Data = require('../data/Data');
+const Data                     = require('../data/Data');
 const OverlayBase              = require('./OverlayBase');
 const {clipboard, ipcRenderer} = require('electron');
 // const clipboardy  = require('clipboardy');
 // const ipcMain = require('electron').ipcMain;
 const fs = require('fs');
 
+const slash = require('slash');
+
 const NotificationManager = require('../NotificationManager');
+const path = require('path');
+
 
 
 module.exports = class DropZoneOverlay extends OverlayBase
@@ -15,14 +19,193 @@ module.exports = class DropZoneOverlay extends OverlayBase
     constructor(overlayManager)
     {
         super(overlayManager);
+        // super.selector = $('#filedrop');
     }
+
+    init()
+    {
+
+        /*$(window).on('keydown', e => {
+         if (e.ctrlKey && e.keyCode === 86)
+         {
+         e.stopPropagation();
+         e.preventDefault();
+
+         const res = clipboard.readBuffer("CF_HDROP").toString("ucs2");
+         const encoded = encodeURI(res).split('%00');
+
+         for (let i = encoded.length - 1; i >= 0; i--)
+         {
+         encoded[i] = decodeURI(encoded[i]);
+         if (fs.existsSync(encoded[i]) === false)
+         {
+         encoded.splice(i, 1);
+         }
+         }
+
+         console.log(encoded);
+         }
+         });*/
+
+
+        $(window).on({
+            'dragenter': (e) => {
+                e.preventDefault();
+                if (e.originalEvent.dataTransfer.effectAllowed === 'all')
+                    this.show();
+
+            },
+            'dragover' : (e) => {
+
+                e.preventDefault();
+                if (e.originalEvent.dataTransfer.effectAllowed === 'all')
+                    e.originalEvent.dataTransfer.dropEffect = 'copy';
+                else
+                    e.originalEvent.dataTransfer.dropEffect = 'none';
+
+            },
+        });
+
+        $('#filedrop').on({
+            'dragover' : (e) => {
+
+                e.preventDefault();
+                if (e.originalEvent.dataTransfer.effectAllowed === 'all')
+                    e.originalEvent.dataTransfer.dropEffect = 'copy';
+                else
+                    e.originalEvent.dataTransfer.dropEffect = 'none';
+            },
+            'dragleave': (e) => {
+                e.preventDefault();
+                this.hide();
+            },
+            'drop'     : (e) => {
+
+                e.preventDefault();
+
+                if (e.originalEvent.dataTransfer.files.length > 0)
+                {
+                    let fileNames = [];
+                    let filePaths = [];
+                    const files = e.originalEvent.dataTransfer.files;
+
+                    for (let i=0; i<files.length; i++)
+                    {
+                        fileNames.push('<br>' + files[i].name + '</>');
+                        filePaths.push(files[i].path);
+                    }
+
+                    fileNames = fileNames.join(',');
+
+                    const fileCount = e.originalEvent.dataTransfer.files.length;
+                    const msg = "Dropped " + fileCount + (fileCount > 1 ? " files" : " file");
+                    NotificationManager.addNotification(msg, fileNames, true);
+
+                    $(document).trigger('uploadMedia', [files]);
+                }
+                else
+                {
+                    NotificationManager.addNotification("Dropped link.", '', true);
+
+                    // $('#drop-content').html(`
+                    //     <img src='"${  slash(filePaths[0].path)}"'>
+                    // `);
+
+                    const droppedHTML = e.originalEvent.dataTransfer.getData("text/html");
+                    const dropContext = $('<div>').append(droppedHTML);
+                    const imgURL      = $(dropContext).find("img").attr('src');
+
+                    console.log(droppedHTML);
+                    console.log(this.process_pinterestPost(droppedHTML));
+                    console.log(imgURL);
+                    // $('#drop-content').html("<img src=\'" + imgURL + "\'>");
+
+
+                }
+                this.hide();
+
+            }
+        });
+
+
+
+        // document.getElementById('filedrop').addEventListener('drop', (e) => {
+
+        // console.log('drop');
+        // e.preventDefault();
+        //
+        // this.hide();
+
+        // console.log(e.dataTransfer.getData('html'));
+        // console.log(e.dataTransfer.getData('text'));
+        // console.log(e.dataTransfer.getData('text/html'));
+
+        // const droppedHTML = e.dataTransfer.getData("text/html");
+        // const dropContext = $('<div>').append(droppedHTML);
+        // const imgURL      = $(dropContext).find("img").attr('src');
+
+        // console.log(droppedHTML);
+        // console.log(this.process_pinterestPost(droppedHTML));
+        // console.log(imgURL);
+        // console.log(e.dataTransfer.files);
+
+        // this.server.uploadMedia(e.dataTransfer.files);
+
+        // for (let i = 0; i < e.originalEvent.dataTransfer.files.length; i++)
+        // {
+        // 	this.server.uploadMedia(e.originalEvent.dataTransfer.files.item(i));
+        //
+        // }
+        // });
+
+        $('#filedrop').on('webkitTransitionEnd transitionend', () => {
+            if ($('#filedrop').hasClass('show') === false)
+                $('#filedrop').css('visibility', 'hidden');
+        });
+    }
+
+    // dragType(e)
+    // {
+    //     e.preventDefault();
+    //     if (Data.draggingOwnElement)
+    //     {
+    //         e.originalEvent.dataTransfer.dropEffect = 'none';
+    //     }
+    //     else
+    //     {
+    //         e.originalEvent.dataTransfer.dropEffect = 'copy';
+    //
+    //     }
+    //
+    //     // this.show(e);
+    // }
+
+    generateHtmlForItem(itemPaths)
+    {
+        let res = [];
+
+        for (let i = 0; i < itemPaths.length; i++){
+            const path = (slash(itemPaths[i])).toString();
+            console.log(path);
+            // res.push("<img src=\'" + path + "\'>");
+        }
+
+        return res;
+    }
+
+    dragContainsFiles(event)
+    {
+        if (event.dataTransfer.types)
+            for (let i = 0; i < event.dataTransfer.types.length; i++)
+                if (event.dataTransfer.types[i] === "Files")
+                    return true;
+
+        return false;
+    }
+
 
     show()
     {
-        if (Data.mouseDown)
-            return;
-
-        this.overlayManager.hideOverlay();
         $('#filedrop').addClass('show');
         $('#filedrop').css('visibility', 'visible');
     }
@@ -30,89 +213,9 @@ module.exports = class DropZoneOverlay extends OverlayBase
     hide()
     {
         $('#filedrop').removeClass('show');
-    }
+        // $('#filedrop').css('visibility', 'hidden');
 
-    // getClipboardMultiple()
-    // {
-    //     ipcRenderer.send("clipboad-multiple-get");
-    // }
 
-    init()
-    {
-
-        /*$(window).on('keydown', e => {
-            if (e.ctrlKey && e.keyCode === 86)
-            {
-                e.stopPropagation();
-                e.preventDefault();
-
-                const res = clipboard.readBuffer("CF_HDROP").toString("ucs2");
-                const encoded = encodeURI(res).split('%00');
-
-                for (let i = encoded.length - 1; i >= 0; i--)
-                {
-                    encoded[i] = decodeURI(encoded[i]);
-                    if (fs.existsSync(encoded[i]) === false)
-                    {
-                        encoded.splice(i, 1);
-                    }
-                }
-
-                console.log(encoded);
-            }
-        });*/
-
-        $(window).on('dragenter', (e) => {this.show(); });
-        $('#filedrop').on('click', (e) => {this.hide(); });
-        $('#filedrop').on('dragleave', (e) => {this.hide(); });
-        $('#filedrop').on('dragenter', (e) => {this.allowDrag(e); });
-        $('#filedrop').on('dragover', (e) => {this.allowDrag(e); });
-
-        document.getElementById('filedrop').addEventListener('drop', (e) => {
-            // $('#filedrop').on('drop', (e) => {
-
-            e.preventDefault();
-            setTimeout(() => {
-                $('#filedrop').removeClass('show')
-            }, 1000);
-
-            // console.log(e.dataTransfer.getData('html'));
-            // console.log(e.dataTransfer.getData('text'));
-            // console.log(e.dataTransfer.getData('text/html'));
-
-            const droppedHTML = e.dataTransfer.getData("text/html");
-            const dropContext = $('<div>').append(droppedHTML);
-            const imgURL      = $(dropContext).find("img").attr('src');
-
-            console.log(droppedHTML);
-            console.log(this.process_pinterestPost(droppedHTML));
-            console.log(imgURL);
-
-            NotificationManager.addNotification("Dropped link.", '', true);
-            // console.log(e.dataTransfer.files);
-            // this.server.uploadMedia(e.dataTransfer.files);
-
-            // for (let i = 0; i < e.originalEvent.dataTransfer.files.length; i++)
-            // {
-            // 	this.server.uploadMedia(e.originalEvent.dataTransfer.files.item(i));
-            //
-            // }
-        });
-
-        $('#filedrop').on('webkitTransitionEnd transitionend', () => {
-            if (!$('#filedrop').hasClass('show'))
-                $('#filedrop').css('visibility', 'hidden');
-        });
-
-    }
-
-    allowDrag(e)
-    {
-        if (true)
-        {  // Test that the item being dragged is a valid one
-            e.originalEvent.dataTransfer.dropEffect = 'copy';
-            e.preventDefault();
-        }
     }
 
     process_pinterestPost(droppedHTML)

@@ -71,6 +71,9 @@ class Site
 
     handleItemClick(item, e)
     {
+        if (e.button === 2)
+            return;
+
         if (this.eventHandlers.ctrlKey === false)
         {
             this.contentController.clearSelection();
@@ -128,16 +131,19 @@ class Site
 
     handleItemDragStart(item, e)
     {
+        console.log('own item drag start ');
+        Data.draggingOwnElement = true;
+
+        if (Data.isItemSelected($(item).attr('data-fileName')) === false)
+            this.handleItemClick(item, e)
+
         e.preventDefault();
-        // const fileName = ($(item).attr('data-filename'));
-        // const filePath = Settings.getMediaPathForFileName(fileName);
-        //
-        // ipcRenderer.send('ondragstart', filePath);
 
         let filePaths = [];
 
         for (let i = 0; i < Data.selectedItemNames.length; i++)
             filePaths.push(Settings.getMediaPathForFileName(Data.selectedItemNames[i]));
+
 
         ipcRenderer.send('ondragstart', filePaths);
 
@@ -211,7 +217,7 @@ class Site
             contextmenu.removeClass('show');
         });
 
-        $(window).on('mousedown', () => {
+        $(window).on('click', () => {
             contextmenu.removeClass('show');
         });
         $(window).on('scroll', () => {

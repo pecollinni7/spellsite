@@ -13,10 +13,21 @@ class NotificationManager
 
         if (autohide)
         {
-            setTimeout(() => {
-                $('#' + this.#id).alert('close');
-            }, 2000);
+            const id = this.#id;
+            setTimeout((e) => {
+                $('#' + id).alert('close');
+            }, 3000);
         }
+
+        this.playSound();
+
+    }
+
+    static playSound()
+    {
+        var obj = document.createElement("audio");
+        obj.src = "../sounds/264447__kickhat__open-button-2.wav";
+        obj.play().then(r => {console.log('audio played')});
     }
 
     static #generateHtml(title, message, elementId)

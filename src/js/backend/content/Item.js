@@ -117,22 +117,25 @@ class Item
 
     generateHtml(extension)
     {
-        // const filePath = encodeURI(this.src);
         let res;
-        const test = "adsasdsdsaadsd";
-
 
         switch (extension)
         {
             case ".gif":
             case ".jpg":
             case ".png":
+            case ".tiff":
+            case ".tga":
+            case ".bmp":
                 res = "<img " + //TODO: add isSelected in the class list
                     "class='image " + this.htmlSelectedOrNot() +
                     "' src='" + this.src + "'" +
                     " onmouseup='site.handleItemClick(this, event)' " +
                     " oncontextmenu='site.openContextMenu(event, event.clientX - 5, event.clientY - 5)' " +
                     " ondblclick='site.handleItemDoubleClick(this)' " +
+                    " draggable='true' " +
+                    // " ondragover='site.handleItemOnDragOver(this, event);' " +
+                    // " ondragend='site.handleItemOnDragEnd(this, event);' " +
                     " ondragstart='site.handleItemDragStart(this, event);' " +
                     " data-fileName='" + this.name + "'" + ">";
                 return res;

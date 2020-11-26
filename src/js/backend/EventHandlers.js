@@ -81,17 +81,9 @@ class EventHandlers
             this.ctrlKey = e.ctrlKey;
         });
 
-        $(document).on('newFilesArrived', () => {
-            // if (this.site.contentPages.activePage) this.site.contentPages.activePage.holdSelection();
-            //
-            // this.site.generatePagesAndPagination();
-            // this.site.tags.generateTagsFromData();
-            //
-            // if (this.site.contentPages.activePage) this.site.contentPages.activePage.restoreSelection();
-            //
-            // this.site.updateDataFileVersionLabel();
-
-            console.log('new files arrived');
+        $(document).on(DataServiceEvents.CONTENT_UPDATE, () => {
+            this.site.contentController.regenerate();
+            this.site.displaySelectedItemsActiveTags();
         });
 
         $(document).on(DataServiceEvents.NEW_DATA_FILE, () => {

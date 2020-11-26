@@ -93,7 +93,7 @@
 	linear-gradient(0deg, yellow 50%, transparent 30%);
 
 	background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-	background-size: 15px 4px, 15px 4px, 4px 15px, 4px 15px;
+	background-size: 15px 1px, 15px 1px, 1px 15px, 1px 15px;
 	padding: 1px;
 	animation: border-dance 8s infinite linear;
 	z-index: -1;

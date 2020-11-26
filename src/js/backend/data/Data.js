@@ -2,11 +2,12 @@ class Data
 {
     static _currentPageIndex     = 0;
     static _filterMode           = false;
+    static _draggingOwnElement   = false;
     static _filterModeTags       = [];
     static _currentPageItemNames = [];
     static _selectedItemNames    = [];
     static _tagNameList          = [];
-    static _mouseDown;
+    static _mouseDown = false;
     static _currentTagName;
 
     static get currentTagName() { return this._currentTagName; }
@@ -24,10 +25,18 @@ class Data
     static get tagNameList() { return this._tagNameList; }
     static set tagNameList(value) { this._tagNameList = value; }
     static get mouseDown() { return this._mouseDown; }
+    static get mouseUp() { return !this.mouseDown; }
     static set mouseDown(value) { this._mouseDown = value; }
+    static get draggingOwnElement() { return this._draggingOwnElement; }
+    static set draggingOwnElement(value) { this._draggingOwnElement = value; }
     static get isSelectionEmpty() {return this.selectedItemNames.length === 0;}
 
     constructor() { }
+
+    static isItemSelected(itemName)
+    {
+        return this.selectedItemNames.includes(itemName);
+    }
 
 }
 

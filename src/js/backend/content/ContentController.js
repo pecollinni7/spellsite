@@ -97,7 +97,7 @@ class ContentController
             }
 
             this.removeItems(itemNamesToRemove);
-            this.addItems(itemNamesToAdd);
+            this.addItems(itemNamesToAdd, true);
 
             // console.log('Content items regenerate:\nremoved: ' + itemNamesToRemove + '\nadded: ' + itemNamesToAdd);
         }
@@ -140,14 +140,21 @@ class ContentController
         this.paginationController.generate(this.numOfPages);
     }
 
-    addItems(itemNames = [])
+    addItems(itemNames = [], unshift=false)
     {
-        itemNames.forEach(item => this.addItem(item));
+        itemNames.forEach(item => this.addItem(item, unshift));
     }
 
-    addItem(itemName)
+    addItem(itemName, unshift=false)
     {
-        this.items.push(new Item(itemName));
+        if (unshift)
+        {
+            this.items.unshift(new Item(itemName));
+        }
+        else
+        {
+            this.items.push(new Item(itemName));
+        }
     }
 
     removeItems(itemNames = [])
@@ -366,6 +373,7 @@ class ContentController
 
     generatePages()
     {
+        console.log('generating pages now');
         const previousPagesCount = this.numOfPages;
 
         this.pages = this.chunk(this.items, Settings.app_pageSize);
