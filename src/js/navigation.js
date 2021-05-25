@@ -40,9 +40,11 @@ function setDropdownPos()
     dropdown.css({top: 30, left: 0, position: 'fixed'});
     dropdown.toggleClass('show');
 
-    dropdown.on('mouseleave mousedown', () => {
-        dropdown.removeClass('show');
-    });
+    //TODO: it needs to disappear when clicked off container
+
+    // dropdown.on('mouseleave mousedown', () => {
+    //     dropdown.removeClass('show');
+    // });
 
 
 }

@@ -16,40 +16,45 @@ Fixes:
 ---
 
 ## 1.7.32 (25/11/2020)
-added Gren changelog.md
+- Added Gren changelog.md
 ---
 
 ## 1.7.31 (25/11/2020)
-fixed server notifying for changes. implemented drag n drop onto the window as well as drag n drop out of the window. copy n paste also works both ways.
+Fixes:
+- Server notifying for changes
+- Implemented drag n drop onto the window as well as drag n drop out of the window 
+- Copy n paste also works both ways.
 ---
 
 ## 1.7.30 (24/11/2020)
-clipboard stuff
+Backend enchancements:
+- Clipboard stuff
 ---
 
 ## 1.7.29 (24/11/2020)
-sorted stuff out
+Refactoring
 ---
 
 ## 1.7.25 (24/11/2020)
-moved release-notes.md to root
+Fixes:
+- Moved release-notes.md to root
 
 ---
 
 ## 1.7.24 (24/11/2020)
-testingtestingadadsadsadsaadsadsdsa
+Refactoring
 ---
 
 ## 1.7.23 (24/11/2020)
-who knows how many times 
+Refactoring
 ---
 
 ## 1.7.22 (24/11/2020)
-lets hope that this one works
+Refactoring
 ---
 
 ## 1.7.21 (24/11/2020)
-hgfhgfhgfhgfhgfhgfhgf
+Refactoring
 ---
 
 ## 1.7.20 (24/11/2020)

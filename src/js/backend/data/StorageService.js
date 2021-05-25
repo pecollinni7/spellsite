@@ -1,6 +1,7 @@
-const settings = require('../Settings');
-const fs       = require('fs');
-const path     = require('path');
+const settings       = require('../Settings');
+const fs             = require('fs');
+const path           = require('path');
+const moveFileModule = require('move-file');
 
 function readFile(filePath)
 {
@@ -19,17 +20,27 @@ function writeFile(fileData, filePath)
 
 function deleteFile(fileName)
 {
-    try {
+    try
+    {
         console.log('deleting file: ' + fileName);
         fs.unlinkSync(settings.getMediaPathForFileName(fileName));
     }
-    catch (err) {
+    catch (err)
+    {
         console.error(err)
     }
+}
+
+function moveFile(srcPath, destinationPath, cb)
+{
+    (async () => {
+        await moveFileModule(srcPath, destinationPath, {overwrite: true}).then(() => {cb();});
+    })();
 }
 
 module.exports = {
     readFile,
     writeFile,
-    deleteFile
+    deleteFile,
+    moveFile
 }

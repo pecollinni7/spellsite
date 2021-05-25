@@ -12,5 +12,9 @@
 
 
     cursor: pointer;
+    user-select: none; /* Standard */
+}
 
+pre {
+    white-space: pre-wrap;
 }

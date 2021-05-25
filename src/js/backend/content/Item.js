@@ -52,7 +52,7 @@ class Item
     set tags(value)
     {
         this._tags = value;
-        DataService.setTagsForFileName(this.name, this._tags);
+        // DataService.setTagsForFileName(this.name, this._tags);
     }
 
     getActiveTags()

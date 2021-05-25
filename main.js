@@ -1,15 +1,19 @@
 const {app, ipcMain, globalShortcut} = require('electron');
-const {BrowserWindow}                = require('electron');
+const {BrowserWindow, shell}         = require('electron');
 const {autoUpdater}                  = require('electron-updater');
 const electronLocalshortcut          = require('electron-localshortcut');
 const windowsClipboard               = require('windows-file-clipboard');
 const slash                          = require('slash');
 const path                           = require('path');
 const log                            = require('electron-log');
+const FileType          = require('file-type');
+const EventEmitter = require('events');
+class MyEmitter extends EventEmitter {}
 
 
 let loaderWindow;
 let window;
+const useLoaderWindow = true;
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
@@ -19,8 +23,10 @@ autoUpdater.logger.transports.file.level = 'info';
 
 app.whenReady().then(() => {
 
-    // createLoaderWindow();
-    createWindow();
+        createLoaderWindow();
+        createWindow();
+
+
     autoUpdater.checkForUpdatesAndNotify().then();
 
     setInterval(() => {
@@ -38,14 +44,34 @@ app.whenReady().then(() => {
         windowsClipboard.writePaths(dataForClipboard);
     });
 
-    electronLocalshortcut.register(window, 'Ctrl+V', () => {
-        let clipboardPaths = windowsClipboard.readPaths();
+    electronLocalshortcut.register(window, 'Ctrl+V', (e) => {
+        let clipboardPaths;
+        let res = [];
 
-        for (let i = 0; i < clipboardPaths.length; i++)
-            clipboardPaths[i] = slash(clipboardPaths[i]);
+        try
+        {
+            clipboardPaths = windowsClipboard.readPaths();
 
-        //TODO: you need to check are the paths valid first and error escape
-        console.log(clipboardPaths);
+            if (clipboardPaths.length === 0)
+            {
+                return;
+            }
+
+            for (let i = 0; i < clipboardPaths.length; i++)
+            {
+                // clipboardPaths[i] = slash(clipboardPaths[i]);
+                res[i] = {path: clipboardPaths[i], name: path.basename(clipboardPaths[i])}
+            }
+
+            console.log(res);
+            //  TODO: you need to check are the paths valid first and error escape
+            window.webContents.send("uploadMedia", res);
+        }
+        catch (e)
+        {
+            console.log('Clipboard files error ', e);
+        }
+
     });
 
     ipcMain.on('ondragstart', (event, filePaths) => {
@@ -54,13 +80,28 @@ app.whenReady().then(() => {
 
         event.sender.startDrag({
             files: filePaths,
-            icon: 'D:/_WebStorm/spellsite/src/images/icon_copy_x256x64.png'
+            icon : 'D:/_WebStorm/spellsite/src/images/icon_copy_x256x64.png'
         });
 
     });
 
+    // shell.showItemInFolder('D:\\testmedia\\media\\e8c4b459-e1cf-4952-8fcf-ae95b8c2cbe2.gif');
+    //
 
 });
+
+
+
+
+
+/*
+async function constructUploadData(filePath)
+{
+    return {
+        content_type: (await FileType.fromFile(path.normalize(filePath))).mime
+    };
+}
+*/
 
 /*
  app.on('window-all-closed', function () {
@@ -92,8 +133,9 @@ function createLoaderWindow()
         height        : 540,
         show          : true,
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
-            webSecurity    : false
+            webSecurity    : true
         },
         // backgroundColor: '#00000000',
         frame         : false,
@@ -101,15 +143,17 @@ function createLoaderWindow()
     });
 
     loaderWindow.loadFile('./src/html/loader.html').then(r => {
-        createWindow();
+        // createWindow();
 
     });
     // loaderWindow.webContents.openDevTools();
 
-    loaderWindow.on('closed', function () {
+    loaderWindow.on('close', function () {
         // loaderWindow = null;
+
         // createWindow();
         window.show();
+
     });
 
 }
@@ -136,6 +180,7 @@ function createWindow()
         window.webContents.send('message', text);
     }
 
+    // window.loadFile('./src/html/test.html').then(r => {});
     window.loadFile('./src/html/index.html').then(r => {});
     window.webContents.openDevTools();
 
@@ -143,7 +188,10 @@ function createWindow()
         window = null;
     });
 
-    window.show();
+
+    // if (!useLoaderWindow)
+    // window.show();
+    // window.hide();
 
     // Let autoUpdater check for updates, it will start downloading it automatically
     autoUpdater.on('checking-for-update', () => {

@@ -1,13 +1,17 @@
-const ContentController = require('./content/ContentController');
-const TagsController    = require('./tags/TagsController');
-const EventHandlers     = require('./EventHandlers');
-const DataService       = require('./data/DataService');
-const Data              = require('./data/Data');
-const Server            = require('./server/Server');
-const remote            = require('electron').remote;
-const {ipcRenderer}     = require('electron');
-const OverlayManager    = require('./overlay/OverlayManager');
-const Settings          = require('./Settings');
+const ContentController   = require('./content/ContentController');
+const TagsController      = require('./tags/TagsController');
+const EventHandlers       = require('./EventHandlers');
+const DataService         = require('./data/DataService');
+const Data                = require('./data/Data');
+const Server              = require('./server/Server');
+const remote              = require('electron').remote;
+const {ipcRenderer}       = require('electron');
+const {shell}             = require('electron')
+const OverlayManager      = require('./overlay/OverlayManager');
+const Settings            = require('./Settings');
+const Path                = require('path');
+const NotificationManager = require('./NotificationManager');
+const MDParser            = require('./MDParser');
 
 class Site
 {
@@ -23,7 +27,7 @@ class Site
     get data() {return Data;}
     get om() {return this.overlayManager};
 
-    //TODO: move this to separate file
+    //TODO: move this to a separate file
     get om_newTag() {return this.overlayManager.getOverlay(OverlayManager.NEW_TAG_OVERLAY);}
     get om_settings() {return this.overlayManager.getOverlay(OverlayManager.SETTINGS_OVERLAY);}
     get om_dropZone() {return this.overlayManager.getOverlay(OverlayManager.DROP_ZONE_OVERLAY);}
@@ -52,16 +56,21 @@ class Site
         this.server            = new Server(this);
 
         this.overlayManager = new OverlayManager(this);
-        this.overlayManager.init();
+        this.overlayManager.init(); //TODO: maybe move to initialize func
     }
 
     initialize()
     {
-        this.contentController.generate();
-        this.tagsController.generate();
-        this.server.polling.run();
+        DataService.deleteUndownloadedFiles();
+        // Settings.clearTempMediaFolder();
 
+        // this.contentController.generate();
+        // this.tagsController.generate();
+        // this.server.polling.run();
+        //
         this.updateDataFileVersionLabel();
+        //
+        // MDParser.showChangeLogNotification();
     }
 
     displaySelectedItemsActiveTags()
@@ -71,18 +80,19 @@ class Site
 
     handleItemClick(item, e)
     {
-        if (e.button === 2)
+        if (e.button === 1) //middle click
             return;
 
-        if (this.eventHandlers.ctrlKey === false)
+        //TODO: when you click multiple times with right click it messes up the selection. select it but not :/
+        if (this.eventHandlers.ctrlKey || e.button === 2 && Data.isItemSelected($(item).attr('data-filename')))
         {
-            this.contentController.clearSelection();
-            this.tagsController.clearSelection();
-
             this.contentController.toggleItemSelection(item);
         }
         else
         {
+            this.contentController.clearSelection();
+            this.tagsController.clearSelection();
+
             this.contentController.toggleItemSelection(item);
         }
 
@@ -131,7 +141,6 @@ class Site
 
     handleItemDragStart(item, e)
     {
-        console.log('own item drag start ');
         Data.draggingOwnElement = true;
 
         if (Data.isItemSelected($(item).attr('data-fileName')) === false)
@@ -143,7 +152,6 @@ class Site
 
         for (let i = 0; i < Data.selectedItemNames.length; i++)
             filePaths.push(Settings.getMediaPathForFileName(Data.selectedItemNames[i]));
-
 
         ipcRenderer.send('ondragstart', filePaths);
 
@@ -193,21 +201,26 @@ class Site
         }
     }
 
+    //TODO: maybe you should switch this with real OS context menu. bcs this one sucks. bcs you suck.
     openContextMenu(e, mouseX, mouseY)
     {
         let contextmenu;
+        Data.currentItemName = $(e.target).attr('data-filename');
 
         if ($(e.target).hasClass('image') || $(e.target).hasClass('videoInsert'))
         {
             contextmenu = $('#itemcontextmenu');
-            this.contentController.getItemByName($(e.target).attr('data-filename')).select();
+            this.contentController.getItemByName(Data.currentItemName).select();
         }
-
-        if ($(e.target).hasClass('item-content'))
+        else if ($(e.target).hasClass('item-content'))
         {
             contextmenu         = $('#tagcontextmenu');
             Data.currentTagName = $(e.target).text();
-            $("#tagcontextmenu").children().first().text('Delete tag ' + Data.currentTagName);
+            $("#tagcontextmenu").children().first().text('Delete Tag [' + Data.currentTagName + ']');
+        }
+        else
+        {
+            return;
         }
 
         contextmenu.css({top: mouseY, left: mouseX, position: 'fixed'});
@@ -215,6 +228,7 @@ class Site
 
         contextmenu.on('mouseleave', () => {
             contextmenu.removeClass('show');
+            contextmenu.off('mouseleave');
         });
 
         $(window).on('click', () => {
@@ -228,6 +242,17 @@ class Site
     updateDataFileVersionLabel()
     {
         document.getElementById("version-dataFile").innerText = 'd' + DataService.version;
+    }
+
+    revealItemsInExplorer()
+    {
+        let itemPath = (Path.normalize(Settings.getMediaPathForFileName(Data.currentItemName)));
+        shell.showItemInFolder(Path.normalize(itemPath));
+        /*shell.openPath(Path.normalize(Settings.path_mediaFolder)).then(()=>{
+         select the selection via cmd
+         });
+         shell.showItemInFolder('D:\\testmedia\\media\\1dfe0ec3-b9b1-461a-b85b-b8ba194d0086.gif');*/
+
     }
 }
 

@@ -178,11 +178,13 @@ class ContentController
         }
     }
 
+    //TODO: if you remove the items in the media folder, they are not shown/deleted in the app
     deleteSelectedItems()
     {
         const selectedItemNames = this.getSelectedItemNames();
         this.removeItems(selectedItemNames);
         this.generatePages();
+        //TODO: there is a visual glitch here because client and server are both messing with the content page. deploy is being called twice i think.
         this.deployPage(Data.currentPageIndex, false);
 
         DataService.removeItems(selectedItemNames);
@@ -373,7 +375,6 @@ class ContentController
 
     generatePages()
     {
-        console.log('generating pages now');
         const previousPagesCount = this.numOfPages;
 
         this.pages = this.chunk(this.items, Settings.app_pageSize);

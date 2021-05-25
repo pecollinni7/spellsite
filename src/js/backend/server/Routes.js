@@ -18,10 +18,13 @@ const getData = () => needle.request('get',
 
         if (error)
         {
+            if ((error.toString()).includes('ECONNREFUSED'))
+            {
+                $('#serverIcon').attr("src", Settings.ICON_DOT_RED);
+                $('#serverIcon').attr("title", "Server Offline");
 
-            console.error('Server error:\n' + error); //no connection
-            $('#serverIcon').attr("src", Settings.ICON_DOT_RED);
-            $('#serverIcon').attr("data-original-title", "Server offline");
+                // console.error('Cannot connect to the server');
+            }
 
             return;
         }
@@ -30,8 +33,9 @@ const getData = () => needle.request('get',
 
         if (response.statusCode === 200)
         {
-            // console.log('new data arrived');
             $('#serverIcon').attr("src", Settings.ICON_DOT_GREEN);
+            $('#serverIcon').attr("title", "Server Online");
+
 
             fs.writeFile(
                 Settings.path_dataFile,
@@ -55,12 +59,16 @@ const getData = () => needle.request('get',
         {
             // console.log('you are up to date');
             $('#serverIcon').attr("src", Settings.ICON_DOT_GREEN);
+            $('#serverIcon').attr("title", "Server Online");
+
         }
 
         if (response.statusCode === 404)
         {
-            console.log('Server DataFile not found');
+            // console.error('Server DataFile not found');
             $('#serverIcon').attr("src", Settings.ICON_DOT_GREEN);
+            $('#serverIcon').attr("title", "Server Online");
+
         }
     });
 
@@ -93,22 +101,45 @@ function downloadNewFiles()
 
     fileDiff.forEach(fileName => {
 
-        downloadFile(fileName);
+        //TODO: who should go first here?
         DataService.addToCurrentlyDownloading(fileName);
+        downloadFile(fileName);
 
     });
-
-    // $(document).trigger("newFilesArrived");
-
 }
 
-const setData = (cb) => needle.request('post', Settings.SRV_SET_DATA_FILE,
+function downloadLink(data)
+{
+
+    needle.request(
+        'post',
+        Settings.SRV_DOWNLOAD_LINK,
+        {jsonLinks: JSON.stringify(data)},
+        {multipart: true, json: true},
+        (error, response, body) => {
+
+            if (error)
+            {
+                console.log(error);
+                return;
+            }
+
+
+            console.log('server downloadLink response statusCode = ' + response.statusCode);
+            // console.log(body);
+        });
+}
+
+const setData = (cb) => needle.request(
+    'post',
+    Settings.SRV_SET_DATA_FILE,
     {jsonData: JSON.stringify(DataService.patchFile)},
     {multipart: true, json: true},
     (error, response, body) => {
 
         if (error)
         {
+            //TODO: app stops listening to the server if its not online after making a change
             console.log(error);
             return;
         }
@@ -171,6 +202,7 @@ const downloadFile = (fileName) => {
 
     let stream = needle.get(Settings.SRV_DOWNLOAD_MEDIA + fileName);
     let ws     = fs.createWriteStream(Settings.getMediaPathForFileName(fileName));
+    // let ws     = fs.createWriteStream(Settings.getTempMediaPathForFileName(fileName));
 
     stream.on('readable', function () {
         let chunk;
@@ -191,7 +223,7 @@ const downloadFile = (fileName) => {
         DataService.removeFromCurrentlyDownloading(fileName);
         filesDownloaded += 1;
         updateDownloadProgressBar();
-        // $(document).trigger("newFilesArrived");
+        $(document).trigger(DataServiceEvents.CONTENT_UPDATE);
     });
 };
 
@@ -228,6 +260,6 @@ function normalizeValue(val, max, min)
 }
 
 module.exports = {
-    setData, getData, uploadMedia, downloadFile, downloadNewFiles
+    setData, getData, downloadLink, uploadMedia, downloadFile, downloadNewFiles
 };
 

@@ -10,6 +10,7 @@ window.wheelzoom = (function(){
 		initialZoom: 1,
 		initialX: 0.5,
 		initialY: 0.5,
+		dragMultiplier: 1
 	};
 
 	var main = function(img, options){
@@ -110,8 +111,8 @@ window.wheelzoom = (function(){
 
 		function drag(e) {
 			e.preventDefault();
-			bgPosX += (e.pageX - previousEvent.pageX);
-			bgPosY += (e.pageY - previousEvent.pageY);
+			bgPosX += (e.pageX - previousEvent.pageX)*settings.dragMultiplier;
+			bgPosY += (e.pageY - previousEvent.pageY)*settings.dragMultiplier;
 			previousEvent = e;
 			updateBgStyle();
 		}

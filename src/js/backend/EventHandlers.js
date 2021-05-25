@@ -96,6 +96,8 @@ class EventHandlers
             //todo update the content for filter mode
         });
 
+
+        //TODO: combine all the mouse events in the project
         $(document).on('mousedown', e => {
             const element = $(e.target);
 
@@ -120,6 +122,10 @@ class EventHandlers
                     clickY      = e.pageY;
                     clickYStart = e.clientY;
                 }
+
+
+
+
             }, 'mouseup': (e) => {
                 Data.mouseDown = false;
                 clicked        = false;

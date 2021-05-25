@@ -21,9 +21,13 @@
     <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
 
-<!--    3d viewer-->
+    <script src="../lib/wheelzoom.js"></script>
+
+
+    <!--    3d viewer-->
 <!--    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>-->
 <!--    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>-->
+    <script type="module" src="https://modelviewer.dev/node_modules/@google/model-viewer/dist/model-viewer.min.js"></script>
 
 
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
@@ -55,9 +59,9 @@
 
 
 <div class="titlebar" id="titlebar">
-    <a class="icon" onmousedown="setDropdownPos();">&#xE700;</a>
-    <a class="icon" onmousedown="site.reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
-    <a class="icon" onmousedown="site.overlayManager.showOverlay(OM.NEW_TAG_OVERLAY);" data-toggle="tooltip" data-placement="bottom" title="Add new Tag">&#xE948;</a>
+    <a class="icon" onclick="setDropdownPos();">&#xE700;</a>
+    <a class="icon" onclick="site.reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
+    <a class="icon" onclick="site.overlayManager.showOverlay(OM.NEW_TAG_OVERLAY);" data-toggle="tooltip" data-placement="bottom" title="Add new Tag">&#xE948;</a>
 
     <!--    <a  data-toggle="tooltip" data-placement="bottom" title="Server is online">-->
 <!--    </a>-->
@@ -135,13 +139,21 @@
 </div>
 
 <div class="dropdown-menu" id="tagcontextmenu">
-    <a class="dropdown-item" onclick="site.tagsController.removeTag(site.data.currentTagName)" href="#">Delete tag</a>
-    <a class="dropdown-item" href="#">Action 2</a>
+    <a class="dropdown-item" href="#">Ignore Tag [Alt+Click]</a>
+    <a class="dropdown-item" href="#">Rename Tag</a>
+    <a class="dropdown-item" onclick="site.tagsController.removeTag(site.data.currentTagName)" href="#">Delete Tag</a>
 </div>
 
 <div class="dropdown-menu" id="itemcontextmenu">
-    <a class="dropdown-item" onclick="site.contentController.deleteSelectedItems()" href="#">Delete selected items</a>
-    <a class="dropdown-item" href="#">Action 2</a>
+    <a class="dropdown-item text-muted" href="#">Copy [Ctrl+C]</a>
+    <a class="dropdown-item text-muted" href="#">Paste [Ctrl+V]</a>
+    <a class="dropdown-item" onclick="site.contentController.deleteSelectedItems()" href="#">Delete [Del]</a>
+    <a class="dropdown-item text-muted" href="#">Copy Tags</a>
+    <a class="dropdown-item text-muted" href="#">Paste Tags</a>
+    <a class="dropdown-item" onclick="site.revealItemsInExplorer();" href="#">Reveal in Explorer [Ctrl+E]</a>
+<!--    <div class="dropdown-divider text-muted"></div>-->
+    <a class="dropdown-item text-muted" href="#">Download</a>
+    <a class="dropdown-item text-muted" href="#">Download [original]</a>
 </div>
 
 <div class="navigation collapse show" id="navigation">
@@ -251,7 +263,38 @@
 
 <div class="overlay" id="overlay" onclick="site.overlayManager.hideOverlay();" ></div>
 
-<div class="content" id="content"></div>
+<!--<div class="modalViewerTemp">-->
+<!--    <model-viewer style='width:1000px; height:1000px' camera-controls skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/DamagedHelmet.glb"></model-viewer>-->
+
+<!--</div>-->
+
+<div class="content" id="content">
+
+<!--    <model-viewer camera-controls  skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/test_out/test.gltf"></model-viewer>-->
+<!--    <model-viewer camera-controls  skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/test.glb"></model-viewer>-->
+    <model-viewer camera-controls  skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/exp.glb"></model-viewer>
+<!--    <model-viewer camera-controls  skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/football_ball_out/football_ball.gltf"></model-viewer>-->
+    <model-viewer camera-controls disable-zoom skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/DamagedHelmet.glb"></model-viewer>
+
+    <!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+
+</div>
 
 <div class="footer" id="footer"></div>
 
@@ -303,7 +346,7 @@
         dropdown.css({top: 30, left: 0, position: 'fixed'});
         dropdown.toggleClass('show');
 
-        dropdown.on('mouseleave mousedown', () => {
+        dropdown.on('click', () => {
             dropdown.removeClass('show');
         });
 

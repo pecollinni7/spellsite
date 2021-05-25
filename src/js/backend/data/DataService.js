@@ -9,6 +9,7 @@ class DataService
 
     static _dataFile;
     static _patchFile;
+    static _dlItems;
     static _currentlyDownloading = [];
 
     static get version()
@@ -32,6 +33,19 @@ class DataService
     static set dataFile(value)
     {
         this._dataFile = value;
+    }
+
+    static get dlItems()
+    {
+        if (this._dlItems === undefined)
+            this._dlItems = StorageService.readFile(Settings.path_dlItemsFile);
+
+        return this._dlItems;
+    }
+
+    static set dlItems(value)
+    {
+        this._dlItems = value;
     }
 
     static get patchFile()
@@ -73,6 +87,11 @@ class DataService
         StorageService.writeFile(this.patchFile, Settings.path_patchFile);
     }
 
+    static saveDlItems()
+    {
+        StorageService.writeFile(this.dlItems, Settings.path_dlItemsFile);
+    }
+
     static reloadData()
     {
         this._dataFile = StorageService.readFile(Settings.path_dataFile);
@@ -81,27 +100,64 @@ class DataService
     static addToCurrentlyDownloading(fileName)
     {
         if (this.isCurrentlyDownloading(fileName) === false)
-        {
-            this._currentlyDownloading.push(fileName);
-        }
+            this.dlItems['filesCurrentlyDownloading'].push(fileName);
+
+        this.saveDlItems();
+
+        // if (this.isCurrentlyDownloading(fileName) === false)
+        //     this._currentlyDownloading.push(fileName);
     }
 
     static removeFromCurrentlyDownloading(fileName)
     {
-        const index = this._currentlyDownloading.indexOf(fileName);
-        if (index > -1)
-        {
-            this._currentlyDownloading.splice(index, 1);
-        }
+        // StorageService.moveFile(Settings.getTempMediaPathForFileName(fileName), Settings.getMediaPathForFileName(fileName), () => {
+
+            if (this.dlItems.hasOwnProperty('filesCurrentlyDownloading'))
+            {
+                const itemIndex = this.dlItems['filesCurrentlyDownloading'].indexOf(fileName);
+                if (itemIndex > -1)
+                    this.dlItems['filesCurrentlyDownloading'].splice(itemIndex, 1);
+
+                this.saveDlItems();
+            }
+        // });
+
+        // const index = this._currentlyDownloading.indexOf(fileName);
+        // if (index > -1)
+        // {
+        //     this._currentlyDownloading.splice(index, 1);
+        // }
     }
 
     static isCurrentlyDownloading(fileName)
     {
-        return this._currentlyDownloading.indexOf(fileName) !== -1;
+        return this.dlItems['filesCurrentlyDownloading'].indexOf(fileName) > -1;
+
+        // return this._currentlyDownloading.indexOf(fileName) > -1;
+    }
+
+    static deleteUndownloadedFiles()
+    {
+        if (this.dlItems.hasOwnProperty('filesCurrentlyDownloading'))
+        {
+            for (let i = this.dlItems['filesCurrentlyDownloading'].length - 1; i >= 0; i--)
+            {
+                const fileName = this.dlItems['filesCurrentlyDownloading'][i];
+
+                if (Settings.fileExists(this.dlItems['filesCurrentlyDownloading'][i]))
+                {
+                    StorageService.deleteFile(fileName);
+                    this.removeFromCurrentlyDownloading(fileName);
+                }
+            }
+        }
+
+
     }
 
     static setTagsForFileName(name)
     {
+        console.log('emptyFunction');
     }
 
     static getFileNames(tagsFilter = null)

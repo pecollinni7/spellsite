@@ -22,6 +22,8 @@ function removeDuplicatesFromArray(arr)
     return Array.from(it);
 }
 
+
+
 module.exports = {
     displayTextWidth,
     removeDuplicatesFromArray,

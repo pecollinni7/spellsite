@@ -33,6 +33,13 @@ module.exports = class ItemViewOverlay extends OverlayBase
         this.ext      = Path.extname(this.fileName);
         this.filePath = Settings.getMediaPathForFileName(this.fileName);
 
+        $('#gifContent').css('pointer-events', 'none');
+
+        $('#overlay').on('mousemove', (e) => {
+            $('#gifContent').css('pointer-events', 'auto');
+            $('#overlay').off('mousemove');
+        })
+
         $('#overlay').html(this.generateHtml()); //append
         $('#overlay').addClass('show');
         $('#overlay').css('visibility', 'visible');
@@ -40,15 +47,31 @@ module.exports = class ItemViewOverlay extends OverlayBase
 
         switch (this.ext)
         {
+            case '.gif':
+                // $('#gifContent').css('pointer-events', 'auto');
+
+                // setTimeout(() => {
+                //     $('#gifContent').css('pointer-events', 'auto')
+                // }, 100);
+                break;
+
             case '.jpg':
             case '.png':
             case '.tga':
             case '.tiff':
             case '.bmp':
-            case '.gif':
-                setTimeout(() => {
-                    $('#gifContent').css('pointer-events', 'auto')
-                }, 100);
+
+                let imgElement = document.getElementById('overlay').childNodes[0].childNodes[0];
+                wheelzoom(imgElement, {zoom:0.45, dragMultiplier:2});
+
+                imgElement.addEventListener('mousedown', function(e) {
+                    imgElement.classList.remove('interactive');
+                })
+
+                imgElement.addEventListener('mouseup', function(e) {
+                    imgElement.classList.add('interactive');
+                })
+
                 break;
 
             case '.mp4':
@@ -83,6 +106,8 @@ module.exports = class ItemViewOverlay extends OverlayBase
 
     hide()
     {
+
+        //TODO: this.selector is maybe not working :/
         this.selector.on("webkitTransitionEnd transitionend", () => {
             if (this.selector.hasClass('show') === false)
             {
@@ -94,6 +119,7 @@ module.exports = class ItemViewOverlay extends OverlayBase
 
         this.selector.removeClass('show');
         $('#gifContent').css('pointer-events', 'none');
+        $('#videoOverlay').off();
     }
 
     generateHtml()
@@ -132,7 +158,7 @@ module.exports = class ItemViewOverlay extends OverlayBase
 
                 return "<div id='gifContent' class='gifContent'>" +
                     // "<img id='gifLoader' src=" + "../images/loading.gif" + ">" +
-                    "<gif-player class='gifPlayer' src=" + this.filePath +
+                    "<gif-player class='gifPlayer' id='gifPlayer' src=" + this.filePath +
                     " size='contain' speed='1' play prerender style='" +
                     // "width:" + ($(document).width() / 100 * 70) + "px; " +
                     // "height:" + ($(document).height() / 100 * 50) + "px; " +
@@ -141,13 +167,15 @@ module.exports = class ItemViewOverlay extends OverlayBase
                     "position: center; display: block'>" +
                     "</div>";
 
+                //TODO: only include supported filetypes
             case '.png':
             case '.jpg':
             case '.bmp':
             case '.tiff':
             case '.tga':
                 return "<div class='imageOverlay'>" +
-                    "<img src=" + this.filePath + ">" +
+                    "<img class='interactive' src=" + this.filePath + ">" +
+
                     "</div>";
 
             case '.mp4':

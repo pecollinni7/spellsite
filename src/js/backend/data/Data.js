@@ -7,8 +7,9 @@ class Data
     static _currentPageItemNames = [];
     static _selectedItemNames    = [];
     static _tagNameList          = [];
-    static _mouseDown = false;
+    static _mouseDown            = false;
     static _currentTagName;
+    static _currentItemName;
 
     static get currentTagName() { return this._currentTagName; }
     static set currentTagName(value) { this._currentTagName = value; }
@@ -30,6 +31,8 @@ class Data
     static get draggingOwnElement() { return this._draggingOwnElement; }
     static set draggingOwnElement(value) { this._draggingOwnElement = value; }
     static get isSelectionEmpty() {return this.selectedItemNames.length === 0;}
+    static get currentItemName() { return this._currentItemName; }
+    static set currentItemName(value) { this._currentItemName = value; }
 
     constructor() { }
 

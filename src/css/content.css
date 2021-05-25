@@ -1,8 +1,8 @@
 
 .content {
 	margin-top: 180px;
-	
-	
+
+
 	/* Prevent vertical gaps */
 	line-height: 0;
 
@@ -16,23 +16,45 @@
 	transition: margin-top 0.44s cubic-bezier(0.215, 0.61, 0.355, 1);
 	/*margin-bottom: 14px;*/
 	overflow: scroll;
-	
+
 	/*z-index: 2;*/
 	user-select: none;
 
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	/*transition: width 0.2s ease;*/
+
+}
+
+.content.shrink {
+	animation: shrink-content 0.15s ease-out;
 }
 
 
+@keyframes shrink-content {
+	0% {
+		width: 100%;
+	}
+	5% {
+		width: 99%;
+	}
+	70% {
+		width: 99.75%;
+	}
+	100% {
+		width: 100%;
+	}
+}
 
-.content img {
+.content img  {
 	/* Just in case there are inline attributes */
 	width: 100% !important;
 	height: auto !important;
 	border: transparent solid 1px;
 	/*-webkit-user-drag: none;*/
-
 }
-
 .content img.selected {
 	/* Just in case there are inline attributes */
 	/*width: 100% !important;*/
@@ -40,6 +62,24 @@
 	border: 0;
 
 }
+
+.content model-viewer {
+	/* Just in case there are inline attributes */
+	/*padding-top: 100%;*/
+	width: 100% !important;
+	height: 300px !important ;
+	border: transparent solid 1px;
+	/*-webkit-user-drag: none;*/
+}
+.content model-viewer.selected {
+	/* Just in case there are inline attributes */
+	/*width: 100% !important;*/
+	/*height: auto !important;*/
+	border: 0;
+
+}
+
+/*TODO: add settings for max (more) columns*/
 
 
 @media (max-width: 15000px) {

@@ -5,30 +5,90 @@
 	<title>Title</title>
 
 <!--	<link rel="stylesheet" type="text/css" href="../../src/css/dropArea.css"/>-->
+<!--	<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>-->
+<!--	<script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>-->
+	<script type="module"
+			src="https://modelviewer.dev/node_modules/@google/model-viewer/dist/model-viewer.min.js">
+	</script>
+	<script src="../lib/wheelzoom.js"></script>
+
+
+	<style>
+		img.interactive {
+			transition: background 0.20s ease;
+			/*transition: background-position 10.9s ease;*/
+		}
+
+		model-viewer {
+			position: absolute;
+			left:0px;
+			right:0px;
+
+			width: 100%;
+			height: 100%;
+		}
+
+
+
+	</style>
 
 </head>
 <body>
 
-<div class="dropArea " id="dropArea">
-	<div class="box">
-		<p>adsasdasdasads</p>
-	</div>
-</div>
+<!--<div class="dropArea " id="dropArea">-->
+<!--	<div class="box">-->
+<!--		<p>adsasdasdasads</p>-->
+<!--	</div>-->
+<!--</div>-->
+
+<model-viewer camera-controls disable-zoom skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/DamagedHelmet.glb"></model-viewer>
+
+<!--<img src="../images/logo3.gif" ondragstart="dragStart(event)" ondragend="dragEnd(event)" draggable="true">-->
+
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
 
 
-<img src="../images/logo3.gif" ondragstart="dragStart(event)" ondragend="dragEnd(event)" draggable="true">
+<!--<img id='testic'  class='zoom interactive' src='../images/logo3.gif' alt='Daisy!' width='540' height='540'/>-->
+
+
+<!--<video class='zoom' width='540' height='540' autoplay loop>-->
+<!--	<source src="../images/test.mp4" type="video/mp4"/>-->
+<!--</video>-->
+
+
+
+
 
 </body>
 
 <script>
 
-	function dragStart(event) {
-		console.log('dragstart');
-	}
+	// document.querySelector('img.zoom').addEventListener('mousedown', function(e) {
+	// 	document.getElementById('testic').classList.remove('interactive');
+	// })
+	//
+	// document.querySelector('img.zoom').addEventListener('mouseup', function(e) {
+	// 	document.getElementById('testic').classList.add('interactive');
+	// })
+	//
+	// wheelzoom(document.getElementById('testic'), {zoom:0.45, dragMultiplier:2});
 
-	function dragEnd(event) {
-		console.log('dragEnd');
-	}
 
 </script>
 
