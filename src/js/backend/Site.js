@@ -6,7 +6,7 @@ const Data                = require('./data/Data');
 const Server              = require('./server/Server');
 const remote              = require('electron').remote;
 const {ipcRenderer}       = require('electron');
-const {shell}             = require('electron')
+const {shell}             = require('electron');
 const OverlayManager      = require('./overlay/OverlayManager');
 const Settings            = require('./Settings');
 const Path                = require('path');
@@ -64,12 +64,12 @@ class Site
         DataService.deleteUndownloadedFiles();
         // Settings.clearTempMediaFolder();
 
-        // this.contentController.generate();
-        // this.tagsController.generate();
-        // this.server.polling.run();
-        //
+        this.contentController.generate();
+        this.tagsController.generate();
+        this.server.polling.run();
+
         this.updateDataFileVersionLabel();
-        //
+
         // MDParser.showChangeLogNotification();
     }
 
@@ -144,7 +144,7 @@ class Site
         Data.draggingOwnElement = true;
 
         if (Data.isItemSelected($(item).attr('data-fileName')) === false)
-            this.handleItemClick(item, e)
+            this.handleItemClick(item, e);
 
         e.preventDefault();
 

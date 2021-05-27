@@ -79,8 +79,9 @@ app.whenReady().then(() => {
         console.log(filePaths);
 
         event.sender.startDrag({
-            files: filePaths,
-            icon : 'D:/_WebStorm/spellsite/src/images/icon_copy_x256x64.png'
+            // icon : 'D:/_WebStorm/spellsite/src/images/icon_copy_x256x64.png',
+            icon : 'C:\\Users\\petarj\\WebstormProjects\\spellsite\\src\\images\\icon_copy_x256x64.png',
+            files: filePaths
         });
 
     });
@@ -197,20 +198,20 @@ function createWindow()
     autoUpdater.on('checking-for-update', () => {
         browserLog('Checking for software update...');
         sendStatusToWindow('Checking for update...');
-    })
+    });
     autoUpdater.on('update-available', (info) => {
         browserLog('Software update available.');
         sendStatusToWindow('Update available.');
 
-    })
+    });
     autoUpdater.on('update-not-available', (info) => {
         browserLog('Software update not available.');
         sendStatusToWindow('Update not available.');
-    })
+    });
     autoUpdater.on('error', (err) => {
         browserLog('Error in auto-updater.');
         sendStatusToWindow('Error in auto-updater. ' + err);
-    })
+    });
     autoUpdater.on('download-progress', (progressObj) => {
         let log_message = "Download speed: " + progressObj.bytesPerSecond;
         log_message     = log_message + ' - Downloaded ' + progressObj.percent + '%';

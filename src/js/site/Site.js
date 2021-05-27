@@ -78,7 +78,7 @@ class Site
 		this.generatePagesAndPagination();
 		this.tags.generateTags(Data.tagsList);
 
-		this.server.polling.run();
+		// this.server.polling.run();
 	}
 
 	generatePagesAndPagination(tagsFilter = undefined)
@@ -91,9 +91,6 @@ class Site
 		if (this.contentPages.activePage !== undefined)
 			this.contentPages.activePage.clearSelection();
 	}
-
-
-
 
 	reloadPage()
 	{

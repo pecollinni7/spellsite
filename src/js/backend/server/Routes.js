@@ -23,7 +23,7 @@ const getData = () => needle.request('get',
                 $('#serverIcon').attr("src", Settings.ICON_DOT_RED);
                 $('#serverIcon').attr("title", "Server Offline");
 
-                // console.error('Cannot connect to the server');
+                console.error('Cannot connect to the server');
             }
 
             return;
