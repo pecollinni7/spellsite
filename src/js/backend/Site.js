@@ -64,9 +64,9 @@ class Site
         DataService.deleteUndownloadedFiles();
         // Settings.clearTempMediaFolder();
 
-        this.contentController.generate();
-        this.tagsController.generate();
-        this.server.polling.run();
+        // this.contentController.generate();
+        // this.tagsController.generate();
+        // this.server.polling.run();
 
         this.updateDataFileVersionLabel();
 

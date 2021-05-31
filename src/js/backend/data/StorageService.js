@@ -43,4 +43,4 @@ module.exports = {
     writeFile,
     deleteFile,
     moveFile
-}
+};

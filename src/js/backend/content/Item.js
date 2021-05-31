@@ -153,6 +153,15 @@ class Item
                 // console.log(res);
                 return res;
 
+            case ".glb":
+                res = "<model-viewer " +
+                    "camera-controls disable-zoom " +
+                    "skybox-image=\"../images/spruit_sunrise_1k_HDR.hdr\" alt=\"A 3D model of a damaged helmet\" " +
+                    "src=\"../images/models/DamagedHelmet.glb\">" +
+                    "</model-viewer>";
+                return res;
+
+
             //TODO: filepath cannot contain blank spaces, bcs its recognized as class
             //TODO: return html block for unsupported fileType
             default:
