@@ -11,7 +11,7 @@ const OverlayManager      = require('./overlay/OverlayManager');
 const Settings            = require('./Settings');
 const Path                = require('path');
 const NotificationManager = require('./NotificationManager');
-const MDParser            = require('./MDParser');
+const MDParser            = require('mdparser');
 
 class Site
 {
