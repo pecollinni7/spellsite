@@ -70,7 +70,7 @@ class Site
 
         this.updateDataFileVersionLabel();
 
-        // MDParser.showChangeLogNotification();
+        MDParser.showChangeLogNotification();
     }
 
     displaySelectedItemsActiveTags()

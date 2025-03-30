@@ -63,6 +63,7 @@
     "image-size": "^0.9.3",
     "jquery": "^3.5.0",
     "markdown-parser": "0.0.8",
+    "mdparser": "^0.0.3",
     "move-file": "^2.0.0",
     "muuri": "^0.8.0",
     "needle": "^2.3.2",
