@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.41 (30/03/2025)
+Fixes:
+- For all sort of things
+- Reactivated new server
+
+---
+
 ## 1.7.33 (26/11/2020)
 Backend enhancements:
 - Reimplemented drag and drop on the app
