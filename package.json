@@ -70,6 +70,7 @@
     "slash": "^3.0.0"
   },
   "devDependencies": {
+    "@electron-forge/publisher-github": "^7.8.0",
     "electron": "^11.4.7",
     "electron-builder": "^22.11.5",
     "electron-rebuild": "^2.3.5"
