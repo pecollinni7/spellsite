@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.43 (30/03/2025)
+Fixes:
+- Disabled ChangelogNotifications
+
+---
+
 ## 1.7.42 (30/03/2025)
 Fixes:
 - Disabled DevTools
