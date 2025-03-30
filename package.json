@@ -1,6 +1,6 @@
 {
   "name": "spellsite",
-  "version": "1.7.35",
+  "version": "1.7.36",
   "description": "Electron SpellSite application",
   "main": "main.js",
   "build": {
