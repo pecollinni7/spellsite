@@ -1,6 +1,6 @@
 const AsyncPolling = require('../../../lib/async-polling');
 const Routes       = require('./Routes');
-const interval     = 3000;
+const interval     = 1000;
 
 let polling = AsyncPolling(function (end) {
     Routes.getData();

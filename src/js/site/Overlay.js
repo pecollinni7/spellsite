@@ -9,6 +9,7 @@ class Overlay
 	_ext;
 	_filePath;
 	_selector;
+	_documentWidth;
 	
 	
 	get fileName() { return this._fileName; }
@@ -118,15 +119,17 @@ class Overlay
 			case '.mp4':
 				let mouseX;
 				let video = $('#videoOverlay').get(0);
-				
+				let docWidth = $(document).width();
+				let timV = video.duration;
+
 				$('#videoOverlay').on('mousemove', function moveFunc(e) {
-					
+
 					video.pause();
 					mouseX = e.offsetX;
 					
-					let timV = video.duration;
-					let valV = (timV * mouseX / $(document).width());
-					
+					// let valV = (timV * mouseX / $(document).width());
+					let valV = (timV * mouseX / docWidth);
+
 					valV              = Math.round(valV * 100) / 100;
 					video.currentTime = valV;
 				});
@@ -145,6 +148,8 @@ class Overlay
 				this.selector.off("webkitTransitionEnd transitionend");
 			}
 		});
+
+		$('#videoOverlay').off('mousemove');
 		
 		this.selector.removeClass('show');
 		// this.selector.css('visibility', 'hidden');

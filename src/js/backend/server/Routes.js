@@ -28,6 +28,11 @@ const getData = () => needle.request('get',
 
             return;
         }
+        else
+        {
+            $('#serverIcon').attr("src", Settings.ICON_DOT_GREEN);
+            $('#serverIcon').attr("title", "Server Online");
+        }
 
         // console.log('response statusCode = ' + response.statusCode);
 

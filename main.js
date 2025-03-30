@@ -1,14 +1,17 @@
 const {app, ipcMain, globalShortcut} = require('electron');
-const {BrowserWindow, shell}         = require('electron');
-const {autoUpdater}                  = require('electron-updater');
-const electronLocalshortcut          = require('electron-localshortcut');
-const windowsClipboard               = require('windows-file-clipboard');
-const slash                          = require('slash');
-const path                           = require('path');
-const log                            = require('electron-log');
-const FileType          = require('file-type');
+const {BrowserWindow, shell} = require('electron');
+// const {autoUpdater} = require('electron-updater');
+const electronLocalshortcut = require('electron-localshortcut');
+// const windowsClipboard = require('windows-file-clipboard');
+const windowsClipboard = require('clipboardy')
+const slash = require('slash');
+const path = require('path');
+const log = require('electron-log');
+const FileType = require('file-type');
 const EventEmitter = require('events');
-class MyEmitter extends EventEmitter {}
+
+class MyEmitter extends EventEmitter {
+}
 
 
 let loaderWindow;
@@ -17,21 +20,21 @@ const useLoaderWindow = true;
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
-let platform                             = process.platform;
-autoUpdater.logger                       = log;
-autoUpdater.logger.transports.file.level = 'info';
+let platform = process.platform;
+// autoUpdater.logger = log;
+// autoUpdater.logger.transports.file.level = 'info';
 
 app.whenReady().then(() => {
 
-        createLoaderWindow();
-        createWindow();
+    createLoaderWindow();
+    createWindow();
 
 
-    autoUpdater.checkForUpdatesAndNotify().then();
+    // autoUpdater.checkForUpdatesAndNotify().then();
 
-    setInterval(() => {
-        autoUpdater.checkForUpdatesAndNotify().then();
-    }, 30 * 60000);
+    // setInterval(() => {
+    //     autoUpdater.checkForUpdatesAndNotify().then();
+    // }, 30 * 60000);
 
     // browserLog(fs.readFileSync(path.resolve(__dirname, 'release-notes.md')));
     // browserLog(clipboard.readBuffer("CF_HDROP").toString("ucs2"));
@@ -41,24 +44,22 @@ app.whenReady().then(() => {
 
         //TODO: you need to check are the paths valid first and error escape them
         console.log(dataForClipboard);
-        windowsClipboard.writePaths(dataForClipboard);
+        windowsClipboard.writeSync(dataForClipboard);
     });
 
     electronLocalshortcut.register(window, 'Ctrl+V', (e) => {
         let clipboardPaths;
         let res = [];
 
-        try
-        {
-            clipboardPaths = windowsClipboard.readPaths();
+        try {
+            clipboardPaths = windowsClipboard.readSync();
+            clipboardPaths = "";
 
-            if (clipboardPaths.length === 0)
-            {
+            if (clipboardPaths.length === 0) {
                 return;
             }
 
-            for (let i = 0; i < clipboardPaths.length; i++)
-            {
+            for (let i = 0; i < clipboardPaths.length; i++) {
                 // clipboardPaths[i] = slash(clipboardPaths[i]);
                 res[i] = {path: clipboardPaths[i], name: path.basename(clipboardPaths[i])}
             }
@@ -66,9 +67,7 @@ app.whenReady().then(() => {
             console.log(res);
             //  TODO: you need to check are the paths valid first and error escape
             window.webContents.send("uploadMedia", res);
-        }
-        catch (e)
-        {
+        } catch (e) {
             console.log('Clipboard files error ', e);
         }
 
@@ -80,7 +79,7 @@ app.whenReady().then(() => {
 
         event.sender.startDrag({
             // icon : 'D:/_WebStorm/spellsite/src/images/icon_copy_x256x64.png',
-            icon : 'C:\\Users\\petarj\\WebstormProjects\\spellsite\\src\\images\\icon_copy_x256x64.png',
+            icon: 'C:\\Users\\petarj\\WebstormProjects\\spellsite\\src\\images\\icon_copy_x256x64.png',
             files: filePaths
         });
 
@@ -90,9 +89,6 @@ app.whenReady().then(() => {
     //
 
 });
-
-
-
 
 
 /*
@@ -121,26 +117,24 @@ app.on('will-quit', () => {
     globalShortcut.unregisterAll()
 });
 
-function browserLog(s)
-{
+function browserLog(s) {
     if (window && window.webContents)
         window.webContents.executeJavaScript(`console.log("${s}")`).then();
 }
 
-function createLoaderWindow()
-{
+function createLoaderWindow() {
     loaderWindow = new BrowserWindow({
-        width         : 540,
-        height        : 540,
-        show          : true,
+        width: 540,
+        height: 540,
+        show: true,
         webPreferences: {
             enableRemoteModule: true,
             nodeIntegration: true,
-            webSecurity    : true
+            webSecurity: true
         },
         // backgroundColor: '#00000000',
-        frame         : false,
-        transparent   : true,
+        frame: false,
+        transparent: true,
     });
 
     loaderWindow.loadFile('./src/html/loader.html').then(r => {
@@ -159,30 +153,29 @@ function createLoaderWindow()
 
 }
 
-function createWindow()
-{
+function createWindow() {
     window = new BrowserWindow({
-        width          : 1600,
-        height         : 1200,
-        show           : false,
-        webPreferences : {
-            preload           : path.join(__dirname, './src/js/preload.js'),
-            nodeIntegration   : true,
-            webSecurity       : false,
+        width: 1600,
+        height: 1200,
+        show: false,
+        webPreferences: {
+            preload: path.join(__dirname, './src/js/preload.js'),
+            nodeIntegration: true,
+            webSecurity: false,
             enableRemoteModule: true
         },
         backgroundColor: '#ffffff',
-        frame          : false
+        frame: false
     });
 
-    function sendStatusToWindow(text)
-    {
+    function sendStatusToWindow(text) {
         log.info(text);
         window.webContents.send('message', text);
     }
 
     // window.loadFile('./src/html/test.html').then(r => {});
-    window.loadFile('./src/html/index.html').then(r => {});
+    window.loadFile('./src/html/index.html').then(r => {
+    });
     window.webContents.openDevTools();
 
     window.on('closed', function () {
@@ -193,7 +186,7 @@ function createWindow()
     // if (!useLoaderWindow)
     // window.show();
     // window.hide();
-
+/*
     // Let autoUpdater check for updates, it will start downloading it automatically
     autoUpdater.on('checking-for-update', () => {
         browserLog('Checking for software update...');
@@ -214,8 +207,8 @@ function createWindow()
     });
     autoUpdater.on('download-progress', (progressObj) => {
         let log_message = "Download speed: " + progressObj.bytesPerSecond;
-        log_message     = log_message + ' - Downloaded ' + progressObj.percent + '%';
-        log_message     = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+        log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+        log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
         browserLog(log_message);
         sendStatusToWindow(log_message);
     });
@@ -226,7 +219,7 @@ function createWindow()
         // fs.appendFileSync(path.resolve(__dirname, 'release-notes.md'), JSON.stringify(info.releaseNotes),{encoding: 'utf8'});
 
         sendStatusToWindow('Update downloaded');
-    });
+    });*/
 
     /*
      ipcMain.on('quitAndInstall', (event, arg) => {

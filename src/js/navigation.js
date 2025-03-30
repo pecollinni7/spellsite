@@ -29,7 +29,10 @@
 //     }, 200);
 // });
 
-
+$(window).on('mousedown', function () {
+    const dropdown = $('#mainmenu');
+    dropdown.removeClass('show');
+});
 
 
 //TODO move all this crap to EventHandlers

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en-US" class="html">
+<head>
+    <meta charset="UTF-8">
+    <title>SpellSite</title>
+
+    <script>window.$ = window.jQuery = require('jquery');</script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+
+<!--    TODO: find another way to load this font. it gives you a warning like this-->
+<!--    <link rel="stylesheet" href="../fonts/OpenSans-Light.ttf">-->
+
+
+    <script src="../lib/bootstrap.min.js"></script>
+    <script src="../lib/jquery-ui.js"></script>
+    <script src="../lib/web-animations.min.js"></script>
+
+    <script src="../lib/gif-player.es6.js"></script>
+    <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+
+
+    <script src="../lib/wheelzoom.js"></script>
+
+
+    <!--    3d viewer-->
+<!--    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>-->
+<!--    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>-->
+    <script type="module" src="https://modelviewer.dev/node_modules/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../css/titlebar.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/welcome.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dropdown.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/addTag.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/navigation.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/loaderContent.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/tags.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/content.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/filedrop.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/overlay.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/notificationOverlay.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+
+</head>
+<body>
+
+
+<!--<p id="demo"></p>-->
+<!--<button disabled id="rdy-button" type="button" onClick="ipcRenderer.send('quitAndInstall')">Update Ready-->
+<!--</button>-->
+<!--<script>-->
+<!--    document.getElementById("demo").innerHTML = "app version is: " + require('electron').remote.app.getVersion();-->
+<!--</script>-->
+
+
+
+<div class="titlebar" id="titlebar">
+    <a class="icon" onclick="setDropdownPos();">&#xE700;</a>
+    <a class="icon" onclick="site.reloadPage();" data-toggle="tooltip" data-placement="bottom" title="Reload">&#xE72C;</a>
+    <a class="icon" onclick="site.overlayManager.showOverlay(OM.NEW_TAG_OVERLAY);" data-toggle="tooltip" data-placement="bottom" title="Add new Tag">&#xE948;</a>
+
+    <!--    <a  data-toggle="tooltip" data-placement="bottom" title="Server is online">-->
+<!--    </a>-->
+<!--    <div class="reloadNotification">New files arrived. Reloading in 3</div>-->
+
+
+    <div class="progress fade " id="progressBar">
+        <div class="progress-bar progress-bar-gray text" id="downloadProgressBar" role="progressbar" aria-valuenow="80"
+             aria-valuemin="0" aria-valuemax="100" style="width:80%">
+        </div>
+        <span id="progressBarText">Downloading 4/21</span>
+
+    </div>
+
+    <div class="drag-region"></div>
+
+
+
+    <a class="text-small" id="version-dataFile" data-toggle="tooltip" data-placement="bottom" title="Data version">
+        d000
+    </a>
+    <a class="text-small" id="version-software" data-toggle="tooltip" data-placement="bottom" title="Software version">v1.0.1</a>
+    <img class="icon" id="serverIcon" data-toggle="tooltip" data-placement="bottom" title="Server online" src="../images/dot_red.png">
+
+
+    <a class="text" onmousedown="site.clearSelection();">Deselect</a>
+    <a class="icon navButton" onclick="toggleNavigation(this)" data-toggle="tooltip"
+       data-placement="bottom" title="Toggle Navigation">&#xE70E;</a>
+
+    <div class="window-controls" id="window-controls">
+        <div class="button" id="min-button">
+            <span>&#xE921;</span>
+        </div>
+        <div class="button" id="max-button">
+            <span>&#xE922;</span>
+        </div>
+        <div class="button" id="restore-button">
+            <span>&#xE923;</span>
+        </div>
+        <div class="button" id="close-button">
+            <span>&#xE8BB;</span>
+        </div>
+    </div>
+</div>
+
+<div class="filedrop" id="filedrop">
+    <div class="drop-content" id="drop-content">
+<!--        		<a data-pin-do="embedPin" href="https://www.pinterest.com/pin/396879785902836210/"></a>-->
+<!--        		<iframe src="https://player.vimeo.com/video/281053917?autoplay=1&loop=1&color=ff4208&title=0&byline=0&portrait=0"-->
+<!--        		        width="640" height="360" frameborder="0" allow="fullscreen" allowfullscreen></iframe>-->
+
+        <!--		<iframe width="560" height="315" src="https://www.youtube.com/embed/668nUCeBHyY?autoplay=1&controls=0" frameborder="0" -->
+        <!--		        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+        <!--		<iframe src="https://www.vimeo.com/263130429?autoplay=1&loop=1&color=ff4208&title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allow="fullscreen" allowfullscreen></iframe>-->
+        <!--		<iframe src="https://player.vimeo.com/video/263130429?autoplay=1&loop=1&color=ff4208&title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>-->
+        <!--		<iframe src="https://player.vimeo.com/video/263130429?autoplay=1&loop=1&color=ff4208&title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>-->
+    </div>
+</div>
+
+<div class="dropdown-menu" id="mainmenu">
+    <a class="dropdown-item" href="#" onclick="choseMediaDirectory()">Set Storage Folder</a>
+    <a class="dropdown-item " href="#">
+        Set page size
+<!--        <input class="form-control-sm" type="number" value="50" min="0" max="500" step="10"/>-->
+<!--        <input id="spinner" name="value">-->
+    </a>
+<!--    <a>-->
+<!--        <label for="spinner">Select a value:</label>-->
+<!--        <input id="spinner" name="value">-->
+<!--    </a>-->
+    <a class="dropdown-item" href="#" onclick="settings.clearSettings()">Clear Settings</a>
+    <a class="dropdown-item" href="#" onclick="console.log('test')">Test func</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="#">Separated link</a>
+</div>
+
+<div class="dropdown-menu" id="tagcontextmenu">
+    <a class="dropdown-item" href="#">Ignore Tag [Alt+Click]</a>
+    <a class="dropdown-item" href="#">Rename Tag</a>
+    <a class="dropdown-item" onclick="site.tagsController.removeTag(site.data.currentTagName)" href="#">Delete Tag</a>
+</div>
+
+<div class="dropdown-menu" id="itemcontextmenu">
+    <a class="dropdown-item text-muted" href="#">Copy [Ctrl+C]</a>
+    <a class="dropdown-item text-muted" href="#">Paste [Ctrl+V]</a>
+    <a class="dropdown-item" onclick="site.contentController.deleteSelectedItems()" href="#">Delete [Del]</a>
+    <a class="dropdown-item text-muted" href="#">Copy Tags</a>
+    <a class="dropdown-item text-muted" href="#">Paste Tags</a>
+    <a class="dropdown-item" onclick="site.revealItemsInExplorer();" href="#">Reveal in Explorer [Ctrl+E]</a>
+<!--    <div class="dropdown-divider text-muted"></div>-->
+    <a class="dropdown-item text-muted" href="#">Download</a>
+    <a class="dropdown-item text-muted" href="#">Download [original]</a>
+</div>
+
+<div class="navigation collapse show" id="navigation">
+    <ul class="pagination" id="pagination"></ul>
+    <div class="tags " id="tags"></div>
+</div>
+
+<div class="loaderContent align-middle" id="loaderContent">
+
+    <h4 class="text-center text-light">Please specify the media directory.</h4>
+    <h6 class="text-muted text-center" >
+        This is where all the media will be stored. It can take a few gigabytes of space.
+        Chose a fast folder somewhere on your SSD drive...
+    </h6>
+    <div class="text-center" style="margin-top: 20px">
+        <button type="button"
+                class="btn btn-primary btn-lg btn-light"
+                onclick="choseMediaDirectory()">Select</button>
+<!--                onclick="site.choseMediaDirectory()">Select</button>-->
+    </div>
+
+
+
+</div>
+
+<div class="addTag" id="addTag">
+
+    <label class="text-center  h5" for="addTagInputName">Please specify the name for the new tag:</label>
+
+    <!--    TODO: add regex for letter matching     -->
+    <input type="text" class="addTagInputName" id="addTagInputName" name="name"
+           placeholder="TagName..." autofocus required minlength="1"
+           onkeyup="site.om_newTag.handleKeyPress();">
+
+<!--    <h6 class="text-danger text-center " id="errorText" style="display: none">-->
+<!--        * Tag with that name already exists-->
+<!--    </h6>-->
+
+    <div>
+        <button type="button" class="btn btn-secondary  btn-light" onclick="site.om.hideOverlay();">Cancel</button>
+        <button type="button" class="btn btn-secondary  btn-light" onclick="site.om_newTag.confirm();">Confirm</button>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="notificationOverlay" id="notificationOverlay">
+<!--    <div class="alert alert-secondary alert-dismissible fade show" role="alert">-->
+<!--        <strong>Notification test!</strong> Welcome stranger.-->
+<!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
+
+<!--    <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">-->
+<!--        <strong>Auto dismissible notification!</strong> blablabla release notes here...-->
+<!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
+
+<!--    <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="true" data-delay="1000">-->
+<!--        <div class="toast-header">-->
+<!--            <img src="" class="rounded mr-2" alt="...">-->
+<!--            <strong class="mr-auto">Bootstrap</strong>-->
+<!--            <small>11 mins ago</small>-->
+<!--            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">-->
+<!--                <span aria-hidden="true">&times;</span>-->
+<!--            </button>-->
+<!--        </div>-->
+<!--        <div class="toast-body">-->
+<!--            Hello, world! This is a toast message.-->
+<!--        </div>-->
+<!--    </div>-->
+
+</div>
+
+
+
+<script>
+
+
+
+    setTimeout(
+        function()
+        {
+            //do something special
+            $('#myAlert').alert('close');
+            // $('#progressBar').toggleClass('show');
+
+        }, 2000);
+
+    $('#myAlert').on('closed.bs.alert', function () {
+        // do something…
+        // alert('asdad');
+    });
+
+
+</script>
+
+
+
+
+
+<div class="overlay" id="overlay" onclick="site.overlayManager.hideOverlay();" ></div>
+
+<!--<div class="modalViewerTemp">-->
+<!--    <model-viewer style='width:1000px; height:1000px' camera-controls skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/DamagedHelmet.glb"></model-viewer>-->
+
+<!--</div>-->
+
+<div class="content" id="content">
+
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/bec1ff38-93fb-4f76-87c2-d1a12de342e2.png" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="bec1ff38-93fb-4f76-87c2-d1a12de342e2.png">
+    <video class="videoInsert  " onmouseup="site.handleItemClick(this, event)" ondblclick="site.handleItemDoubleClick(this)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="99e8605d-e4f2-459e-9f10-e15bf0f921ac.mp4" autoplay="" loop="" muted=""><source src="C:/Users/petarj/Documents/spellsiteStorage/media/99e8605d-e4f2-459e-9f10-e15bf0f921ac.mp4" type="video/mp4"></video>
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/5edf1f64-836f-44d1-87ec-3423a722030c.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="5edf1f64-836f-44d1-87ec-3423a722030c.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/78c04d08-7b0f-46a9-a1db-d44b51a7962e.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="78c04d08-7b0f-46a9-a1db-d44b51a7962e.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/4956d18d-c41e-4b55-b781-f7150beb6934.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="4956d18d-c41e-4b55-b781-f7150beb6934.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/08d78732-30ce-4ae6-bc55-127a16afee91.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="08d78732-30ce-4ae6-bc55-127a16afee91.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/52355773-732e-4724-867b-60d5f711bc08.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="52355773-732e-4724-867b-60d5f711bc08.gif">
+
+    <model-viewer camera-controls skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/DamagedHelmet.glb"></model-viewer>
+    <model-viewer camera-controls skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/out.glb"></model-viewer>
+
+
+
+
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/5ca12193-c817-4d70-bed4-06a4fa4ff51c.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="5ca12193-c817-4d70-bed4-06a4fa4ff51c.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/e0ae974a-bf66-4976-891a-5064e239d693.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="e0ae974a-bf66-4976-891a-5064e239d693.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/32479f2b-8845-48da-8f41-f92bc60091ff.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="32479f2b-8845-48da-8f41-f92bc60091ff.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/42b06cbb-fa4d-4b6d-916f-136a572b5cb0.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="42b06cbb-fa4d-4b6d-916f-136a572b5cb0.gif">
+    <video class="videoInsert  " onmouseup="site.handleItemClick(this, event)" ondblclick="site.handleItemDoubleClick(this)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="64e7de73-7010-4bac-a086-62da5f60b329.mp4" autoplay="" loop="" muted=""><source src="C:/Users/petarj/Documents/spellsiteStorage/media/64e7de73-7010-4bac-a086-62da5f60b329.mp4" type="video/mp4"></video>
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/c212e016-c2f7-4ad9-9279-37c52791cf4c.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="c212e016-c2f7-4ad9-9279-37c52791cf4c.gif">
+
+    <model-viewer style='width:500px; height:500px' skybox-image="../images/spruit_sunrise_1k_HDR.hdr" src="../images/models/RobotExpressive.glb" alt="A 3D model of an astronaut" camera-controls autoplay animation-name="Running" ar shadow-intensity="2" disable-zoom ></model-viewer>
+
+
+
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/0b9455c6-ced4-41b9-8eb7-98f8691a8ba8.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="0b9455c6-ced4-41b9-8eb7-98f8691a8ba8.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/f8ac9919-f42c-4bf2-ac4a-223c0f942122.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="f8ac9919-f42c-4bf2-ac4a-223c0f942122.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/b7e51d11-cd62-4aee-a86d-9da4883e035a.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="b7e51d11-cd62-4aee-a86d-9da4883e035a.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/6d647c3c-458a-4547-ac27-9e5d4955daab.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="6d647c3c-458a-4547-ac27-9e5d4955daab.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/fae35085-3056-4f4e-971d-c9e131199ba1.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="fae35085-3056-4f4e-971d-c9e131199ba1.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/aa6a57a7-6a7f-4dea-8824-104b70ffac99.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="aa6a57a7-6a7f-4dea-8824-104b70ffac99.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/4e5c50c0-34f9-4329-8987-b21f98ca200f.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="4e5c50c0-34f9-4329-8987-b21f98ca200f.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/7209d2b8-5b77-49cc-8b12-e0f1ff140cd3.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="7209d2b8-5b77-49cc-8b12-e0f1ff140cd3.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/e69175b3-07f9-4c1a-a608-fb986ffb0883.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="e69175b3-07f9-4c1a-a608-fb986ffb0883.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/ad772d9f-1002-4bf3-b6e5-3becb0dbf494.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="ad772d9f-1002-4bf3-b6e5-3becb0dbf494.gif">
+    <img class="image " src="C:/Users/petarj/Documents/spellsiteStorage/media/62bab8e2-b8c4-4e7c-bb65-62c52055176a.gif" onmouseup="site.handleItemClick(this, event)" oncontextmenu="site.openContextMenu(event, event.clientX - 5, event.clientY - 5)" ondblclick="site.handleItemDoubleClick(this)" draggable="true" ondragstart="site.handleItemDragStart(this, event);" data-filename="62bab8e2-b8c4-4e7c-bb65-62c52055176a.gif">
+
+
+
+
+
+    <!--    <model-viewer camera-controls  skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/test_out/test.gltf"></model-viewer>-->
+<!--    <model-viewer camera-controls  skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/test.glb"></model-viewer>-->
+    <model-viewer camera-controls  skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/exp.glb"></model-viewer>
+<!--    <model-viewer camera-controls  skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/football_ball_out/football_ball.gltf"></model-viewer>-->
+    <model-viewer camera-controls disable-zoom skybox-image="../images/spruit_sunrise_1k_HDR.hdr" alt="A 3D model of a damaged helmet" src="../images/models/DamagedHelmet.glb"></model-viewer>
+
+    <!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+    <model-viewer style='width:500px; height:500px' src="../images/models/RobotExpressive.glb" alt="A 3D model of an astronaut" camera-controls autoplay animation-name="Running" ar shadow-intensity="2" disable-zoom ></model-viewer>
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+<!--    <model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" camera-controls  disable-zoom ></model-viewer>-->
+
+</div>
+
+<div class="footer" id="footer"></div>
+
+<!--<model-viewer style='width:500px; height:500px' src="../images/astronaut.glb" alt="A 3D model of an astronaut" auto-rotate camera-controls></model-viewer>-->
+
+
+
+<!--<script src="../lib/bootstrap-input-spinner.js"></script>-->
+<!--<script>-->
+<!--    var config = {-->
+<!--        decrementButton: "<strong>&minus;</strong>", // button text-->
+<!--        incrementButton: "<strong>&plus;</strong>", // ..-->
+<!--        groupClass: "", // css class of the resulting input-group-->
+<!--        // buttonsClass: "btn-outline-secondary",-->
+<!--        buttonsClass: "btn btn-outline-secondary btn-sm  p-1",-->
+<!--        buttonsWidth: "2.5rem",-->
+<!--        textAlign: "center", // alignment of the entered number-->
+<!--        autoDelay: 500, // ms threshold before auto value change-->
+<!--        autoInterval: 50, // speed of auto value change-->
+<!--        buttonsOnly: false, // set this `true` to disable the possibility to enter or paste the number via keyboard-->
+<!--        locale: navigator.language, // the locale, per default detected automatically from the browser-->
+<!--        template: // the template of the input-->
+<!--            '<div class="input-group ${groupClass}">' +-->
+<!--            '<div class="input-group-prepend"><button style="min-width: ${buttonsWidth}" class="btn btn-decrement ${buttonsClass} btn-minus" type="button">${decrementButton}</button></div>' +-->
+<!--            '<input type="text" inputmode="decimal" style="text-align: ${textAlign}" class="form-control form-control-text-input"/>' +-->
+<!--            '<div class="input-group-append"><button style="min-width: ${buttonsWidth}" class="btn btn-increment ${buttonsClass} btn-plus" type="button">${incrementButton}</button></div>' +-->
+<!--            '</div>'-->
+<!--    }-->
+
+<!--    // $("input[type='number']").inputSpinner();-->
+<!--    $("input[type='number']").inputSpinner(config);-->
+
+<!--</script>-->
+
+<!--<script src="../js/appDownloaderService.js"></script>-->
+<script src="../js/titlebar.js"></script>
+<!--<script src="../js/backend/App.js"></script>-->
+<script src="../js/Start.js"></script>
+<!--<script src="../js/backend/TagOverlay.js"></script>-->
+
+<!--<script src="../js/GUI.js"></script>-->
+<script src="../js/navigation.js"></script>
+<script src="../js/renderer.js"></script>
+
+<script>
+    function setDropdownPos()
+    {
+        const dropdown = $('#mainmenu');
+        dropdown.css({top: 30, left: 0, position: 'fixed'});
+        dropdown.toggleClass('show');
+
+        dropdown.on('click', () => {
+            dropdown.removeClass('show');
+        });
+
+
+    }
+
+    const OM = require('../js/backend/overlay/OverlayManager');
+</script>
+</body>
+</html>

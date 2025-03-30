@@ -2,7 +2,6 @@ const fs       = require('fs');
 const path     = require('path');
 const slash    = require('slash');
 const settings = require('electron').remote.require('electron-settings');
-const {dialog} = require('electron').remote;
 
 const defaultFolders = ['json', 'media', 'temp'];
 
@@ -178,6 +177,12 @@ const removeDir = function (dirPath) {
     }
 }
 
+function clearPatchFile()
+{
+    if (fs.existsSync(module.exports.path_patchFile) === false)
+        fs.writeFileSync(module.exports.path_patchFile, JSON.stringify({}));
+}
+
 function clearSettings()
 {
     //TODO: this throws an error
@@ -187,10 +192,10 @@ function clearSettings()
 }
 
 const IP_LOCAL              = "http://127.0.0.1";
-const IP_PUBLIC             = "http://144.91.87.68";
-const IP_PUBLIC_2           = "http://207.180.249.216";
-const SRV_IP                = IP_PUBLIC_2;
+const IP_PUBLIC             = "http://194.163.151.224";
+const SRV_IP                = IP_PUBLIC;
 const SRV_PORT              = "12345";
+// const SRV_PORT              = "22";
 const SRV_GET_FILE          = "";
 const SRV_SET_DATA_FILE     = SRV_IP + ":" + SRV_PORT + "/setDataFile";
 // const SRV_SEND_LINKS        = SRV_IP + ":" + SRV_PORT + "/sendLinks";
@@ -210,6 +215,7 @@ module.exports = {
     getTempMediaPathForFileName,
     fileExists,
     clearSettings,
+    clearPatchFile,
     listAllSettings,
     numOfMediaFiles,
     clearTempMediaFolder,

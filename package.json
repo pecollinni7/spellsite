@@ -67,8 +67,7 @@
     "muuri": "^0.8.0",
     "needle": "^2.3.2",
     "parse-md": "^2.0.4",
-    "slash": "^3.0.0",
-    "windows-file-clipboard": "^0.3.0"
+    "slash": "^3.0.0"
   },
   "devDependencies": {
     "electron": "^11.4.7",

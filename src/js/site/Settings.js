@@ -8,8 +8,10 @@ const ICON_DOT_GREEN    = '../images/dot_green.png';
 const ICON_DOT_RED      = '../images/dot_red.png';
 
 // const SERVER            = "http://127.0.0.1";
-const SERVER            = "http://144.91.87.68";
+// const SERVER            = "http://144.91.87.68";
+const SERVER           = "http://194.163.151.224";
 const PORT              = "12345";
+// const PORT              = "22";
 const GET_FILE          = "";
 const SET_DATA_FILE     = SERVER + ":" + PORT + "/setDataFile";
 const CHECK_FOR_UPDATES = SERVER + ":" + PORT + "/checkForUpdates";
