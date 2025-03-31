@@ -48,7 +48,7 @@ function setDefaultPaths(baseFolderPath)
     });
 
     settings.set('app', {
-        pageSize                 : 25,
+        pageSize                 : 50,
         tagsOrder                : [],
         saveSelectionOnPageSwitch: true,
         enableLogger             : false,

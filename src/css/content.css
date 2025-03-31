@@ -82,7 +82,15 @@
 /*TODO: add settings for max (more) columns*/
 
 
-@media (max-width: 15000px) {
+@media (max-width: 2500px) {
+	.content {
+		-moz-column-count: 5;
+		-webkit-column-count: 5;
+		column-count: 5;
+	}
+}
+
+@media (max-width: 2050px) {
 	.content {
 		-moz-column-count: 4;
 		-webkit-column-count: 4;
@@ -133,7 +141,7 @@
 	linear-gradient(0deg, yellow 50%, transparent 30%);
 
 	background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-	background-size: 15px 1px, 15px 1px, 1px 15px, 1px 15px;
+	background-size: 15px 2px, 15px 2px, 2px 15px, 2px 15px;
 	padding: 1px;
 	animation: border-dance 8s infinite linear;
 	z-index: -1;

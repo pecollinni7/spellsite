@@ -2,6 +2,7 @@ const NewTagOverlay   = require('./NewTagOverlay');
 const ItemViewOverlay = require('./ItemViewOverlay');
 const DropZoneOverlay = require('./DropZoneOverlay');
 const SettingsOverlay = require('./SettingsOverlay');
+// const {ipcMain, ipcRenderer} = require('electron');
 
 class OverlayManager
 {
@@ -62,12 +63,17 @@ class OverlayManager
 
         this.activeOverlay = this.getOverlay(overlayType);
         this.activeOverlay.show(param1);
+
+        // ipcRenderer.emit('showOverlay');
     }
 
     hideOverlay()
     {
         if (this.activeOverlay)
+        {
             this.activeOverlay.hide();
+            // ipcRenderer.emit('hideOverlay');
+        }
     }
 
     getOverlay(overlayType)

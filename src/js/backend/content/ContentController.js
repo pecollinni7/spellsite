@@ -406,6 +406,31 @@ class ContentController
         return chunksStringed;
     }
 
+    pauseAllVideosOnActivePage(isPaused = true)
+    {
+        $('#content').children().each(function (index, element) {
+            let videoElement = $(element);
+            if(videoElement.hasClass('videoInsert'))
+            {
+                if (isPaused)
+                {
+                    videoElement.removeAttr('autoplay');
+                    videoElement.removeAttr('loop');
+                    videoElement.removeAttr('muted');
+                    videoElement.get(0).pause();
+                }
+                else
+                {
+                    videoElement.attr('autoplay');
+                    videoElement.attr('loop');
+                    videoElement.attr('muted');
+                    videoElement.get(0).play();
+                }
+            }
+        });
+        // console.log($('#content').children());
+    }
+
 }
 
 module.exports = ContentController;

@@ -5,7 +5,7 @@ const DataService         = require('./data/DataService');
 const Data                = require('./data/Data');
 const Server              = require('./server/Server');
 const remote              = require('electron').remote;
-const {ipcRenderer}       = require('electron');
+// const {ipcRenderer, ipcMain}       = require('electron');
 const {shell}             = require('electron');
 const OverlayManager      = require('./overlay/OverlayManager');
 const Settings            = require('./Settings');
@@ -71,6 +71,14 @@ class Site
         this.updateDataFileVersionLabel();
 
         // MDParser.showChangeLogNotification();
+
+        // ipcRenderer.on('showOverlay', () => {
+        //     this.contentController.pauseAllVideosOnActivePage(true);
+        // })
+        //
+        // ipcRenderer.on('hideOverlay', () => {
+        //     this.contentController.pauseAllVideosOnActivePage(false);
+        // })
     }
 
     displaySelectedItemsActiveTags()
