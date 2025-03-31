@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.44 (31/03/2025)
+Fixes:
+- Content.css fixes. 
+- Increased page size to 50
+
+---
+
 ## 1.7.43 (30/03/2025)
 Fixes:
 - Disabled ChangelogNotifications
